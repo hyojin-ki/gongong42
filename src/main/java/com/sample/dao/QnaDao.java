@@ -21,4 +21,10 @@ public interface QnaDao {
 	void updateQna(Map<String, Object> map);
 	void deleteQna(int qnaId);
 	
+	/**
+	 * 아직 답변되지 않은 qna 숫자
+	 * @return
+	 */
+	int getNoAnswerQnaCnt();
+	
 }

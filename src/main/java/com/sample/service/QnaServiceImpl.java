@@ -140,5 +140,9 @@ public class QnaServiceImpl implements QnaService{
 		qnaDao.insertAnswer(map);
 		
 	}
+	
+	public int getNoAnswerQnaCnt() {
+		return qnaDao.getNoAnswerQnaCnt();
+	}
 
 }

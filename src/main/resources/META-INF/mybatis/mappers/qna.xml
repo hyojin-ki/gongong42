@@ -114,5 +114,11 @@
 		where id = ${value}
 	</update>
 	
+	<select id="getNoAnswerQnaCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM qna_main
+		WHERE answerContent IS null
+	</select>
+	
 </mapper>
 

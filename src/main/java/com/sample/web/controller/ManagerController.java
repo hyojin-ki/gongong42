@@ -26,6 +26,7 @@ import com.sample.dto.NoticeDetailDto;
 import com.sample.dto.NoticeInsideContentDto;
 import com.sample.dto.UserInfoDto;
 import com.sample.service.NoticeService;
+import com.sample.service.PaymentService;
 import com.sample.service.QnaService;
 import com.sample.service.ReserveService;
 import com.sample.service.UserService;
@@ -52,10 +53,15 @@ public class ManagerController {
 	@Autowired
 	private ReserveService reserveService;
 	
+	@Autowired
+	private QnaService qnaService;
+	
+	@Autowired
+	private PaymentService paymentService;
+	
+	
 	@Value("${directory.save.noticeImg}")
 	private String saveDirectory;
-	@Autowired
-	QnaService qnaService;
 	
 	@Value("${directory.save.qnaImg}")
 	private String qnaSaveDirectory;
@@ -81,10 +87,14 @@ public class ManagerController {
 		param.put("sort", "date");
 		param.put("query", "regDate");
 		int total = userService.getAllUsersCount(param);
-
+		int paymentTotal = paymentService.getCurrentMothPaymentCnt();
+		int noanswerQnaCnt = qnaService.getNoAnswerQnaCnt();
+		
 		model.addAttribute("topReserves", topReserves);
 		model.addAttribute("userCount", total);
 		model.addAttribute("userList", userList);
+		model.addAttribute("paymentTotal", paymentTotal);
+		model.addAttribute("noanswerCnt", noanswerQnaCnt);
 		
 		return "/manager/managerhome";  
 	}

@@ -28,4 +28,11 @@ public interface PaymentDao {
     List<PaymentDto> getPaymentAll(PaymentDto paymentDto);
     
     List<PaymentDto> getTotalSales(PaymentDto paymentDto);
+    
+    /**
+     * 최근 달의 결제 현황을 보여준다.
+     * @return
+     */
+    int getCurrentMothPaymentCnt();
+    
 }
