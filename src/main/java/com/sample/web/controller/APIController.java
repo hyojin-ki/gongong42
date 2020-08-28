@@ -35,6 +35,6 @@ public class APIController {
 	@ResponseBody
 	public APIPerformanceDetail getAPIDataDetail(@RequestParam("seq") int seqNo) {
 		
-		return apiPerformanceService.getAPIDataDetailBySeqNo(seqNo);
+		return apiPerformanceService.getAPIDataDetailBySeqNo(seqNo);    
 	}
 }
