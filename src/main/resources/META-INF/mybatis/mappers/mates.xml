@@ -66,6 +66,50 @@ WHERE mmain.id = 1;
 		<collection property="mateTags" select="getMateTagByMateId" column="id"/>
 	</resultMap>
 
+	<!-- mateManagemanent For list -->	
+	<!-- 모튼 mate TotalCnt -->
+	<resultMap type="com.sample.dto.MateList" id="mateListMap">
+		<result property="totalCnt" column="TotalCnt"/>
+		<association property="performance" column="performanceId" select="getMatePerformanceByPerformanceId" />
+		<association property="Rseats" column="performanceId" select="getAllMateSeatCnt_R"/>
+		<association property="Sseats" column="performanceId" select="getAllMateSeatCnt_S"/>
+		<association property="Aseats" column="performanceId" select="getAllMateSeatCnt_A"/>
+	</resultMap>
+	<select id="getAllMateTotal" resultMap="mateListMap">
+		SELECT 
+			mmain.performanceId,
+			COUNT(*) TotalCnt
+		FROM mate_main mmain
+		GROUP BY mmain.performanceId
+		order by mmain.performanceId desc
+	</select>
+	
+	<select id="getAllMateSeatCnt_R" resultType="int">
+		SELECT 
+			COUNT(mmain.seatRate) as cnt
+		FROM mate_main mmain
+		WHERE mmain.performanceId = #{performanceId}
+		and mmain.seatRate in ('R')
+		GROUP BY mmain.seatRate
+	</select>
+	<select id="getAllMateSeatCnt_S" resultType="int">
+		SELECT 
+			COUNT(mmain.seatRate) as cnt
+		FROM mate_main mmain
+		WHERE mmain.performanceId = #{performanceId}
+		and mmain.seatRate in ('S')
+		GROUP BY mmain.seatRate
+	</select>
+	<select id="getAllMateSeatCnt_A" resultType="int">
+		SELECT 
+			COUNT(mmain.seatRate) as cnt
+		FROM mate_main mmain
+		WHERE mmain.performanceId = #{performanceId}
+		and mmain.seatRate in ('A')
+		GROUP BY mmain.seatRate
+	</select>
+	
+	
 <!-- mateSeach -->
 		<!-- 유저 아이디 , 퍼포먼스를 입력 받아, 좌석 등급에 해당하는 메이트 정보를 모두 구함 -->
 	<select id="getAllMates" resultMap="mateMap" parameterType="map">

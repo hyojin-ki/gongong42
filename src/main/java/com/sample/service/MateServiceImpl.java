@@ -15,6 +15,7 @@ import com.sample.dao.PerformanceDao;
 import com.sample.dao.ReserveDao;
 import com.sample.dao.UserDao;
 import com.sample.dto.MateDetailDto;
+import com.sample.dto.MateList;
 import com.sample.dto.MateUserDto;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.web.form.MateSearchForm;
@@ -450,10 +451,13 @@ public class MateServiceImpl implements MateService {
 		}
 	}
 	
-	@Override
 	public List<Mate> mateListForMypage(String userId) {
-		// TODO Auto-generated method stub
 		return mateDao.getMateListByUserId(userId);
+	}
+	
+	
+	public List<MateList> getAllMateListForManagement() {
+		return mateDao.getAllMateTotal();
 	}
 	
 }

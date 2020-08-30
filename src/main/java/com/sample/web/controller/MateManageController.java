@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sample.dto.JsonHallSeat;
 import com.sample.dto.JsonPerformance;
+import com.sample.dto.MateList;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
 import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.web.form.MateForm;
+import com.sample.web.view.Mate;
 import com.sample.web.view.Performance;
 
 @Controller
@@ -69,6 +71,17 @@ public class MateManageController {
 	public @ResponseBody int countMate(@RequestBody MateForm mateForm) {
 		
 		return mateManagerService.countMate(mateForm.getSeats());
+	}
+	@RequestMapping("/mateManagementJson.do")
+	public @ResponseBody Map<String, Object> mateManagementList() {
+		Map<String, Object> map = new HashMap<>();
+		List<MateList> list = mateService.getAllMateListForManagement();
+		map.put("mateList", list);
+		return map;
+	}
+	@RequestMapping("/mateList.do")
+	public String mateManagerList() {
+		return "mate/mateManagerList";
 	}
 	
 }

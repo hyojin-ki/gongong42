@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sample.dto.MateList;
 import com.sample.dto.MateUserDto;
 import com.sample.web.form.MateSearchForm;
 import com.sample.web.view.HallInfo;
@@ -255,5 +256,11 @@ public interface MateDao {
     
     List<Mate> getMateListByUserId(String userId);
     
+    
+    
+    List<MateList> getAllMateTotal();
+    int getAllMateSeatCnt_R(int performanceId);
+    int getAllMateSeatCnt_S(int performanceId);
+    int getAllMateSeatCnt_A(int performanceId);
     
 }
