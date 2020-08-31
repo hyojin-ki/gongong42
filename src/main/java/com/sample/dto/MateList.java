@@ -12,6 +12,10 @@ public class MateList {
 	private int Rseats;
 	private int Sseats;
 	private int Aseats;
+	private List<Map<String, Object>> rStatus;
+	private List<Map<String, Object>> sStatus;
+	private List<Map<String, Object>> aStatus;
+	
 	
 	public MateList() { }
 
@@ -30,10 +34,6 @@ public class MateList {
 	public void setTotalCnt(int totalCnt) {
 		this.totalCnt = totalCnt;
 	}
-
-
-	
-
 	public int getRseats() {
 		return Rseats;
 	}
@@ -58,13 +58,30 @@ public class MateList {
 		Aseats = aseats;
 	}
 
-	@Override
-	public String toString() {
-		return "MateList [performance=" + performance + ", totalCnt=" + totalCnt + ", Rseats=" + Rseats + ", Sseats="
-				+ Sseats + ", Aseats=" + Aseats + "]";
+
+	public List<Map<String, Object>> getrStatus() {
+		return rStatus;
 	}
 
+	public void setrStatus(List<Map<String, Object>> rStatus) {
+		this.rStatus = rStatus;
+	}
 
+	public List<Map<String, Object>> getsStatus() {
+		return sStatus;
+	}
+
+	public void setsStatus(List<Map<String, Object>> sStatus) {
+		this.sStatus = sStatus;
+	}
+
+	public List<Map<String, Object>> getaStatus() {
+		return aStatus;
+	}
+
+	public void setaStatus(List<Map<String, Object>> aStatus) {
+		this.aStatus = aStatus;
+	}
 
 	
 	

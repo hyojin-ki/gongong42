@@ -31,7 +31,7 @@
 	src="/resources/js/manager/mateManager.js"></script>
 <script type="text/javascript"
 	src="/resources/js/manager/mateManagerList.js"></script>
-	
+
 </head>
 <body>
 	<c:set var="topName" value="mate" />
@@ -71,14 +71,99 @@
 								</tbody>
 								<tfoot class="mx-auto">
 									<tr>
-										<td colspan="13">
-											
-										</td>
+										<td colspan="13"></td>
 									</tr>
 								</tfoot>
 							</table>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="mate-detail-modal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">메이트 상세정보</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<table class="table table-bordered" style="border: 1px solid gray">
+						<tbody>
+							<tr>
+								<td colspan="2" rowspan="5"></td>
+								<td>공연명</td>
+								<td>카테고리</td>
+							</tr>
+							<tr>
+								<td>공연일자</td>
+								<td>공연시간</td>
+							</tr>
+							<tr>
+								<td>회차</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>총 좌석수</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>총 메이트 수</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td rowspan="3">R석</td>
+								<td>빈방</td>
+								<td>2인방</td>
+								<td>카테고리별</td>
+							</tr>
+							<tr>
+								<td>모집중</td>
+								<td>3인방</td>
+								<td rowspan="8"></td>
+							</tr>
+							<tr>
+								<td>모집완료</td>
+								<td>4인방</td>
+							</tr>
+							<tr>
+								<td rowspan="3">S석</td>
+								<td>빈방</td>
+								<td>2인방</td>
+							</tr>
+							<tr>
+								<td>모집중</td>
+								<td>3인방</td>
+							</tr>
+							<tr>
+								<td>모집완료</td>
+								<td>4인방</td>
+							</tr>
+							<tr>
+								<td rowspan="3">A석</td>
+								<td>빈방</td>
+								<td>2인방</td>
+							</tr>
+							<tr>
+								<td>모집중</td>
+								<td>3인방</td>
+							</tr>
+							<tr>
+								<td>모집완료</td>
+								<td>4인방</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-primary">수정</button>
 				</div>
 			</div>
 		</div>

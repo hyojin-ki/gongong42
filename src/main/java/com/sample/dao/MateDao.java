@@ -257,10 +257,14 @@ public interface MateDao {
     List<Mate> getMateListByUserId(String userId);
     
     
-    
-    List<MateList> getAllMateTotal();
+    int getAllMateTotalRows();
+    List<MateList> getAllMateTotal(Map<String, Object> map);
     int getAllMateSeatCnt_R(int performanceId);
     int getAllMateSeatCnt_S(int performanceId);
     int getAllMateSeatCnt_A(int performanceId);
+    
+    List<Map<String, Object>> getStatusGroupBySeatRateForS();
+    List<Map<String, Object>> getStatusGroupBySeatRateForR();
+    List<Map<String, Object>> getStatusGroupBySeatRateForA();
     
 }

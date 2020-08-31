@@ -456,8 +456,13 @@ public class MateServiceImpl implements MateService {
 	}
 	
 	
-	public List<MateList> getAllMateListForManagement() {
-		return mateDao.getAllMateTotal();
+	public List<MateList> getAllMateListForManagement(Map<String, Object> map) {
+		return mateDao.getAllMateTotal(map);
 	}
-	
+	public int getAllMateTotalRows() {
+		return mateDao.getAllMateTotalRows();
+	}
+	public List<MateList> getAllMateDetailForManagement(Map<String, Object> map) {
+		return mateDao.getAllMateTotal(map);
+	}
 }

@@ -109,8 +109,11 @@ public interface MateService {
     
     List<Mate> mateListForMypage(String userId);
 
-    List<MateList> getAllMateListForManagement();
+    List<MateList> getAllMateListForManagement(Map<String, Object> map);
     
+    public int getAllMateTotalRows();
+    
+    List<MateList> getAllMateDetailForManagement(Map<String, Object> map);
     
     
 }

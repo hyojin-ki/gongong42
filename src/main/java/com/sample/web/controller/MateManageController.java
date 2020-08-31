@@ -23,6 +23,7 @@ import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.web.form.MateForm;
 import com.sample.web.view.Mate;
+import com.sample.web.view.Pagination;
 import com.sample.web.view.Performance;
 
 @Controller
@@ -73,9 +74,24 @@ public class MateManageController {
 		return mateManagerService.countMate(mateForm.getSeats());
 	}
 	@RequestMapping("/mateManagementJson.do")
-	public @ResponseBody Map<String, Object> mateManagementList() {
+	public @ResponseBody Map<String, Object> mateManagementList(@RequestParam(value="pageNo", defaultValue="1") int pageNo) {
 		Map<String, Object> map = new HashMap<>();
-		List<MateList> list = mateService.getAllMateListForManagement();
+		Map<String, Object> queryMap = new HashMap<>();
+		int totalRows = mateService.getAllMateTotalRows();
+
+		
+		//pagination
+		int rowsPerPage = 2;
+		int pagesPerBlock = 5;
+		Pagination pagination = new Pagination(rowsPerPage, pagesPerBlock, pageNo, totalRows);
+		int beginIndex = pagination.getBeginIndex() - 1;
+		int endIndex = 2;
+		queryMap.put("beginIndex", beginIndex);
+		queryMap.put("endIndex", endIndex);
+		
+		List<MateList> list = mateService.getAllMateListForManagement(queryMap);
+		
+		map.put("pagination", pagination);
 		map.put("mateList", list);
 		return map;
 	}
@@ -83,5 +99,17 @@ public class MateManageController {
 	public String mateManagerList() {
 		return "mate/mateManagerList";
 	}
-	
+	@RequestMapping("/mateManagementDetail.do")
+	public @ResponseBody Map<String, Object> mateManagementDetail(){
+		Map<String, Object> map = new HashMap<>();
+		
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("performanceId", 130);
+		List<MateList> list = mateService.getAllMateDetailForManagement(param);
+
+		
+		map.put("list", list);
+		return map;
+	}
 }

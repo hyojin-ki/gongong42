@@ -66,22 +66,60 @@ WHERE mmain.id = 1;
 		<collection property="mateTags" select="getMateTagByMateId" column="id"/>
 	</resultMap>
 
+	<!-- mateMAnagement For Detail -->
+	
 	<!-- mateManagemanent For list -->	
-	<!-- 모튼 mate TotalCnt -->
+	<!-- 모든 mate TotalCnt -->
 	<resultMap type="com.sample.dto.MateList" id="mateListMap">
 		<result property="totalCnt" column="TotalCnt"/>
 		<association property="performance" column="performanceId" select="getMatePerformanceByPerformanceId" />
 		<association property="Rseats" column="performanceId" select="getAllMateSeatCnt_R"/>
 		<association property="Sseats" column="performanceId" select="getAllMateSeatCnt_S"/>
 		<association property="Aseats" column="performanceId" select="getAllMateSeatCnt_A"/>
+		<collection property="rStatus" column="performanceId" select="getStatusGroupBySeatRateForR"/>
+		<collection property="sStatus" column="performanceId" select="getStatusGroupBySeatRateForS"/>
+		<collection property="aStatus" column="performanceId" select="getStatusGroupBySeatRateForA"/>
 	</resultMap>
-	<select id="getAllMateTotal" resultMap="mateListMap">
+	<select id="getStatusGroupBySeatRateForR" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('R')
+		GROUP BY `status`;
+	</select>
+	<select id="getStatusGroupBySeatRateForS" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('S')
+		GROUP BY `status`;
+	</select>
+	<select id="getStatusGroupBySeatRateForA" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('A')
+		GROUP BY `status`;
+	</select>
+	<select id="getAllMateTotalRows" resultType="int">
+		SELECT COUNT(a.cnt) FROM 
+			(SELECT COUNT(*) cnt
+			FROM mate_main mmain
+			GROUP BY mmain.performanceId) a
+	</select>
+	<select id="getAllMateTotal" parameterType="map" resultMap="mateListMap">
 		SELECT 
 			mmain.performanceId,
 			COUNT(*) TotalCnt
 		FROM mate_main mmain
+		<if test="performanceId != null">
+			where mmain.performanceId = #{performanceId}
+		</if>
 		GROUP BY mmain.performanceId
 		order by mmain.performanceId desc
+		<if test="beginIndex != null and endIndex != null">
+			limit #{beginIndex}, #{endIndex}
+		</if>
 	</select>
 	
 	<select id="getAllMateSeatCnt_R" resultType="int">
@@ -108,6 +146,7 @@ WHERE mmain.id = 1;
 		and mmain.seatRate in ('A')
 		GROUP BY mmain.seatRate
 	</select>
+	
 	
 	
 <!-- mateSeach -->
