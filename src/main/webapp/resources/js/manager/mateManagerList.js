@@ -61,13 +61,127 @@ $(function(){
 	})
 	
 	
-	
+	//모달 클릭
 	$('#matelist-table tbody').on('click', '#matelist-detail-btn', function(){
 		
+		$('#mate-detail-modal').modal('show');
 		var pId = $(this).data('performanceid');
 		
-		$('#mate-detail-modal').modal('show');
-		console.log(pId);
+		$.ajax({
+			type:"POST",
+			url:"/manager/mateManagementDetail.do",
+			data:{
+				"performanceId":pId
+			},
+			success:function(result){
+				var detail = result.detail[0];
+				var performance = result.detail[0].performance;
+				var schedule = performance.schedule[0];
+				
+				var pTitle = performance.title;
+				var pCat = performance.category;
+				var pShowDate = schedule.showDate;
+				var pShowTime = schedule.showTime;
+				var pShowNumber = schedule.showNumber;
+				var pImg = performance.imagePath;
+				var mateTotalCnt = detail.totalCnt;
+				var hallTotalCnt = detail.totalHallSeat;
+				
+				var rStatusArray = detail.rStatus;
+				var sStatusArray = detail.sStatus;
+				var aStatusArray = detail.aStatus;
+				var mateCatArray = detail.categories;
+				
+				
+				var rSeats = detail.rseats;
+				var sSeats = detail.sseats;
+				var aSeats = detail.aSetas;
+				
+				$('#pImg').attr('src','/resources/sample-images/' + pImg);
+				$('#pName').text(pTitle);
+				$('#pCat').text(pCat);
+				$('#pDate').text(pShowDate);
+				$('#pTime').text(pShowTime);
+				$('#pNum').text(pShowNumber);
+				$('#totalSeats').text(hallTotalCnt);
+				$('#totalMates').text(mateTotalCnt);
+				$('#mate-category').empty();
+				for(var i in rStatusArray){
+					if(rStatusArray[i].status == '모집중'){
+						$('#mate-R-progress').text(rStatusArray[i].statusCnt);
+					} else if(rStatusArray[i].status == '모집완료'){
+						$('#mate-R-complete').text(rStatusArray[i].statusCnt);
+					} else if(rStatusArray[i].status == '빈방'){
+						$('#mate-R-empty').text(rStatusArray[i].statusCnt);
+					}
+				}
+				for(var i in sStatusArray){
+					if(sStatusArray[i].status == '모집중'){
+						$('#mate-S-progress').text(sStatusArray[i].statusCnt);
+					} else if(sStatusArray[i].status == '모집완료'){
+						$('#mate-S-complete').text(sStatusArray[i].statusCnt);
+					} else if(sStatusArray[i].status == '빈방'){
+						$('#mate-S-empty').text(sStatusArray[i].statusCnt);
+					}
+				}
+				for(var i in aStatusArray){
+					if(aStatusArray[i].status == '모집중'){
+						$('#mate-A-progress').text(aStatusArray[i].statusCnt);
+					} else if(aStatusArray[i].status == '모집완료'){
+						$('#mate-A-complete').text(aStatusArray[i].statusCnt);
+					} else if(aStatusArray[i].status == '빈방'){
+						$('#mate-A-empty').text(aStatusArray[i].statusCnt);
+					}
+				}
+				var rows = '';
+				for(var i in mateCatArray){
+					rows += '<div class="col-12">';
+					rows += '<h6><span>'+mateCatArray[i].category+' / </span><span>'+mateCatArray[i].catCnt+'</span></h6>'
+					rows += '</div>';
+				}
+				$('#mate-category').append(rows);
+				
+				$('#mate-detail-table tbody span').addClass('text-primary');
+				$('#mate-detail-table tbody div').addClass('text-primary').addClass('h6');
+				
+				
+				var rGroupSizeArray = detail.rGroupsize;
+				var sGroupSizeArray = detail.sGroupsize;
+				var aGroupSizeArray = detail.aGroupsize;
+				console.log(rGroupSizeArray);
+				
+				var rows2 = '';
+				for(var i in rGroupSizeArray){
+					var count = rGroupSizeArray[i].groupSizecnt;
+					var groupSize = rGroupSizeArray[i].groupSize;
+					rows2 += '<div><span>'+groupSize+'인방 : </span><span>'+count+'</span></div>'
+				}
+				
+				var rows3 = '';
+				for(var i in sGroupSizeArray){
+					var count = sGroupSizeArray[i].groupSizecnt;
+					var groupSize = sGroupSizeArray[i].groupSize;
+					rows3 += '<div><span>'+groupSize+'인방 : </span><span>'+count+'</span></div>'
+				}
+				var rows4 = '';
+				for(var i in aGroupSizeArray){
+					var count = aGroupSizeArray[i].groupSizecnt;
+					var groupSize = aGroupSizeArray[i].groupSize;
+					rows4 += '<div><span>'+groupSize+'인방 : </span><span>'+count+'</span></div>'
+				}
+
+				$('#sGroupSize').empty();
+				$('#rGroupSize').empty();
+				$('#aGroupSize').empty();
+				
+				$('#sGroupSize').append(rows2);
+				$('#rGroupSize').append(rows3);
+				$('#aGroupSize').append(rows4);
+				
+				
+			}
+		})
+		
 	})
 	
 	

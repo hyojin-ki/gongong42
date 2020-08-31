@@ -267,4 +267,11 @@ public interface MateDao {
     List<Map<String, Object>> getStatusGroupBySeatRateForR();
     List<Map<String, Object>> getStatusGroupBySeatRateForA();
     
+    int getTotalHallseatByPerformanceId(int performanceId);
+    List<Map<String, Object>> getAllCategoryByPerformanceId(int performanceId);
+    List<Map<String, Object>> getGroupSizeForR(int performanceId);
+    List<Map<String, Object>> getGroupSizeForS(int performanceId);
+    List<Map<String, Object>> getGroupSizeForA(int performanceId);
+    
+    
 }

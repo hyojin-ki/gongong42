@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -100,16 +101,16 @@ public class MateManageController {
 		return "mate/mateManagerList";
 	}
 	@RequestMapping("/mateManagementDetail.do")
-	public @ResponseBody Map<String, Object> mateManagementDetail(){
+	public @ResponseBody Map<String, Object> mateManagementDetail(@RequestParam("performanceId") int performanceId){
 		Map<String, Object> map = new HashMap<>();
 		
 		
 		Map<String, Object> param = new HashMap<>();
-		param.put("performanceId", 130);
-		List<MateList> list = mateService.getAllMateDetailForManagement(param);
+		param.put("performanceId", performanceId);
+		List<MateList> detail = mateService.getAllMateDetailForManagement(param);
 
 		
-		map.put("list", list);
+		map.put("detail", detail);
 		return map;
 	}
 }
