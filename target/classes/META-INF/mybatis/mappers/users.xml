@@ -268,7 +268,21 @@
 		VALUES
 			(#{user.id}, #{payment.id}, #{status}, #{value})
 	</insert>
-
+	<select id="getAllUserPointHistoryCount" parameterType="string" resultType="int">
+		select count(*)
+		from user_point_history
+		where userId = #{userId}
+	</select>
+	<select id="getUserPointHistoryForPagination" parameterType="hashMap" resultType="UserPointHistoryDto" >
+		select a.id, a.regDate, a.value, e.title
+		from user_point_history a
+		join payment_main b on a.paymentId = b.id
+		join reserve_main c on b.reserveId = c.id
+		join performance_main d on c.performanceId = d.id
+		join performance_info e on d.infoId = e.id
+		where a.userId = #{userId}
+		limit #{rowPerPage} offset #{startRow}
+	</select>
 </mapper>
 
 
