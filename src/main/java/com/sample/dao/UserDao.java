@@ -33,13 +33,17 @@ public interface UserDao {
     User getPasswordByEmail(String email);
     
     List<Coupon> getCouponsByUserId(String userId);
+    List<Coupon> getCouponsByUserIdForPagination(Map<String, Object> param);
     List<UserBadge> getBadgesByUserId(String userId);
     List<User> getUsersByMateId(int mateId);
     List<UserInfoDto> getAllUsers(Map<String, Object> param );
     List<String> getUserInterest(String userId);
     List<String> getUserIntro(String userId);
     List<UserPointHistoryDto> getUserPointHistory(String userId);
-    
+    List<UserPointHistoryDto> getUserPointHistoryForPagination(Map<String, Object> param);
+
     UserInfoDto getUserInfoDetail(String id);
     int getAllUsersCount(Map<String, Object> param );
+    int getAllUserPointHistoryCount(String userId);
+    int getAllUserCouponCount(String userId);
 }
