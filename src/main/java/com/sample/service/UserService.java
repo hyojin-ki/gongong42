@@ -31,6 +31,8 @@ public interface UserService {
     
     int getAllUsersCount(Map<String, Object> param);
     int getAllPointHistoryCount(String userID);
+    int getAllUsersCouponCount(String userId);
     List<UserPointHistoryDto> getUserPointHistoryForPagination(Map<String, Object> param);
-    
+    List<Coupon> getCouponByUserIdForPagination(Map<String, Object> param);
+
 }

@@ -188,11 +188,18 @@ public class MyPageController {
 
     @ResponseBody
     @PostMapping("/myCoupon.do")
-    public Map<String, Object> myCoupon(HttpSession session) {
+    public Map<String, Object> myCoupon(HttpSession session, @RequestBody Map<String, Object> param) {
         Map<String, Object> map = new HashMap<>();
+        //get all coupons count
         User user = (User) session.getAttribute("LOGIN_USER");
-        user = userService.getUserDetail(user.getId());
+        String userId = user.getId();
+        user = userService.getUserDetail(userId);
+        param.put("userId",userId);
+        user.setCoupons(userService.getCouponByUserIdForPagination(param));
+
         map.put("coupons", user.getCoupons());
+        map.put("totalRows", userService.getAllUsersCouponCount(userId));
+        System.out.println(map.get("totalRows"));
         return map;
     }
 

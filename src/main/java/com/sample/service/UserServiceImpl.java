@@ -113,4 +113,13 @@ public class UserServiceImpl implements UserService{
 	public List<UserPointHistoryDto> getUserPointHistoryForPagination(Map<String, Object> param) {
 		return userDao.getUserPointHistoryForPagination(param);
 	}
+
+	public int getAllUsersCouponCount(String userId){
+		return userDao.getAllUserCouponCount(userId);
+	}
+
+	@Override
+	public List<Coupon> getCouponByUserIdForPagination(Map<String, Object> param) {
+		return userDao.getCouponsByUserIdForPagination(param);
+	}
 }

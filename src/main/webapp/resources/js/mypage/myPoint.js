@@ -5,18 +5,22 @@ $(function(){
     activateMenu()
     generatePointHistory(currPage)
     $(document).on('click', '#myPointListPaginate', function(event){
-        const page = $(event.target).data('page')
+        event.preventDefault()
+        let page = $(event.target).data('page')
         console.log(page)
+        if(page ==='stop'){
+            return
+        }else{
         $('#point-history-body').empty()
         $('#myPointList').remove()
         generatePointHistory(page)
+        }
     })
 })
 
 const activateMenu = ()=>{
     $("#mypagemenu li").click(function(){
         const req = $(this).data('href')
-        console.log('/mypage/'+req)
         $(location).attr('href', req)
     })
 }
@@ -26,32 +30,27 @@ const dateToYMD = function (date) {
 const generatePagination= function(){
     const template = `<nav aria-label="Page navigation example" id="myPointList"><ul class="pagination justify-content-center" id="myPointListPaginate"></ul></nav>`
     $('.container').append(template)
-    const listCount = parseInt(totalRow/rowPerPage+1 <= 5 ? 5 : totalRow/rowPerPage+1)
-    const prev = `<li class="page-item" id="page-prev" data-page="prev"><a class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>`
-    const next = `<li class="page-item" id="page-next" data-page="next"><a class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>`
+    const listCount = parseInt(totalRow/rowPerPage+1)
+    const prev = `<li class="page-item" id="page-prev" data-page="${currPage === 1 ? 'stop' : currPage-1}"><a class="page-link" aria-label="Previous" data-page="${currPage === 1 ? 'stop' : currPage-1}"><span aria-hidden="true" data-page="${currPage === 1 ? 'stop' : currPage-1}">&laquo;</span></a></li>`
+    const next = `<li class="page-item" id="page-next" data-page="${currPage === listCount ? 'stop' : currPage+1}"><a class="page-link" aria-label="Next" data-page="${currPage === listCount ? 'stop' : currPage+1}"><span aria-hidden="true" data-page="${currPage === listCount ? 'stop' : currPage+1}">&raquo;</span></a></li>`
     let pointList =$('#myPointListPaginate')
     $(pointList).append(prev)
-    console.log(listCount)
     if(listCount < 6){
-        console.log('a')
         for(let i = 1; i <= listCount; i++){
             let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
             $(pointList).append(list)
         }
     }else if(listCount - currPage < 3){
-        console.log('b')
         for(let i = listCount-4; i <= listCount; i++){
             let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
             $(pointList).append(list)
         }
     }else if(listCount > 5 && currPage > 3){
-        console.log('c')
         for(let i = currPage-1; i <= currPage+2 ; i++){
             let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
             $(pointList).append(list)
         }
     }else{
-        console.log('d')
         for(let i = 1; i <= 5; i++){
             let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
             $(pointList).append(list)
@@ -74,13 +73,14 @@ const generatePagination= function(){
     }
 }
 const generatePointHistory = (movePage)=>{
+    console.log(movePage)
     const startRow = (movePage-1) * rowPerPage
     const url = '/mypage/myPoint.do'
     const pageData={
         'startRow' : startRow,
         'rowPerPage' : rowPerPage
     }
-    console.log(pageData)
+
     $.ajax({
         url:url,
         contentType: 'application/json; charset=utf-8',
@@ -88,7 +88,7 @@ const generatePointHistory = (movePage)=>{
         type:'POST',
         dataType:'JSON'
     }).done(result => {
-        console.log(result.pointHistory)
+
         const history = result.pointHistory
         $("#current-point").text(result.currPoint)
         totalRow = result.totalRows
