@@ -155,8 +155,9 @@ public class NoticeServiceImpl implements NoticeService {
 			noticeForm.setCategoryNo(4);
 		}
 		
-		
 		noticeDao.modifyNoticeMain(noticeForm);
+		
+		noticeDao.deleteNoticeImgTable(noticeForm.getNoticeId());
 		
 		for (int i=0; i<noticeForm.getImagePath().size(); i++) {
 			NoticeImage noticeImg = new NoticeImage();

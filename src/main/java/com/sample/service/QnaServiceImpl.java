@@ -45,22 +45,16 @@ public class QnaServiceImpl implements QnaService{
 		
 	}
 	
+	
 	@Override
 	public void updateQna(QnaForm qnaForm) {
 
-		if ("false".equals(qnaForm.getQnaOpened())) {
-			qnaForm.setQnaOpened("0");
-		} else {
-			qnaForm.setQnaOpened("1");
-		}
-				
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("qnaForm", qnaForm);
 		
 		qnaDao.updateQna(map);
 	}
-	
 	
 	@Override
 	public void removeQna(int qnaId) {

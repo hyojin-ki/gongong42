@@ -5,7 +5,7 @@ public class QnaForm {
 	private String qnaCategory;
 	private String qnaTitle;
 	private String qnaContent;
-	private String qnaOpened;
+	private boolean qnaOpened;
 	private String qnaId;
 	
 	public QnaForm() {
@@ -44,11 +44,11 @@ public class QnaForm {
 		this.qnaContent = qnaContent;
 	}
 
-	public String getQnaOpened() {
+	public boolean isQnaOpened() {
 		return qnaOpened;
 	}
 
-	public void setQnaOpened(String qnaOpened) {
+	public void setQnaOpened(boolean qnaOpened) {
 		this.qnaOpened = qnaOpened;
 	}
 

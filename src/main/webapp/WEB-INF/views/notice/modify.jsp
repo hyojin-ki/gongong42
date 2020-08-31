@@ -76,10 +76,31 @@ a:hover {
 	<%@ include file="../manager/common/managerTop.jsp" %>
 <div class="page-wrapper chiller-theme toggled">
   <%@ include file="../manager/common/managernavi.jsp" %>
+<div class="header">
+	<%@ include file="../common/navi.jsp" %>
+</div>
 <div class="body" style="margin-top: 100px;">
 	<div class="container">
 		<div class="row card">
 			<div class="col-12 mt-2 mb-2">
+		<div class="row">
+			<div class="col-12">
+				<div class="row mb-3">
+					<div class="col-12">
+						<strong><span style="font-size: 25px;">고객지원센터</span></strong>
+						<p id="modal-open-checked1" hidden="" title="${openModal }"></p>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-12">
+						<div class="row category" id="notice-category" align="center">
+							<div class="col" id="notice-list"><a href="/notice/list.do?pageNo=1&rows=10&status=blank&keyword=blank">공지사항</a></div>
+							<div class="col" id="QnA-list"><a href="/qna/list.do">QnA</a></div>
+							<div class="col" id="">자주하는질문</div>
+							<div class="col" id="">나의문의내역</div>
+						</div>
+					</div>
+				</div>
 				<form action="modify.do" method="post" enctype="multipart/form-data">
 				<input type="hidden" id="modify-noticeId" name="noticeId" value="${noticeId }">
 				<!-- EL에서 값 가져오기 -->
@@ -140,16 +161,16 @@ a:hover {
 						</div>
 					</div>
 					<div class="row" style="background-color: #f5f5f5; height: 300px;">
-						<div class="col-2" style="text-align: center;">
+						<div class="col-3" style="text-align: center;">
 							<div class="row" id="selection-image" style="text-align: center;">
 								<div class="col-12" style="margin-top: 40px;"> <!-- <a href="/notice/displayImages.do"></a> -->
-									<button type="button" style="background-color: #f5f5f5" class="btn btn-light" data-toggle="modal" data-target="#modal-image-add-form" 
-									id="search-photo" name="mainImage"><i class="far fa-plus-square fa-9x"></i></button>
+									<button type="button" style="background-color: #f5f5f5" class="btn btn-light" data-toggle="modal" data-target="#modal-image-modify-form" 
+									id="search-photo-modify-modal" name="mainImage"><i class="far fa-plus-square fa-9x"></i></button>
 								</div>
 								<div style="padding-left: 45px;"><span style="font-size: small;">이미지첨부(선택)</span></div>
 							</div>
 						</div>
-						<div class="col-8">
+						<div class="col-9">
 							<div class="row mt-2">
 								<div class="col-12 form-group">
 									<strong><label>폼 제목</label></strong>(필수)
@@ -214,8 +235,9 @@ a:hover {
 			</div>
 		</div>
 	</div>
-</div>
-<%@ include file="noticeSearchModal.jsp" %>
+	</div>
+	</div>
+	</div>
 <%@ include file="noticeModifyModal.jsp" %>
 </div>
 <script type="text/javascript">
@@ -227,88 +249,130 @@ $(function() {
 	if (URL.indexOf("notice") != -1) {
 		$("#notice-list").css("background-color","white")
 	}
-	
-	// 모달창을 생성할 때 선택된 이미지가 없게한다.
-	$("#selection-image").on("click", "#search-photo", function() {
-		$(".modal-body img").css("background-color", "");
-		$("#search-photo-modal").val("")
-		$("#upfile-inputBox").val("");
-		$(".imgs_wrap").empty();
-		
-		var imagePaths = new Array();
-		
-		$.ajax({
-			url: "/notice/getImages.do",
-			type: "GET",
-			dataType: "json",
-			success: function (data) {
-				data.forEach(function (element) {
-					imagePaths.push(element.imagePath);
-				})
-				
-				$("#image-list-notice-modal").empty();
-				
-				var addElement = "";
-				addElement += "<div class='col-12 mb-5' id='image-list-search-image'>";
-				addElement += "</div>"
-				
-				$("#image-list-notice-modal").append(addElement);
-				
-				for (var i=0; i<imagePaths.length; i++) {
-					var addElement = "";
-					addElement = "<img src='/resources/sample-images/"+imagePaths[i]+"' style='height: 200px; width: 200px;' class='img-thumbnail scale'>"
-					
-					$("#image-list-search-image").append(addElement);
-					
-				}
-			}
-		})
-		
-	})
-	
-	// 모달창에서 공지사항에 추가 할 이미지를 선택할 수 있다.
-	$(".modal-body img").on("click", function() {
-		$(".modal-body img").css("background-color", "white");
-		$(this).css("background-color", "black");
-		
-		$(".modal-body img").removeClass("selected-image")
-		$(this).addClass("selected-image");
+
+	$("#form-title").on('keyup', function() {
+		if ($(this).val().length > 50) {
+			$(this).val($(this).val().substring(0, 50));
+			alert("최대 50자까지 입력가능합니다.")
+		}
 	});
 	
-	$("#image-btn-confirm").on("click", function() {
-		// 선택한 이미지의 id값을 가져올 수 있다.
-		var selectImgId = $(".modal-body .selected-image").attr("id");
-		
-		// 선택한 이미지의 경로를 가져올 수 있다.
-		var selectImgSrc = $(".modal-body .selected-image").attr("src");
-		
-		// 모달창의 확인버튼을 클릭했을때 사진을 선택하지않은 경우 사진을 선택하게한다.
-		var count = 0;
-		$(".modal-body img").each(function() {
-			if ($(this).hasClass("selected-image")) {
-				count++;
-			}
-		})
-		if (!count) {
-			alert("사진을 선택해주세요");
-			return false;
-		} else {
-			// 기존에 있던 이미지추가버튼을 제거하고 선택된 이미지를 넣는다.
+ 	var noticeId = $("#modify-noticeId").val();
+ 	
+	$.ajax({
+		url: "noticeDetail.do",
+		data: {no : noticeId},
+		type: "GET",
+		dataType: "json",
+		success : function (notice) {
+			
+			$("#category-box .custom-control-input").each(function (index, element) {
+				if ($(element).data('categoryNo') == notice.category) {
+					$(element).prop('checked', 'check');
+				}
+			})
+			
+			$("#badge-box .custom-control-input").each(function (index, element) {
+				if ($(element).data('badgeNo') == notice.badge) {
+					$(element).prop('checked', 'check');
+				}
+			})
+			
+			$("#main-title").val(notice.title);
+			
 			$("#selection-image").empty();
-			// 이미지추가버튼을 제거하고 선택된 이미지를 넣는다.
+			
+			if (notice.images.length == 1) {
+				var addElement = "";
+				addElement += "<div class='col-12' style='margin-top: 40px;'>";
+				addElement += "<img src=../resources/sample-images/"+notice.images[0].imagePath+" name='imagePath' width='200px' height='200px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[0].imagePath+"'>"
+				addElement += "</div>";
+				addElement += "<div class='row'>"
+				addElement += "<div class='col-12'>"
+				addElement += '<button type="button" style="margin-top: 7px; margin-left: 100px;" class="btn btn-success" id="modify-title-image"'
+				addElement += 'data-toggle="modal" data-target="#modal-image-modify-form">변경하기</button>'
+				addElement += "</div>"
+				addElement += "</div>"
+				$("#selection-image").append(addElement);
+			} else if (notice.images.length == 2) {
+				var addElement = "";
+				addElement += "<div class='col-12' style='margin-top: 80px;'>";
+				addElement += "<img src=../resources/sample-images/"+notice.images[0].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<img src=../resources/sample-images/"+notice.images[1].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[0].imagePath+"'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[1].imagePath+"'>"
+				addElement += "</div>";
+				addElement += "<div class='row'>"
+				addElement += "<div class='col-12'>"
+				addElement += '<button type="button" style="margin-top: 7px; margin-left: 100px;" class="btn btn-success" id="modify-title-image"'
+				addElement += 'data-toggle="modal" data-target="#modal-image-modify-form">변경하기</button>'
+				addElement += "</div>"
+				addElement += "</div>"
+				$("#selection-image").append(addElement);
+			} else if (notice.images.length == 3) {
+				var addElement = "";
+				addElement += "<div class='col-12' style='margin-top: 20px;'>";
+				addElement += "<img src=../resources/sample-images/"+notice.images[0].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<img src=../resources/sample-images/"+notice.images[1].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<img src=../resources/sample-images/"+notice.images[2].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[0].imagePath+"'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[1].imagePath+"'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[2].imagePath+"'>"
+				addElement += "</div>";
+				addElement += "<div class='row'>"
+				addElement += "<div class='col-12'>"
+				addElement += '<button type="button" style="margin-top: 7px; margin-left: 100px;" class="btn btn-success" id="modify-title-image"'
+				addElement += 'data-toggle="modal" data-target="#modal-image-modify-form">변경하기</button>'
+				addElement += "</div>"
+				addElement += "</div>"
+				$("#selection-image").append(addElement);
+			} else if (notice.images.length == 4) {
+				var addElement = "";
+				addElement += "<div class='col-12' style='margin-top: 20px;'>";
+				addElement += "<img src=../resources/sample-images/"+notice.images[0].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<img src=../resources/sample-images/"+notice.images[1].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<img src=../resources/sample-images/"+notice.images[2].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<img src=../resources/sample-images/"+notice.images[3].imagePath+" name='imagePath' width='120px' height='110px' style='border:2px solid white' title='크게보기'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[0].imagePath+"'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[1].imagePath+"'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[2].imagePath+"'>"
+				addElement += "<input type='hidden' name='imagePath' value='"+notice.images[3].imagePath+"'>"
+				addElement += "</div>";
+				addElement += "<div class='row'>"
+				addElement += "<div class='col-12'>"
+				addElement += '<button type="button" style="margin-top: 7px; margin-left: 100px;" class="btn btn-success" id="modify-title-image"'
+				addElement += 'data-toggle="modal" data-target="#modal-image-modify-form">변경하기</button>'
+				addElement += "</div>"
+				addElement += "</div>"
+				$("#selection-image").append(addElement);
+			}  
+			
+			$("#select-emoticon-form").empty();
+			
 			var addElement = "";
-			addElement += "<div class='col-12' style='margin-top: 40px;'>";
-			addElement += "<img src='"+selectImgSrc+"' name='image' style='height:200px;' class='img-thumbnail'>"
-			addElement += "<input type='hidden' name='imagePath' value='"+selectImgSrc+"'>"
-			addElement += "</div>";
+			addElement += "<div class='col-12'>";
+			addElement += "<i class='"+notice.imoticon+"'></i>";
+			addElement += "<input type='hidden' name='mainEmoticon' value='"+notice.imoticon+"'>"
+			addElement += "</div>"
 			addElement += "<div class='row'>"
 			addElement += "<div class='col-12'>"
-			addElement += '<button type="button" style="margin-top: 7px; margin-left: 50px;" class="btn btn-success" id="modify-title-image"'
-			addElement += 'data-toggle="modal" data-target="#modal-image-add-form">변경하기</button>'
+			addElement += '<button type="button" style="margin-top: 7px; margin-left: 10px;" class="btn btn-success" id="modify-title-imoticon"'
+			addElement += 'data-toggle="modal" data-target="#modal-emoticon-add-form">변경하기</button>'
 			addElement += "</div>"
 			addElement += "</div>"
-			$("#selection-image").append(addElement);
+			$("#select-emoticon-form").append(addElement);
+			
+			var formContent = notice.insideContents[1].content
+			var subContent = notice.insideContents[3].content
+			
+			$("#form-title").val(notice.insideContents[0].title);
+			$("#summernote-form-content").summernote('code', formContent);
+			$("#subTitle").val(notice.insideContents[2].title);
+			$("#summernote-content-sub").summernote('code', subContent);
+			
 		}
+		
 	});
 	
 	$('#summernote-content-sub').summernote({
@@ -358,126 +422,7 @@ $(function() {
 			  placeholder: '최대 자까지 가능합니다.'	//placeholder 설정
 	});
 	
-	$("#form-title").on('keyup', function() {
-		if ($(this).val().length > 50) {
-			$(this).val($(this).val().substring(0, 50));
-			alert("최대 50자까지 입력가능합니다.")
-		}
-	});
 	
-	/*
-	var modalOpenCheck = $("#modal-open-checked1").attr("title");
-	
-	if (modalOpenCheck == 'open') {
-		$(window).on('load', function() {
-			$("#modal-image-add-form").modal("show");
-		})
-	}
-	*/
- 	var noticeId = $("#modify-noticeId").val();
- 	
-	$.ajax({
-		url: "/notice/noticeDetail.do",
-		data: {no : noticeId},
-		type: "GET",
-		dataType: "json",
-		success : function (notice) {
-			
-			$("#category-box .custom-control-input").each(function (index, element) {
-				if ($(element).data('categoryNo') == notice.category) {
-					$(element).prop('checked', 'check');
-				}
-			})
-			
-			$("#badge-box .custom-control-input").each(function (index, element) {
-				if ($(element).data('badgeNo') == notice.badge) {
-					$(element).prop('checked', 'check');
-				}
-			})
-			
-			$("#main-title").val(notice.title);
-			
-			$("#selection-image").empty();
-			
-			
-			var addElement = "";
-			addElement += "<div class='col-12' style='margin-top: 40px;'>";
-			addElement += "<img src=/resources/sample-images/"+notice.images[0].imagePath+" name='imagePath' style='height:200px;' class='img-thumbnail'>"
-			addElement += "<input type='hidden' name='imagePath' value='"+notice.images[0].imagePath+"'>"
-			addElement += "</div>";
-			addElement += "<div class='row'>"
-			addElement += "<div class='col-12'>"
-			addElement += '<button type="button" style="margin-top: 7px; margin-left: 50px;" class="btn btn-success" id="modify-title-image"'
-			addElement += 'data-toggle="modal" data-target="#modal-image-modify-form">변경하기</button>'
-			addElement += "</div>"
-			addElement += "</div>"
-			$("#selection-image").append(addElement);
-			
-			
-			$("#select-emoticon-form").empty();
-			
-			var addElement = "";
-			addElement += "<div class='col-12'>";
-			addElement += "<i class='"+notice.imoticon+"'></i>";
-			addElement += "<input type='hidden' name='mainEmoticon' value='"+notice.imoticon+"'>"
-			addElement += "</div>"
-			addElement += "<div class='row'>"
-			addElement += "<div class='col-12'>"
-			addElement += '<button type="button" style="margin-top: 7px; margin-left: 10px;" class="btn btn-success" id="modify-title-image"'
-			addElement += 'data-toggle="modal" data-target="#modal-emoticon-add-form">변경하기</button>'
-			addElement += "</div>"
-			addElement += "</div>"
-			$("#select-emoticon-form").append(addElement);
-			
-			var formContent = notice.insideContents[1].content
-			var subContent = notice.insideContents[3].content
-			
-			$("#form-title").val(notice.insideContents[0].title);
-			$("#summernote-form-content").summernote('code', formContent);
-			$("#subTitle").val(notice.insideContents[2].title);
-			$("#summernote-content-sub").summernote('code', subContent);
-			
-		}
-		
-	});
-	
-	// 모달창을 생성할 때 선택된 이미지가 없게한다.
-	$("#search-photo").on("click", function() {
-		$(".modal-body img").css("background-color", "");
-		$("#search-photo-modal").val("")
-		$("#upfile-inputBox").val("");
-		$(".imgs_wrap").empty();
-		
-		var imagePaths = new Array();
-		
-		$.ajax({
-			url: "/notice/getImages.do",
-			type: "GET",
-			dataType: "json",
-			success: function (data) {
-				data.forEach(function (element) {
-					imagePaths.push(element.imagePath);
-				})
-				
-				$("#image-list-notice-modal").empty();
-				
-				var addElement = "";
-				addElement += "<div class='col-12 mb-5' id='image-list-search-image'>";
-				addElement += "</div>"
-				
-				$("#image-list-notice-modal").append(addElement);
-				
-				for (var i=0; i<imagePaths.length; i++) {
-					var addElement = "";
-					addElement = "<img src='/resources/sample-images/"+imagePaths[i]+"' style='height: 200px; width: 200px;' class='img-thumbnail scale'>"
-					
-					$("#image-list-search-image").append(addElement);
-					
-				}
-			}
-		})
-		
-	})
 })
 	
 </script>

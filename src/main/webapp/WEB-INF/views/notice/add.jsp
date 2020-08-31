@@ -80,9 +80,31 @@ a:hover {
   <%@ include file="../manager/common/managernavi.jsp" %>
   <!-- sidebar-wrapper  -->
  <div class="page-content">
+<div class="header">
+	<%@ include file="../common/navi.jsp" %>
+</div>
+<div class="body" style="margin-top: 70px;">
 	<div class="container">
 		<div class="row card">
 			<div class="col-12 mt-2 mb-2">
+		<div class="row">
+			<div class="col-12">
+				<div class="row mb-3">
+					<div class="col-12">
+						<strong><span style="font-size: 25px;">고객지원센터</span></strong>
+						<p id="modal-open-checked1" hidden="" title="${openModal }"></p>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-12">
+						<div class="row category" id="notice-category" align="center">
+							<div class="col" id="notice-list"><a href="/notice/list.do">공지사항</a></div>
+							<div class="col" id="QnA-list"><a href="/qna/list.do">QnA</a></div>
+							<div class="col" id="">자주하는질문</div>
+							<div class="col" id="">나의문의내역</div>
+						</div>
+					</div>
+				</div>
 				<form action="add.do" method="post" enctype="multipart/form-data">
 				<!-- EL에서 값 가져오기 -->
 					<div class="row">
@@ -215,6 +237,8 @@ a:hover {
 				</form>
 			</div>
 		</div>
+		</div>
+	</div>
 	</div>
 <%@ include file="noticeSearchModal.jsp" %>
 </div>
@@ -322,6 +346,27 @@ $(function() {
 	})
 	
 	$("#customRadio").focus();
+	
+	$("#main-title").on("keyup", function () {
+        var text = $(this).val()
+        var regexp = /[0-9a-zA-Zㄱ-ㅎ|ㅏ-ㅣ|가-힣~!@#$%^&*()_+|<>?:{}.;\-]/; // 숫자,영문,특수문자
+        for(var i=0; i<text.length; i++){
+            if(text.charAt(i) != " " && regexp.test(text.charAt(i)) == false){
+             var currentString = $(this).val()
+             var substitutionSentence = currentString.substr(0, currentString.length-1)
+             alert(text.charAt(i) + "는 입력불가능한 문자입니다");
+             $(this).val(substitutionSentence)
+             return;
+            }
+        }
+        if ($(this).val().length > 35) {
+        	alert("최대 35자까지 가능합니다.");
+            var currentString = $(this).val()
+            var substitutionSentence = currentString.substr(0, 35)
+            $(this).val(substitutionSentence)
+        	return;
+        }
+	})
 })
 	
 </script>

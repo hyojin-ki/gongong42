@@ -201,13 +201,17 @@
 			id = #{noticeId} 
 	</update>
 	
-	<update id="modifyNoticeImg" parameterType="NoticeImage">
-		update notice_image_path
-		set
-			imagePath = #{imagePath}
-		where 
-			id =  #{id}
-	</update>
+	<delete id="deleteNoticeImgTable" parameterType="int">
+		delete from notice_image_path
+		where id = #{value}
+	</delete>
+	
+	<insert id="modifyNoticeImg" parameterType="NoticeImage">
+		insert into notice_image_path
+		(id, imagePath)
+		values
+		(#{id}, #{imagePath})
+	</insert>
 	
 	<update id="modifyNoticeTitlesAndContents" parameterType="map">
 		update notice_inside_content
