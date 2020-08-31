@@ -39,7 +39,9 @@ public interface UserDao {
     List<String> getUserInterest(String userId);
     List<String> getUserIntro(String userId);
     List<UserPointHistoryDto> getUserPointHistory(String userId);
-    
+    List<UserPointHistoryDto> getUserPointHistoryForPagination(Map<String, Object> param);
+
     UserInfoDto getUserInfoDetail(String id);
     int getAllUsersCount(Map<String, Object> param );
+    int getAllUserPointHistoryCount(String userId);
 }

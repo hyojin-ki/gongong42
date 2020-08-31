@@ -184,3 +184,9 @@ somoim/.idea/workspace.xml
 .idea/modules.xml
 .idea/vcs.xml
 .idea/workspace.xml
+final-project.iml
+final-project.iml
+*.iml
+*.properties
+target/m2e-wtp/web-resources/META-INF/maven/com.sample.spring/spring-web/pom.properties
+*.class

@@ -1,6 +1,16 @@
+let rowPerPage = 10
+let totalRow = 0
+let currPage = 1
 $(function(){
     activateMenu()
-    generatePointHistory()
+    generatePointHistory(currPage)
+    $(document).on('click', '#myPointListPaginate', function(event){
+        const page = $(event.target).data('page')
+        console.log(page)
+        $('#point-history-body').empty()
+        $('#myPointList').remove()
+        generatePointHistory(page)
+    })
 })
 
 const activateMenu = ()=>{
@@ -13,16 +23,78 @@ const activateMenu = ()=>{
 const dateToYMD = function (date) {
     return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
 }
-const generatePointHistory = ()=>{
+const generatePagination= function(){
+    const template = `<nav aria-label="Page navigation example" id="myPointList"><ul class="pagination justify-content-center" id="myPointListPaginate"></ul></nav>`
+    $('.container').append(template)
+    const listCount = parseInt(totalRow/rowPerPage+1 <= 5 ? 5 : totalRow/rowPerPage+1)
+    const prev = `<li class="page-item" id="page-prev" data-page="prev"><a class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>`
+    const next = `<li class="page-item" id="page-next" data-page="next"><a class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>`
+    let pointList =$('#myPointListPaginate')
+    $(pointList).append(prev)
+    console.log(listCount)
+    if(listCount < 6){
+        console.log('a')
+        for(let i = 1; i <= listCount; i++){
+            let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
+            $(pointList).append(list)
+        }
+    }else if(listCount - currPage < 3){
+        console.log('b')
+        for(let i = listCount-4; i <= listCount; i++){
+            let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
+            $(pointList).append(list)
+        }
+    }else if(listCount > 5 && currPage > 3){
+        console.log('c')
+        for(let i = currPage-1; i <= currPage+2 ; i++){
+            let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
+            $(pointList).append(list)
+        }
+    }else{
+        console.log('d')
+        for(let i = 1; i <= 5; i++){
+            let list=`<li class="page-item"><a class="page-link" data-page="${i}">${i}</a></li>`
+            $(pointList).append(list)
+        }
+    }
+    $(pointList).append(next)
+    if(currPage === 1){
+        $('#page-prev').addClass('disabled')
+        $('#page-prev .page-link').attr('aria-disabled','true')
+    }else{
+        $('#page-prev').removeClass('disabled')
+        $('#page-prev .page-link').removeAttr('aria-disabled')
+    }
+    if(currPage===listCount){
+        $('#page-next').addClass('disabled')
+        $('#page-next .page-link').attr('aria-disabled','true')
+    }else{
+        $('#page-next').removeClass('disabled')
+        $('#page-next .page-link').removeAttr('aria-disabled')
+    }
+}
+const generatePointHistory = (movePage)=>{
+    const startRow = (movePage-1) * rowPerPage
     const url = '/mypage/myPoint.do'
+    const pageData={
+        'startRow' : startRow,
+        'rowPerPage' : rowPerPage
+    }
+    console.log(pageData)
     $.ajax({
         url:url,
+        contentType: 'application/json; charset=utf-8',
+        data:JSON.stringify(pageData),
         type:'POST',
         dataType:'JSON'
     }).done(result => {
         console.log(result.pointHistory)
         const history = result.pointHistory
         $("#current-point").text(result.currPoint)
+        totalRow = result.totalRows
+
+        console.log(totalRow,', ' ,startRow)
+
         history.forEach(row=>{
             const item = `<tr id="point-history-list-${row.id}">
                               <td class="history-title">${row.title}</td>
@@ -41,12 +113,13 @@ const generatePointHistory = ()=>{
                 $(`#point-history-list-${row.id} .history-method`).text('감소')
                 $(`#point-history-list-${row.id} .history-change`).text(row.value*-1)
             }
-
         })
+
+        currPage = parseInt(startRow/10)+1
+        generatePagination()
 
     }).fail({
 
     }).always({
-
     })
 }

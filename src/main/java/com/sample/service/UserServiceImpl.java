@@ -3,6 +3,7 @@ package com.sample.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sample.dto.UserPointHistoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,7 +104,13 @@ public class UserServiceImpl implements UserService{
 		return userDao.getAllUsersCount(param);
 	}
 
+	@Override
+	public int getAllPointHistoryCount(String userId) {
+		return userDao.getAllUserPointHistoryCount(userId);
+	}
 
-	
-
+	@Override
+	public List<UserPointHistoryDto> getUserPointHistoryForPagination(Map<String, Object> param) {
+		return userDao.getUserPointHistoryForPagination(param);
+	}
 }
