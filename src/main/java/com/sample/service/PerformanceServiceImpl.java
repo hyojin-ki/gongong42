@@ -1,6 +1,9 @@
 package com.sample.service;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +14,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -399,17 +404,29 @@ public class PerformanceServiceImpl implements PerformanceService {
 	public String saveImage(String strUrl, String title, String saveDirectory) {
 
 		String realFilename = System.currentTimeMillis() + title;
+		
 		try {
-
-
+			
 			URL url = new URL(strUrl);
+			
+			BufferedImage image =  ImageIO.read(url);
+			
+			System.out.println("url은 대체 뭐냐 : " + url);
+			
+			
+			// realFilename = realFilename + strUrl.substring(strUrl.length() - 4);
+			String ext = strUrl.substring(strUrl.lastIndexOf(".")+1, strUrl.length());
+			
+			System.out.println("image는 도대체 머냐 : " + image);
+			
+			System.out.println("ext는 대체 뭐냐 : " + ext);
+			
+			ImageIO.write(image, ext, new File(saveDirectory + realFilename));
+			
 
-			InputStream in = url.openStream();
-
-			realFilename = realFilename + strUrl.substring(strUrl.length() - 4);
-
-			FileOutputStream out = new FileOutputStream(new File(saveDirectory, realFilename));
-			FileCopyUtils.copy(in, out);
+//			InputStream in = url.openStream();
+			/*FileOutputStream out = new FileOutputStream(new File(saveDirectory, realFilename));
+			FileCopyUtils.copy(in, out);*/
 
 		} catch (Exception e){
 			e.printStackTrace();

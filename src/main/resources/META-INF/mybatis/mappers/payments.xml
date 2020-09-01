@@ -48,6 +48,7 @@
 		SELECT regDate as lineDate, 
 			   SUM(pay) as totalSales
 		FROM payment_main
-		GROUP BY day(regDate);
+		GROUP BY day(regDate)
+		ORDER BY regDate
 	</select>
 </mapper>
