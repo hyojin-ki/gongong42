@@ -65,6 +65,11 @@ public class NoticeController {
 	 * @param 없음 
 	 * @return 공지사항 페이지
 	 */
+	/**
+	 * 
+	 * @param 없음 
+	 * @return 공지사항 페이지
+	 */
 	@GetMapping("/list.do")
 	public String list(Model model
 						, @RequestParam(value = "pageNo", defaultValue="1") int pageNo
@@ -109,13 +114,6 @@ public class NoticeController {
 		model.addAttribute("pageNo", pageNo);
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("rows", rows);
-		
-		System.out.println(pagination.getBeginPage());
-		System.out.println(pagination.getEndPage());
-		
-		for (Notice notice : notices) {
-			System.out.println(notice.getId());
-		}
 		
 		return "notice/list";
 	}
@@ -326,8 +324,6 @@ public class NoticeController {
 	public String modify(NoticeForm noticeForm) {
 		
 		noticeService.updateNotice(noticeForm);
-		
-		System.out.println(noticeForm.toString());
 		
 		return "redirect:/admin/notice/list.do";
 	}

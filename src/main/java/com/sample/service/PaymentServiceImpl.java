@@ -98,4 +98,8 @@ public class PaymentServiceImpl implements PaymentService{
 	public List<PaymentDto> getTotalSales(PaymentDto paymentDto) {
 		return paymentDao.getTotalSales(paymentDto);
 	}	
+	
+	public int getCurrentMothPaymentCnt() {
+		return paymentDao.getCurrentMothPaymentCnt();
+	}
 }

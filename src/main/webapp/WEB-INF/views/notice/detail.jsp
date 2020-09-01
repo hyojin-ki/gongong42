@@ -176,7 +176,8 @@ a:hover {
 									<img src="../resources/sample-images/${detail.images[0].imagePath }" style="width: 125px; height: 100px;">
 									<img src="../resources/sample-images/${detail.images[1].imagePath }" style="width: 125px; height: 100px;">
 									<img src="../resources/sample-images/${detail.images[2].imagePath }" style="width: 125px; height: 100px; margin-top: 5px;">
-									<button type="button" class="btn btn-info btn-sm" data-toggle='modal' data-target="#detail-image-sizeUp" style="margin-top: 10px;">크게보기</button>
+									<div><button type="button" class="btn btn-info btn-sm" data-toggle='modal' data-target="#detail-image-sizeUp" style="margin-top: 10px;">크게보기</button></div>
+									
 								</div>
 							</c:when>
 							<c:when test="${detail.images.size() == 4 }">

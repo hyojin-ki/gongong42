@@ -129,8 +129,7 @@ a:hover {
 									<colgroup>
 										<col width="10%">
 										<col width="15%">
-										<col width="45%">
-										<col width="10%">
+										<col width="55%">
 										<col width="10%">
 										<col width="10%">
 									</colgroup>
@@ -140,7 +139,6 @@ a:hover {
 											<th>분 류</th>
 											<th style="text-align: left !important;"><span style="padding-left: 160px;">제</span><span style="padding-left: 130px;">목</span></th>
 											<th>작성자</th>
-											<th>조회수</th>
 											<th>등록일</th>
 										</tr>
 									</thead>
@@ -246,7 +244,6 @@ a:hover {
 															</c:when>
 														</c:choose>
 														<td>${qna.questionUser.id }</td>
-														<td>${qna.hits }</td>
 														<td><fmt:formatDate value="${qna.regDate }"/></td>
 													</tr>
 													<c:choose>

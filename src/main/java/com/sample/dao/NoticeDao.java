@@ -51,5 +51,7 @@ public interface NoticeDao {
     void modifyNoticeMain(NoticeForm notice);
 	void modifyNoticeImg(NoticeImage noticeImg);
 	void modifyNoticeTitlesAndContents(Map<String, Object> map);
+	
+	void deleteNoticeImgTable(int NoticeId);
     
 }

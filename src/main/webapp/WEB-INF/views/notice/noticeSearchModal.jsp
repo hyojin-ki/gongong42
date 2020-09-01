@@ -197,7 +197,6 @@ $(function() {
 			}
 			reader.readAsDataURL(f);
 		})
-		
 	})
 	
 	$(".imgs_wrap").on("click", ".img-thumbnail", function () {
@@ -305,7 +304,7 @@ $(function() {
 	})
 	
 	var imageCount = 0;
-
+	var selectedImgArray = [];
 	$(".open-image-modal").on("click", ".img-thumbnail", function() {
 		
 		if ($(this).hasClass("selected-image")) {
@@ -323,6 +322,24 @@ $(function() {
 			$(this).addClass("selected-image");
 			imageCount++
 		}
+		
+		selectImgGroup = [];
+		
+		$(".selected-image").each(function () {
+			selectImgGroup.push($(this).attr("src"));
+		})
+		
+		for (var i=0; i<selectImgGroup.length; i++) {
+			for (var j=i+1; j<=selectImgGroup.length; j++) {
+				if (selectImgGroup[i] == selectImgGroup[j]) {
+					alert("이름이 같은 파일은 업로드할 수 없습니다.")
+ 					$(this).removeClass("selected-image")
+ 					$(this).css("background-color", "white")
+ 					imageCount--;
+					return false;
+					}
+				}
+			}
 	});
 	
 	$("#image-btn-close").on("click", function () {
@@ -346,6 +363,10 @@ $(function() {
 				count++;
 			}
 		})
+		if (count > 4) {
+			alert("사진은 4장까지 추가할 수 있습니다");
+			return false;
+		}
 		if (!count) {
 			alert("사진을 선택해주세요");
 			return false;

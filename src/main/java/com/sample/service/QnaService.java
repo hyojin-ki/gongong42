@@ -24,4 +24,10 @@ public interface QnaService {
 	void modifyAnswer(AnswerForm answerForm);
 	void removeQna(int qnaId);
     
+	/**
+	 * 아직 답변도지 않은 qna count
+	 * @return
+	 */
+	int getNoAnswerQnaCnt();
+	
 }

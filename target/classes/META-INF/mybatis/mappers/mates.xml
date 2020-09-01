@@ -66,6 +66,134 @@ WHERE mmain.id = 1;
 		<collection property="mateTags" select="getMateTagByMateId" column="id"/>
 	</resultMap>
 
+	<!-- mateMAnagement For Detail -->
+	
+	<!-- mateManagemanent For list -->	
+	<!-- 모든 mate TotalCnt -->
+	<resultMap type="com.sample.dto.MateList" id="mateListMap">
+		<result property="totalCnt" column="TotalCnt"/>
+		<association property="totalHallSeat" column="performanceId" select="getTotalHallseatByPerformanceId"/>
+		<association property="performance" column="performanceId" select="getMatePerformanceByPerformanceId" />
+		<association property="Rseats" column="performanceId" select="getAllMateSeatCnt_R"/>
+		<association property="Sseats" column="performanceId" select="getAllMateSeatCnt_S"/>
+		<association property="Aseats" column="performanceId" select="getAllMateSeatCnt_A"/>
+		<collection property="categories" column="performanceId" select="getAllCategoryByPerformanceId"/>
+		<collection property="rStatus" column="performanceId" select="getStatusGroupBySeatRateForR"/>
+		<collection property="sStatus" column="performanceId" select="getStatusGroupBySeatRateForS"/>
+		<collection property="aStatus" column="performanceId" select="getStatusGroupBySeatRateForA"/>
+		<collection property="rGroupsize" column="performanceId" select="getGroupSizeForR"/>
+		<collection property="sGroupsize" column="performanceId" select="getGroupSizeForS"/>
+		<collection property="aGroupsize" column="performanceId" select="getGroupSizeForA"/>
+	
+	</resultMap>
+	<!-- 그룹 사이즈별 -->
+	<select id="getGroupSizeForR" resultType="map">
+		SELECT seatRate,groupSize, COUNT(*) groupSizecnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('R')
+		GROUP BY groupSize
+	</select>
+	<select id="getGroupSizeForS" resultType="map">
+		SELECT seatRate,groupSize, COUNT(*) groupSizecnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('S')
+		GROUP BY groupSize
+	</select>
+	<select id="getGroupSizeForA" resultType="map">
+		SELECT seatRate,groupSize, COUNT(*) groupSizecnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('A')
+		GROUP BY groupSize
+	</select>
+	<!-- 해당 메이트의 모든 카테고리 숫자 -->
+	<select id="getAllCategoryByPerformanceId" resultType="map">
+		SELECT mcat.category, COUNT(*) catCnt
+		FROM mate_main mmain 
+		JOIN mate_category mcat ON mmain.category = mcat.id
+		WHERE mmain.performanceId = #{performanceId}
+		GROUP BY mmain.category
+	
+	</select>
+	<!-- 모든 좌석 수  -->
+	<select id="getTotalHallseatByPerformanceId" resultType="int">
+		SELECT COUNT(*) FROM hall_seats
+		WHERE performanceId = #{performanceId}
+	</select>
+	<!-- 등급별 status -->
+	<select id="getStatusGroupBySeatRateForR" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('R')
+		GROUP BY `status`
+	</select>
+	<select id="getStatusGroupBySeatRateForS" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('S')
+		GROUP BY `status`
+	</select>
+	<select id="getStatusGroupBySeatRateForA" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('A')
+		GROUP BY `status`
+	</select>
+	<!-- 모든 메이트 방 숫자 -->
+	<select id="getAllMateTotalRows" resultType="int">
+		SELECT COUNT(a.cnt) FROM 
+			(SELECT COUNT(*) cnt
+			FROM mate_main mmain
+			GROUP BY mmain.performanceId) a
+	</select>
+	<!-- 메이트 리스트, 디테일 쿼리 -->
+	<select id="getAllMateTotal" parameterType="map" resultMap="mateListMap">
+		SELECT 
+			mmain.performanceId,
+			COUNT(*) TotalCnt
+		FROM mate_main mmain
+		<if test="performanceId != null">
+			where mmain.performanceId = #{performanceId}
+		</if>
+		GROUP BY mmain.performanceId
+		order by mmain.performanceId desc
+		<if test="beginIndex != null and endIndex != null">
+			limit #{beginIndex}, #{endIndex}
+		</if>
+	</select>
+	<!-- seatRate 에 따른 쿼리 -->
+	<select id="getAllMateSeatCnt_R" resultType="int">
+		SELECT 
+			COUNT(mmain.seatRate) as cnt
+		FROM mate_main mmain
+		WHERE mmain.performanceId = #{performanceId}
+		and mmain.seatRate in ('R')
+		GROUP BY mmain.seatRate
+	</select>
+	<select id="getAllMateSeatCnt_S" resultType="int">
+		SELECT 
+			COUNT(mmain.seatRate) as cnt
+		FROM mate_main mmain
+		WHERE mmain.performanceId = #{performanceId}
+		and mmain.seatRate in ('S')
+		GROUP BY mmain.seatRate
+	</select>
+	<select id="getAllMateSeatCnt_A" resultType="int">
+		SELECT 
+			COUNT(mmain.seatRate) as cnt
+		FROM mate_main mmain
+		WHERE mmain.performanceId = #{performanceId}
+		and mmain.seatRate in ('A')
+		GROUP BY mmain.seatRate
+	</select>
+	
+	
+	
 <!-- mateSeach -->
 		<!-- 유저 아이디 , 퍼포먼스를 입력 받아, 좌석 등급에 해당하는 메이트 정보를 모두 구함 -->
 	<select id="getAllMates" resultMap="mateMap" parameterType="map">

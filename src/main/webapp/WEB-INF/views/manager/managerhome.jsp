@@ -96,7 +96,11 @@
               <div class="card-body-icon">
                <i class="fas fa-chart-line fa-2x"></i>
               </div>
-              <div class="mr-5">이번달 결제 현황 <span class="badge badge-light">9</span></div>
+              <div class="mr-5">이번달 결제 현황 
+              <c:if test="${paymentTotal ne null }">
+              	<span class="badge badge-light">${paymentTotal }</span>
+              </c:if>
+              </div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="/payment/admin_payment.do">
               <span class="float-left">View Details</span>
@@ -112,7 +116,11 @@
               <div class="card-body-icon">
               <i class="fas fa-question-circle fa-2x"></i>
               </div>
-              <div class="mr-5">이번주 QnA 현황 <span class="badge badge-light">9</span></div>
+              <div class="mr-5">QnA 답변 미등록
+              <c:if test="${noanswerCnt ne null }">
+              	<span class="badge badge-light">${noanswerCnt }</span>
+              </c:if>
+              </div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="/admin/qna/list.do">
               <span class="float-left">View Details</span>
@@ -155,7 +163,7 @@
                 		<c:forEach items="${topReserves }" var="reserve" varStatus="status">
                 			<c:set var="index" value="0" />
                 			<div class="carousel-item ${status.index == index ? 'active' : '' }">
-                				<img class="img-thumbnail d-block w-100" src="/resources/sample-images/${reserve.performance.imagePath }" style="width: 150px;">
+                				<img class="img-thumbnail" src="/resources/sample-images/${reserve.performance.imagePath }">
                 			</div>
                 			<c:set var="index" value="${index + 1 }"/>
                 		</c:forEach>
@@ -175,7 +183,6 @@
 						</a>
 					</div>
 					</div>
-                </div>
                 <div class="col-sm-4 text-center my-auto">
                 <c:if test="${not empty topReserves }" >
                 <c:forEach items="${topReserves }" var="reserve" varStatus="status">
@@ -239,6 +246,7 @@
             </c:forEach>
             </c:if>
             </div>
+            </div>
           </div>
         </div>
       </div>
@@ -252,7 +260,7 @@
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
       </div>
-    
+ 
  </div>
  </div>
   <!-- page-content" -->

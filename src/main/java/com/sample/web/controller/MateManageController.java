@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +16,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sample.dto.JsonHallSeat;
 import com.sample.dto.JsonPerformance;
+import com.sample.dto.MateList;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
 import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.web.form.MateForm;
+import com.sample.web.view.Mate;
+import com.sample.web.view.Pagination;
 import com.sample.web.view.Performance;
 
 @Controller
@@ -70,5 +74,43 @@ public class MateManageController {
 		
 		return mateManagerService.countMate(mateForm.getSeats());
 	}
-	
+	@RequestMapping("/mateManagementJson.do")
+	public @ResponseBody Map<String, Object> mateManagementList(@RequestParam(value="pageNo", defaultValue="1") int pageNo) {
+		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> queryMap = new HashMap<>();
+		int totalRows = mateService.getAllMateTotalRows();
+
+		
+		//pagination
+		int rowsPerPage = 2;
+		int pagesPerBlock = 5;
+		Pagination pagination = new Pagination(rowsPerPage, pagesPerBlock, pageNo, totalRows);
+		int beginIndex = pagination.getBeginIndex() - 1;
+		int endIndex = 2;
+		queryMap.put("beginIndex", beginIndex);
+		queryMap.put("endIndex", endIndex);
+		
+		List<MateList> list = mateService.getAllMateListForManagement(queryMap);
+		
+		map.put("pagination", pagination);
+		map.put("mateList", list);
+		return map;
+	}
+	@RequestMapping("/mateList.do")
+	public String mateManagerList() {
+		return "mate/mateManagerList";
+	}
+	@RequestMapping("/mateManagementDetail.do")
+	public @ResponseBody Map<String, Object> mateManagementDetail(@RequestParam("performanceId") int performanceId){
+		Map<String, Object> map = new HashMap<>();
+		
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("performanceId", performanceId);
+		List<MateList> detail = mateService.getAllMateDetailForManagement(param);
+
+		
+		map.put("detail", detail);
+		return map;
+	}
 }

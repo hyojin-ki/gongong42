@@ -67,8 +67,6 @@ public class QnAController {
 			keyword = null;
 		}
 		
-		System.out.println("pageNo" + pageNo);
-		
 		String nowStatus = StringUtil.nullToValue(status, "전체");
 		String searchKeyword = StringUtil.nullToBlank(keyword);
 		
@@ -98,13 +96,6 @@ public class QnAController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("rows", rows);
 		
-		System.out.println(totalRows);
-		System.out.println(totalPageCount);
-		
-		for (Qna qna : qnas) {
-			System.out.println("id: " + qna.getId());
-		}
-		
 		return "qna/list";
 	}
 	
@@ -122,11 +113,7 @@ public class QnAController {
 		qna.setQuestionTitle(qnaForm.getQnaTitle());
 		qna.setQuestionContent(qnaForm.getQnaContent());
 		qna.setQuestionUser(user);
-		if ("true".equals(qnaForm.getQnaOpened())) {
-			qna.setOpened(true);
-		} else if ("false".equals(qnaForm.getQnaOpened())) {
-			qna.setOpened(false);
-		}
+		qna.setOpened(qnaForm.isQnaOpened());
 		
 		qnaService.addNewQna(qna);
 		
@@ -185,7 +172,5 @@ public class QnAController {
 		
 		return "redirect:/admin/qna/list.do";
 	}
-	
-	
 	
 }

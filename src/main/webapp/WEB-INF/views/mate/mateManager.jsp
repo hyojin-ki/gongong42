@@ -25,7 +25,6 @@
 <script type="text/javascript" src="/resources/js/jquery.color.js"></script>
 <script type="text/javascript" src="/resources/js/custom.js"></script>
 <script type="text/javascript" src="/resources/js/manager/mateManager.js"></script>
-<script type="text/javascript" src="/resources/js/jquery.MultiFile.min.js"></script>
 <style>
   .selectable .ui-selecting { background: white  !important; }
   .selectable .ui-selected { background: white !important; color: white; }
@@ -141,7 +140,21 @@
 							<!-- seat부분 -->
 								<div class="row">
 									<div class="col-12 text-center">
-										전면부
+										STAGE
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12">
+										<span class="h3" style="position: absolute; top: 45px; left: 200px;">A</span>
+										<span class="h3" style="position: absolute; top: 45px; left: 425px;">B</span>
+										<span class="h3" style="position: absolute; top: 160px; left: -10px;">C</span>
+										<span class="h3" style="position: absolute; top: 160px; left: 205px;">D</span>
+										<span class="h3" style="position: absolute; top: 160px; left: 425px;">E</span>
+										<span class="h3" style="position: absolute; top: 160px; right: 210px;">F</span>
+										<span class="h3" style="position: absolute; top: 265px; left: -10px;">G</span>
+										<span class="h3" style="position: absolute; top: 265px; left: 205px;">H</span>
+										<span class="h3" style="position: absolute; top: 265px; left: 425px;">I</span>
+										<span class="h3" style="position: absolute; top: 265px; right: 210px;">J</span>
 									</div>
 								</div>
 								<div class="row">
@@ -176,7 +189,7 @@
 								</div>
 								<div class="row">
 									<div class="col-12 text-center">
-									 후면부
+									 BACKSIDE
 									</div>
 								</div>
 								<!-- seat부분 end-->
@@ -243,15 +256,18 @@
 												<button class="btn btn-warning" type="button" id="S-change-btn">S석</button>
 											</div>
 											<input type="number" id="S-class" class="form-control" readonly="readonly" />
+											
+										</div>
+										<div class="input-group mt-4">
 											<div class="input-group-prepend">
 												<button class="btn btn-danger" type="button" id="A-change-btn">A석</button>
 											</div>
 											<input type="number" id="A-class" class="form-control" readonly="readonly" />
 											<div class="input-group-prepend">
-												<button class="btn btn-outline-secondary" type="button" id="N-change-btn">예약불가능</button>
+												<button class="btn btn-outline-secondary" type="button" id="N-change-btn">없음</button>
 											</div>
 											<input type="number" id="no-class" class="form-control" readonly="readonly" />
-											
+										
 										</div>
 									</div>
 									<!-- 등급 end -->

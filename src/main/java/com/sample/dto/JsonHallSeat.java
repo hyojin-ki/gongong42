@@ -103,15 +103,6 @@ public class JsonHallSeat {
 	}
 
 
-	public boolean equals(Object obj) {
-		JsonHallSeat other = (JsonHallSeat) obj;
-		if((other.mateNo == this.mateNo)){
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	
 
 	

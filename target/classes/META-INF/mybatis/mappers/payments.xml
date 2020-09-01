@@ -51,4 +51,11 @@
 		GROUP BY day(regDate)
 		ORDER BY regDate
 	</select>
+	
+	<select id="getCurrentMothPaymentCnt" resultType="int">
+		SELECT COUNT(*) 
+		FROM payment_main
+		WHERE MONTH(regDate) = MONTH(CURRENT_TIMESTAMP())
+	</select>
+	
 </mapper>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sample.dto.MateDetailDto;
+import com.sample.dto.MateList;
 import com.sample.dto.MateUserDto;
 import com.sample.web.form.MateSearchForm;
 import com.sample.web.view.Mate;
@@ -107,4 +108,12 @@ public interface MateService {
     Mate getMate(int performanceId, String userId);
     
     List<Mate> mateListForMypage(String userId);
+
+    List<MateList> getAllMateListForManagement(Map<String, Object> map);
+    
+    public int getAllMateTotalRows();
+    
+    List<MateList> getAllMateDetailForManagement(Map<String, Object> map);
+    
+    
 }

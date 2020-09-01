@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sample.dto.MateList;
 import com.sample.dto.MateUserDto;
 import com.sample.web.form.MateSearchForm;
 import com.sample.web.view.HallInfo;
@@ -254,6 +255,23 @@ public interface MateDao {
     void insertMateCat(@Param("id") int id, @Param("category") String category);
     
     List<Mate> getMateListByUserId(String userId);
+    
+    
+    int getAllMateTotalRows();
+    List<MateList> getAllMateTotal(Map<String, Object> map);
+    int getAllMateSeatCnt_R(int performanceId);
+    int getAllMateSeatCnt_S(int performanceId);
+    int getAllMateSeatCnt_A(int performanceId);
+    
+    List<Map<String, Object>> getStatusGroupBySeatRateForS();
+    List<Map<String, Object>> getStatusGroupBySeatRateForR();
+    List<Map<String, Object>> getStatusGroupBySeatRateForA();
+    
+    int getTotalHallseatByPerformanceId(int performanceId);
+    List<Map<String, Object>> getAllCategoryByPerformanceId(int performanceId);
+    List<Map<String, Object>> getGroupSizeForR(int performanceId);
+    List<Map<String, Object>> getGroupSizeForS(int performanceId);
+    List<Map<String, Object>> getGroupSizeForA(int performanceId);
     
     
 }
