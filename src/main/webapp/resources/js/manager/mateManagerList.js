@@ -184,6 +184,11 @@ $(function(){
 		
 	})
 	
+	//수정버튼 클릭
+	$('#matelist-table').on('click','#matelist-update-btn',function(){
+		var performanceId = $(this).data('performanceid');
+		location.href = '/manager/mateManagerUpdate.do?performanceId='+performanceId;
+	})
 	
 	
 	

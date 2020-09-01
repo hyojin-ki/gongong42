@@ -298,7 +298,7 @@
 											<div class="input-group-append">
 												<button type="button" id="rest-mate-selected-btn" class="btn btn-outline-secondary">리셋</button>
 											</div>
-											
+										
 										</div>
 									</div>
 									<div class="col-12 mt-4">
@@ -360,7 +360,9 @@
 									</div>
 									</div>
 									<div class="col-12 mt-4 text-right">
-										<button type="button" id="mate-all-submit-btn" class="btn btn-primary">등록</button>
+										<button type="button" id="mate-all-update-btn" class="btn btn-warning">수정</button>
+										<button type="button" id="mate-all-delete-btn" class="btn btn-danger">삭제</button>
+									
 									</div>
 								</div>
 							</div>
@@ -423,6 +425,7 @@
 <!-- input hidden -->
 <input type="hidden" id="hidden-performance-info-id" />
 <input type="hidden" id="hidden-hall-id" />
+<input type="hidden" id="performanceId" value="${performanceId }" />
 </div>
 </div>
  

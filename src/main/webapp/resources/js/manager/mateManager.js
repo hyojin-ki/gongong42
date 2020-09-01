@@ -371,15 +371,9 @@ $(function(){
 	$('#auto-mate-selected-btn').click(function(){
 		$('button.seatBtn').text('');
 		var AbtnArrayAll = $('button.seatBtn')
-//		for(var i = 0; i < AbtnArrayAll.length; i++){
-//			AbtnArrayAll[i].removeAttribute('data-mate');
-//			AbtnArrayAll[i].removeAttribute('data-groupsize');
-//			
-//		}
 		
 		var AbtnArray = new Array();
 		AbtnArray = $('button.seatBtn:not(.no-class-seat)')
-		//AbtnArray = $('button.seatBtn');
 		var index = Number($('#mate-select-val').val());
 		var j = 1;
 		
@@ -449,17 +443,9 @@ $(function(){
 		for(var i = 0; i < $selectedSeats.length; i++){
 			$selectedSeats[i].removeAttribute('data-mate');
 			$selectedSeats[i].removeAttribute('data-groupsize');
-			//$($selectedSeats[i]).attr('data-groupsize',$selectedSeats.length);
-			//$($selectedSeats[i]).attr('data-mate',nextIndex);
-			//$selectedSeats[i].setAttribute('data-mate',nextIndex);
-			//$selectedSeats[i].setAttribute('data-groupsize',$selectedSeats.length);
 		
 		}
 		for(var i = 0; i < $selectedSeats.length; i++){
-//			$selectedSeats[i].removeAttribute('data-mate');
-//			$selectedSeats[i].removeAttribute('data-groupsize');
-			//$($selectedSeats[i]).attr('data-groupsize',$selectedSeats.length);
-			//$($selectedSeats[i]).attr('data-mate',nextIndex);
 			$selectedSeats[i].setAttribute('data-mate',nextIndex);
 			$selectedSeats[i].setAttribute('data-groupsize',$selectedSeats.length);
 		
@@ -503,7 +489,6 @@ $(function(){
 				contentType:'application/json',
 				data:JSON.stringify(data),
 				success:function(result){
-					console.log('cnt  : ',result);
 					$('#mate-room-cnt').val(result);
 				}
 					

@@ -6,27 +6,21 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sample.dto.JsonHallSeat;
-import com.sample.dto.JsonPerformance;
 import com.sample.dto.MateList;
 import com.sample.dto.PerformanceDetailDto;
-import com.sample.dto.PerformanceDto;
 import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.web.form.MateForm;
-import com.sample.web.view.HallInfo;
-import com.sample.web.view.Mate;
 import com.sample.web.view.Pagination;
-import com.sample.web.view.Performance;
 import com.sample.web.view.PerformanceMain;
 
 @Controller
@@ -72,21 +66,30 @@ public class MateManageController {
 		
 		return mateManagerService.countMate(mateForm.getSeats());
 	}
+	@RequestMapping("/updateMate.do")
+	public @ResponseBody void updateMate(@RequestBody MateForm mateForm) {
+		System.out.println(mateForm);
+	}
+	
+	
+	
 	@GetMapping("/mateManagerUpdate.do")
-	public String mateManagerUpdate() {
-		
+	public String mateManagerUpdate(@RequestParam("performanceId") int performanceId, Model model) {
+		model.addAttribute("performanceId", performanceId);
 		return "mate/mateManagerUpdate";
 	}
 	@RequestMapping("/mateManagerUpdateJson.do")
-	public @ResponseBody Map<String, Object> mateManagerUpdateJson(){
+	public @ResponseBody Map<String, Object> mateManagerUpdateJson(@RequestParam("performanceId") int performanceId){
 		Map<String, Object> map = new HashMap<>();
 		
-		List<JsonHallSeat> seats = mateManagerService.getHallSeats(130);
-		PerformanceMain main = performanceService.getPerformanceMainByPerformanceId(130);
-		PerformanceDetailDto performance = performanceService.getPerformanceByPerformanceMainId(130);
+		List<JsonHallSeat> seats = mateManagerService.getHallSeats(performanceId);
+		PerformanceMain main = performanceService.getPerformanceMainByPerformanceId(performanceId);
+		PerformanceDetailDto performance = performanceService.getPerformanceByPerformanceMainId(performanceId);
 		List<Map<Integer, String>> categories = mateService.getMateAllCategory();
 		List<PerformanceDetailDto> performanceList = performanceService.getAllPerformances();
-	
+		int totalMateSeat = mateManagerService.countMate(seats);
+		
+		map.put("totalMate", totalMateSeat);
 		map.put("seats", seats);
 		map.put("main", main);
 		map.put("performance", performance);
