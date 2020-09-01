@@ -10,4 +10,6 @@ public interface MateManagerService {
 	public void addMate(MateForm mateForm);
 	public void addMateCat(int id,String category);
 	public int countMate(List<JsonHallSeat> list);
+	List<JsonHallSeat> getHallSeats(int performanceId);
+	
 }

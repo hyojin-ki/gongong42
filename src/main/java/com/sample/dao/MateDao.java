@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.sample.dto.MateList;
+import com.sample.dto.MateOrigin;
 import com.sample.dto.MateUserDto;
 import com.sample.web.form.MateSearchForm;
 import com.sample.web.view.HallInfo;
@@ -273,5 +274,6 @@ public interface MateDao {
     List<Map<String, Object>> getGroupSizeForS(int performanceId);
     List<Map<String, Object>> getGroupSizeForA(int performanceId);
     
+    void updateMateByMateId(Mate mate);
     
 }

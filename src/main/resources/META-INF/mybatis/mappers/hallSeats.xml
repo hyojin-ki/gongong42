@@ -24,4 +24,47 @@
 		b.id = #{value}
 </select>
 
+<select id="getHallSeats" parameterType="int" resultType="com.sample.dto.JsonHallSeat">
+	SELECT 
+		a.performanceId,
+		a.hallId,
+		b.groupSize,
+		a.seatBlock,
+		a.seatRow,
+		a.seatCol,
+		b.seatRate,
+		a.mateGroup 	as mateNo,
+		b.category 		as categoryId,
+		a.seatStatus
+	FROM hall_seats a
+	JOIN mate_main b ON a.mateGroup = b.id
+	WHERE a.performanceId = #{value}
+</select>
+
+<update id="updateHallSeatStatusByMateId" parameterType="com.sample.dto.HallSeatDto">
+	UPDATE 
+		hall_seats
+	SET
+		seatStatus = #{seatStatus}
+	WHERE mateGroup = #{mateGroup}
+</update>
+<update id="updateHallSeatOne" parameterType="com.sample.dto.HallSeatDto">
+	UPDATE
+		hall_seats
+	SET 
+		hallId = #{hallId},
+		seatRate = #{seatRate},
+		seatStatus = #{seatStatus},
+		mateGroup = #{mateGroup}
+	where
+		seatRow = #{seatRow}
+	and	
+		seatCol = #{seatCol}
+	and
+		seatBlock = #{seatBlock}
+	AND 
+		performanceId = #{performanceId}
+
+</update>
+
 </mapper>

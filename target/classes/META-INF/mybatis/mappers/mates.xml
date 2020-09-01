@@ -438,8 +438,9 @@ WHERE mmain.id = 1;
 	<select id="getMateByMateId" parameterType="int" resultType="Mate">
 		SELECT 
 				mmain.id, 
-				mmain.performanceId,
+				mmain.performanceId 	as "performance.id",
 				mmain.seatGroup, 
+				mcat.id 				as "categoryId",
 				mcat.category,
 				mmain.groupSize, 
 				mmain.seatRate
@@ -470,6 +471,19 @@ WHERE mmain.id = 1;
 		UPDATE mate_main 
 			SET category = #{catId}
 		WHERE id = #{mateId}
+	</update>
+	<update id="updateMateByMateId" parameterType="Mate">
+	UPDATE 
+		mate_main
+			set
+			performanceId = #{performance.id},
+			category = #{categoryId},
+			groupSize = #{groupsize},
+			seatRate = #{seatRate},
+			`status` = #{status},
+			groupCnt = #{groupCnt}
+	WHERE id = #{id}
+	
 	</update>
 	
 	<!--  해당 메이트방의 멤버의 숫자를 구한다.-->

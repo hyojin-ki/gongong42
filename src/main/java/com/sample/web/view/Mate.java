@@ -103,6 +103,7 @@ public class Mate {
 	public void setGroupCnt(int groupCnt) {
 		this.groupCnt = groupCnt;
 	}
+	
 
 	@Override
 	public String toString() {

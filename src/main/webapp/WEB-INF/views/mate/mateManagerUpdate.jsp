@@ -24,7 +24,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.color.js"></script>
 <script type="text/javascript" src="/resources/js/custom.js"></script>
-<script type="text/javascript" src="/resources/js/manager/mateManager.js"></script>
+<script type="text/javascript" src="/resources/js/manager/mateManagerUpdate.js"></script>
 <style>
   .selectable .ui-selecting { background: white  !important; }
   .selectable .ui-selected { background: white !important; color: white; }
@@ -40,7 +40,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12 mt-5 p-3 text-center ">					
-					<h1>메이트 등록</h1>				
+					<h1>메이트 수정</h1>				
 				<hr />
 				</div>
 			</div>
@@ -221,6 +221,7 @@
 										</div>
 									</div>
 									<!-- 공연등록 end -->
+									
 									<!-- 공연좌석수 -->
 									<div class="col-12 mt-4">
 										<div class="input-group">

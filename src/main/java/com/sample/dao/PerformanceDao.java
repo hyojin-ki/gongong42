@@ -236,4 +236,6 @@ public interface PerformanceDao {
     */
    void insertPerformanceSchedule(PerformanceSchedule performanceSchedule);
    
+   PerformanceMain getPerformanceMainByPerformanceId(int performanceId);
+   
 }

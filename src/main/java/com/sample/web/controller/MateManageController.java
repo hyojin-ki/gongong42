@@ -23,9 +23,11 @@ import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.web.form.MateForm;
+import com.sample.web.view.HallInfo;
 import com.sample.web.view.Mate;
 import com.sample.web.view.Pagination;
 import com.sample.web.view.Performance;
+import com.sample.web.view.PerformanceMain;
 
 @Controller
 @RequestMapping("/manager")
@@ -42,10 +44,6 @@ public class MateManageController {
 	
 	@GetMapping("/mateManager.do")
 	public String MateManager() {
-		
-		
-		
-		
 		return "mate/mateManager";
 	}
 	@RequestMapping("/mateManagerJson.do")
@@ -74,6 +72,34 @@ public class MateManageController {
 		
 		return mateManagerService.countMate(mateForm.getSeats());
 	}
+	@GetMapping("/mateManagerUpdate.do")
+	public String mateManagerUpdate() {
+		
+		return "mate/mateManagerUpdate";
+	}
+	@RequestMapping("/mateManagerUpdateJson.do")
+	public @ResponseBody Map<String, Object> mateManagerUpdateJson(){
+		Map<String, Object> map = new HashMap<>();
+		
+		List<JsonHallSeat> seats = mateManagerService.getHallSeats(130);
+		PerformanceMain main = performanceService.getPerformanceMainByPerformanceId(130);
+		PerformanceDetailDto performance = performanceService.getPerformanceByPerformanceMainId(130);
+		List<Map<Integer, String>> categories = mateService.getMateAllCategory();
+		List<PerformanceDetailDto> performanceList = performanceService.getAllPerformances();
+	
+		map.put("seats", seats);
+		map.put("main", main);
+		map.put("performance", performance);
+		map.put("performanceList", performanceList);
+		map.put("categories", categories);
+		
+		return map;
+	}
+	
+	
+	
+	
+	
 	@RequestMapping("/mateManagementJson.do")
 	public @ResponseBody Map<String, Object> mateManagementList(@RequestParam(value="pageNo", defaultValue="1") int pageNo) {
 		Map<String, Object> map = new HashMap<>();

@@ -44,5 +44,6 @@ public interface ReserveDao {
     void updateReserve(Reserve reserve);
     
     List<Reserve> getReserveCurrentCnt();
-    
+ 
+    List<Reserve> getReserveMyMateId(int mateId);
 }

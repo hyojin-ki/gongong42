@@ -418,6 +418,8 @@ public class PerformanceServiceImpl implements PerformanceService {
 	}
 
 
-
+	public PerformanceMain getPerformanceMainByPerformanceId(int performanceId) {
+		return performanceDao.getPerformanceMainByPerformanceId(performanceId);
+	}
 
 }

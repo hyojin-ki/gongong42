@@ -147,5 +147,8 @@ public class MateManagerServiceImpl implements MateManagerService{
 			System.out.println(seat);
 		}
 		return distinctList.size();
-	}	
+	}
+	public List<JsonHallSeat> getHallSeats(int performanceId) {
+		return hallDao.getHallSeats(performanceId);
+	}
 }
