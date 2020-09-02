@@ -193,25 +193,25 @@ div#A-seats4 button {
 																<tbody>
 																	<tr>
 																		<th rowspan="7" class="text-center">유의사항</th>
-																		<td>- 안내되어 있는 잔여석은 결제 진행 중인 좌석을 포함하고 있어 예매 가능 좌석과 다를 수 있습니다.</td>
+																		<td class="p-1">- 안내되어 있는 잔여석은 결제 진행 중인 좌석을 포함하고 있어 예매 가능 좌석과 다를 수 있습니다.</td>
 																	</tr>
 																	<tr>
-																		<td>- 할인은 자동선택 되지 않으니, 적용 받고자 하는 할인이 있는 경우 직접 선택해주시기 바랍니다.</td>
+																		<td class="p-1">- 할인은 자동선택 되지 않으니, 적용 받고자 하는 할인이 있는 경우 직접 선택해주시기 바랍니다.</td>
 																	</tr>
 																	<tr>
-																		<td>- 장애인, 국가유공자, 학생 할인 등 증빙서류가 필요한 경우 현장수령만 가능하며, 현장에서 증빙서류 미지참 시 차액 지불하셔야 합니다.</td>
+																		<td class="p-1">- 장애인, 국가유공자, 학생 할인 등 증빙서류가 필요한 경우 현장수령만 가능하며, 현장에서 증빙서류 미지참 시 차액 지불하셔야 합니다.</td>
 																	</tr>
 																	<tr>
-																		<td>- 관람 당일 공연 예매 시에는 변경/취소/환불이 불가합니다.</td>
+																		<td class="p-1">- 관람 당일 공연 예매 시에는 변경/취소/환불이 불가합니다.</td>
 																	</tr>
 																	<tr>
-																		<td>- 경우에 따라 ATM 기기에서 가상계좌 입금이 안 될 수 있으니 가급적 인터넷/폰뱅킹 등을 이용해주시기 바랍니다.</td>
+																		<td class="p-1">- 경우에 따라 ATM 기기에서 가상계좌 입금이 안 될 수 있으니 가급적 인터넷/폰뱅킹 등을 이용해주시기 바랍니다.</td>
 																	</tr>
 																	<tr>
-																		<td>- 예매 취소 시 예매수수료는 예매 당일 밤 12시 이전까지 환불되며, 그 이후 기간에는 환불되지 않습니다.</td>
+																		<td class="p-1">- 예매 취소 시 예매수수료는 예매 당일 밤 12시 이전까지 환불되며, 그 이후 기간에는 환불되지 않습니다.</td>
 																	</tr>
 																	<tr>
-																		<td>- 예매 취소 시점에 따라 취소수수료가 부과될 수 있습니다. 예매 후 취소마감시간과 함께 취소수수료를 꼭 확인해주시기 바랍니다.</td>
+																		<td class="p-1">- 예매 취소 시점에 따라 취소수수료가 부과될 수 있습니다. 예매 후 취소마감시간과 함께 취소수수료를 꼭 확인해주시기 바랍니다.</td>
 																	</tr>
 																</tbody>
 															</table>
@@ -227,6 +227,8 @@ div#A-seats4 button {
 																	<span>좌석 현황</span>
 																</div>
 															</div>
+														</div>
+														<div class="col-12">	
 															<div class="row">
 																<div class="col-12">
 																	<div class="card">
@@ -236,6 +238,8 @@ div#A-seats4 button {
 																	</div>
 																</div>
 															</div>
+														</div>
+														<div class="col-12">
 															<div class="row">
 																<div class="offset-3 col-6 offset-3">
 																	<div class="row">
@@ -615,21 +619,21 @@ div#A-seats4 button {
 										</tbody>
 										<tbody id="seat-status" style="display: none;">
 											<tr>
-												<th class="text-center" style="background-color: #00FFFF;">R석</th>
+												<th class="text-center bg-primary text-white font-weight-bold"><h4>R석</h4></th>
 												<td class="text-center"><input type="radio"
 													name="seatGrade" value=""
 													style="width: 25px; height: 25px; border: 10px;"
 													id="r-seat"></td>
 											</tr>
 											<tr>
-												<th class="text-center" style="background-color: #F3F781;">S석</th>
+												<th class="text-center bg-warning text-white font-weight-bold"><h4>S석</h4></th>
 												<td class="text-center"><input type="radio"
 													name="seatGrade" value=""
 													style="width: 25px; height: 25px; border: 10px;"
 													id="s-seat"></td>
 											</tr>
 											<tr>
-												<th class="text-center" style="background-color: #81F781;">A석</th>
+												<th class="text-center bg-danger text-white font-weight-bold"><h4>A석</h4></th>
 												<td class="text-center"><input type="radio"
 													name="seatGrade" value=""
 													style="width: 25px; height: 25px; border: 10px;"
@@ -690,6 +694,7 @@ div#A-seats4 button {
 		</form:form>
 		
 		<input type="hidden" value="${LOGIN_USER.point }" id="user-point-real"/>
+		<input type="hidden" value="${performanceDto.performanceId }" id="seat-performanceId"/>
 		<input type="hidden" id="r-seat-price" />
 		<input type="hidden" id="s-seat-price" />
 		<input type="hidden" id="a-seat-price" />
@@ -885,7 +890,7 @@ div#A-seats4 button {
 						for (var i=0; i<performanceSchedules.length; i++) {
 							//$('.performanceShow').
 								var rows = '<tr>'
-								rows += '<td > <a href="#" data-no="'+performanceSchedules[i].id+'">['+performanceSchedules[i].showNumber+']회</a></td>'
+								rows += '<td > <a href="#" class="performanceScheduleBtn" data-no="'+performanceSchedules[i].id+'">['+performanceSchedules[i].showNumber+']회</a></td>'
 								rows += '<td>'+performanceSchedules[i].showTime+'</td>'
 								rows += '</tr>'
 								
@@ -1084,48 +1089,202 @@ div#A-seats4 button {
 			}
 		});
 
-		var rseats1 = $('#R-seats1');
-		var rseats2 = $('#R-seats2');
-		var sseats1 = $('#S-seats1');
-		var sseats2 = $('#S-seats2');
-		var sseats3 = $('#S-seats3');
-		var sseats4 = $('#S-seats4');
-		var aseats1 = $('#A-seats1');
-		var aseats2 = $('#A-seats2');
-		var aseats3 = $('#A-seats3');
-		var aseats4 = $('#A-seats4');
+		//버튼
+		//버튼 이벤트
+	var rseats1 = $('#R-seats1');
+	var rseats2 = $('#R-seats2');
+	var sseats1 = $('#S-seats1');
+	var sseats2 = $('#S-seats2');
+	var sseats3 = $('#S-seats3');
+	var sseats4 = $('#S-seats4');
+	var aseats1 = $('#A-seats1');
+	var aseats2 = $('#A-seats2');
+	var aseats3 = $('#A-seats3');
+	var aseats4 = $('#A-seats4');
+	
+	createSeat(rseats1);
+	createSeat(rseats2);
+	createSeat(sseats1);
+	createSeat(sseats2);
+	createSeat(sseats3);
+	createSeat(sseats4);
+	createSeat(aseats1);
+	createSeat(aseats2);
+	createSeat(aseats3);
+	createSeat(aseats4);
+	
+	function createSeat($div){
 		
-		var possibleSeats = ['available', 'reserved'];
-		
-		var randomSeat = () => possibleSeats[Math.floor(Math.random() * possibleSeats.length)];
-		
-		createSeat(rseats1);
-		createSeat(rseats2);
-		createSeat(sseats1);
-		createSeat(sseats2);
-		createSeat(sseats3);
-		createSeat(sseats4);
-		createSeat(aseats1);
-		createSeat(aseats2);
-		createSeat(aseats3);
-		createSeat(aseats4);
-		
-		function createSeat($div){
-			
-			for (var i=0;i<4;i++) {
-				for (var j=0;j<12;j++) {
-					var seat = document.createElement('button');
-					seat.setAttribute("class","col-sm-1 btn btn-sm btn-outline-secondary")
-					var possibleSeat = randomSeat();
-					seat.innerHTML = `
-					    <svg class="${possibleSeat}" width="5" height="5">
-					      <use href="#${possibleSeat}"></use>
-					    </svg>
-					    `;				    
-					$div.append(seat);					
+		for (var i=1;i<5;i++) {
+			for (var j=1;j<13;j++) {
+				var seat = document.createElement('button');
+				seat.style.width='25px'
+				seat.style.height='28px'
+				seat.style.padding='1px'
+				seat.style.margin='1px'
+							
+				seat.setAttribute("class"," btn btn-sm btn-outline-secondary seatBtn")
+				var seatClass = '';
+
+				//Seat 구역번호 지정
+				if($div.hasClass('A')){
+					seatClass = 'A';
+				} else if ($div.hasClass('B')){
+					seatClass = 'B';
+				} else if ($div.hasClass('C')){
+					seatClass = 'C';
+				} else if ($div.hasClass('D')){
+					seatClass = 'D';
+				} else if ($div.hasClass('E')){
+					seatClass = 'E';
+				} else if ($div.hasClass('F')){
+					seatClass = 'F';
+				} else if ($div.hasClass('G')){
+					seatClass = 'G';
+				} else if ($div.hasClass('H')){
+					seatClass = 'H';
+				} else if ($div.hasClass('I')){
+					seatClass = 'I';
+				} else if ($div.hasClass('J')){
+					seatClass = 'J';
 				}
+				
+				seat.setAttribute('data-seatblock', seatClass)
+				seat.setAttribute('data-seatrow', i);
+				seat.setAttribute('data-seatcol', j);
+				$div.append(seat);
 			}
 		}
+	}
+
+	
+	var $rseatsBtn1 = $('#R-seats1 button')
+	var $rseatsBtn2 = $('#R-seats2 button');
+	var $sseatsBtn1 = $('#S-seats1 button');
+	var $sseatsBtn2 = $('#S-seats2 button');
+	var $sseatsBtn3 = $('#S-seats3 button');
+	var $sseatsBtn4 = $('#S-seats4 button');
+	var $aseatsBtn1 = $('#A-seats1 button');
+	var $aseatsBtn2 = $('#A-seats2 button');
+	var $aseatsBtn3 = $('#A-seats3 button');
+	var $aseatsBtn4 = $('#A-seats4 button');
+
+	$rseatsBtn1.addClass('bg-primary').addClass('R-class-seat');
+	$rseatsBtn2.addClass('bg-primary').addClass('R-class-seat');
+	$sseatsBtn1.addClass('bg-warning').addClass('S-class-seat');
+	$sseatsBtn2.addClass('bg-warning').addClass('S-class-seat');
+	$sseatsBtn3.addClass('bg-warning').addClass('S-class-seat');
+	$sseatsBtn4.addClass('bg-warning').addClass('S-class-seat');
+	$aseatsBtn1.addClass('bg-danger').addClass('A-class-seat');
+	$aseatsBtn2.addClass('bg-danger').addClass('A-class-seat');
+	$aseatsBtn3.addClass('bg-danger').addClass('A-class-seat');
+	$aseatsBtn4.addClass('bg-danger').addClass('A-class-seat');
+
+	//버튼 이벤트
+	$('#performanceShow').on('click','.performanceScheduleBtn',function(){
+		var pId = $(this).data('no');
+		$.ajax({
+			url:'/manager/mateManagerUpdateJson.do',
+			Type:'POST',
+			contentType:"application/json",
+			data:{
+				"performanceId":pId
+			},
+			success:function(result){
+				
+				//seats
+				var seatsArray = result.seats;
+		        var aSeatArray = new Array();
+		        var bSeatArray = new Array();
+		        var cSeatArray = new Array();
+		        var dSeatArray = new Array();
+		        var eSeatArray = new Array();
+		        var fSeatArray = new Array();
+		        var gSeatArray = new Array();
+		        var hSeatArray = new Array();
+		        var iSeatArray = new Array();
+		        var jSeatArray = new Array();
+		        var rSeatRate = new Array();
+		        var sSeatRate = new Array();
+		        var aSeatRate = new Array();
+		        
+				for(var i in seatsArray){
+		        	var seatBlock = seatsArray[i].seatBlock;
+		        	var seatRow = seatsArray[i].seatRow;
+		        	var seatCol = seatsArray[i].seatCol;
+		        	var seatRate = seatsArray[i].seatRate;
+		        	var groupSize = seatsArray[i].groupSize;
+		        	var mateNo = seatsArray[i].mateNo;
+		        	var catId = seatsArray[i].categoryId;
+		        	var seatStatus = seatsArray[i].seatStatus;
+		        	
+		        	if(seatBlock == 'A'){
+		        		aSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'B'){
+		        		bSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'C'){
+		        		cSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'D'){
+		        		dSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'E'){
+		        		eSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'F'){
+		        		fSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'G'){
+		        		gSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'H'){
+		        		hSeatArray.push(seatsArray[i]);
+		        	} else if (seatBlock == 'I'){
+		        		iSeatArray.push(seatsArray[i]);
+		        	} else {
+		        		jSeatArray.push(seatsArray[i]);
+		        	}
+		        	if(seatRate == 'R'){
+		        		rSeatRate.push(seatsArray)
+		        	} else if (seatRate == 'S'){
+		        		sSeatRate.push(seatsArray)
+		        	} else if (seatRate == 'A')
+		        		aSeatRate.push(seatsArray)
+		        }
+				seatSetFunction(aSeatArray, $rseatsBtn1);
+				seatSetFunction(bSeatArray, $rseatsBtn2);
+				seatSetFunction(cSeatArray, $sseatsBtn1);
+				seatSetFunction(dSeatArray, $sseatsBtn2);
+				seatSetFunction(eSeatArray, $sseatsBtn3);
+				seatSetFunction(fSeatArray, $sseatsBtn4);
+				seatSetFunction(gSeatArray, $aseatsBtn1);
+				seatSetFunction(hSeatArray, $aseatsBtn2);
+				seatSetFunction(iSeatArray, $aseatsBtn3);
+				seatSetFunction(jSeatArray, $aseatsBtn4);
+				
+				
+				var $btnArray = $('button.seatBtn:not(.no-class-seat)')
+				var number = 1;
+				for(var i = 0; i < $btnArray.length; i++){
+					$($btnArray[i]).addClass('text-dark').addClass('text-center').addClass('font-weight-bold').text(number);
+					var mate1 = $($btnArray[i]).data('mate');
+					var mate2 = $($btnArray[i+1]).data('mate');
+					if($($btnArray[i]).data('seatstatus') == 'N'){
+						$($btnArray[i]).text('').removeClass('bg-primary')
+												.removeClass('bg-warning')
+												.removeClass('bg-secondary')
+												.removeClass('bg-danger')
+												.removeClass('S-class-seat')
+												.removeClass('R-class-seat')
+												.removeClass('A-class-seat')
+												.removeClass('no-class-seat')
+												.addClass('bg-secondary')
+												.addClass('no-class-seat');
+					}
+					if(mate1 != mate2){
+						number++;
+					}
+				}
+			}
+			
+			
+		})
+	})
 		
 		// hidden 폼에 들어갈 값들
 		var totalBill = $('#total-bill').val();
@@ -1148,7 +1307,15 @@ div#A-seats4 button {
 			var selectedBank = $(this).val();
 			$('#payradio').val(selectedBank);
 		});
-		
-</script>
+	
+		function seatSetFunction(array, targetBtnArray) {
+			for (var i = 0; i < array.length; i++) {
+				$(targetBtnArray[i]).attr('data-groupsize', array[i].groupSize)
+						.attr('data-mate', array[i].mateNo).attr(
+								'data-category', array[i].catId).attr(
+								'data-seatstatus', array[i].seatStatus);
+			}
+		}
+	</script>
 </body>
 </html>

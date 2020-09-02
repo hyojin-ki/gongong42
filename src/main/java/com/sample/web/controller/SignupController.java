@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -198,7 +199,7 @@ public class SignupController {
 		if (savedUser != null) {
 			errors.rejectValue("nickname", null, "이미 사용중인 닉네임입니다.");
 		}
-			
+		
 			
 		condition.put("column", "tel");
 		condition.put("value", userUpdateForm.getTel());
