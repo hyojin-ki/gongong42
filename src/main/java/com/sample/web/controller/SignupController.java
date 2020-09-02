@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -182,7 +183,7 @@ public class SignupController {
 	}
 	
 	@RequestMapping("/userUpdate.do")
-	public String updateUserInfo(@ModelAttribute("userUpdateForm") @Valid UserUpdateForm userUpdateForm,BindingResult errors) {
+	public String updateUserInfo(@ModelAttribute("userUpdateForm") @Valid UserUpdateForm userUpdateForm,BindingResult errors, HttpSession session) {
 		
 		Map<String, Object> condition = new HashMap<String, Object>();
 		
@@ -194,19 +195,31 @@ public class SignupController {
 		condition.put("column", "nickname");
 		condition.put("value", userUpdateForm.getNickname());		
 		savedUser = userService.getUserDetailByCondition(condition);
-	
-		if (savedUser != null) {
-			errors.rejectValue("nickname", null, "이미 사용중인 닉네임입니다.");
-		}
-			
+		
+		User sessionUser = (User)session.getAttribute("LOGIN_USER");
+		
+		if(sessionUser.getNickname() != userUpdateForm.getNickname()) {
+	         
+	         if (savedUser != null) {
+	            errors.rejectValue("nickname", null, "이미 사용중인 닉네임입니다.");
+	         }
+	         
+	      }
+		
 			
 		condition.put("column", "tel");
 		condition.put("value", userUpdateForm.getTel());
 		savedUser = userService.getUserDetailByCondition(condition);
-		if (savedUser != null ) {
-			errors.rejectValue("tel", null, "이미 사용중인 전화번호입니다.");
-			
-			}
+		
+		if(sessionUser.getTel() != userUpdateForm.getTel()) {
+	         
+			 if (savedUser != null) {
+		            errors.rejectValue("tel", null, "이미 사용중인 전화번호입니다.");
+		         }
+	         
+	      }
+		
+		
 		System.out.println("유효성 체크결과 에러가 발견되었는가? " + errors.hasErrors());
 		if (errors.hasErrors()) {
 			return "user/userUpdate"; //입력화면으로 내부이동하기
