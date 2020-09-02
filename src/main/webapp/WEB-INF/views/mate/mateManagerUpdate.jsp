@@ -428,6 +428,8 @@
 <input type="hidden" id="performanceId" value="${performanceId }" />
 </div>
 </div>
- 
+ <div id="loading" style="display: none;">
+	<img src="/resources/logo/loading.gif" alt="" style="position: absolute; top: 600px; left: 800px"/>
+</div>
 </body>
 </html>

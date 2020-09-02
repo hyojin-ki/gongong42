@@ -28,4 +28,5 @@ public interface ReserveService {
      */
     Reserve getReservedMateByPerformanceIdAndUserId(String userId, int performanceId);
     List<Reserve> getReserveCurrentCnt();
+    List<Reserve> getReserveByPerformanceId(int performanceId);
 }

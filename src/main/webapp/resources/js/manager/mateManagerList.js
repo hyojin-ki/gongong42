@@ -189,7 +189,34 @@ $(function(){
 		var performanceId = $(this).data('performanceid');
 		location.href = '/manager/mateManagerUpdate.do?performanceId='+performanceId;
 	})
-	
+	//삭제버튼 클릭
+	$('#matelist-table').on('click','#matelist-delete-btn',function(){
+		var performanceId = $(this).data('performanceid');
+		var check = confirm("해당 방을 삭제하면 해당 정보가 모두 삭제 됩니다. 정말 삭제하시겠습니까?");
+		if(check != true){
+			return;
+		}
+		$.ajax({
+			url:"/manager/deleteMate.do",
+			type:"POST",
+			data:{
+				"performanceId":performanceId
+			},
+			success:function(data){
+				alert(data.message);
+				history.go(0);
+			},
+			beforeSend:function(){
+				$('#loading').show();
+			},
+			complete:function(){
+				$('#loading').hide();
+			},
+			error:function(){
+				alert('실패하였습니다.');
+			}
+		})
+	})
 	
 	
 	

@@ -35,4 +35,6 @@ public interface HallDao {
      * @param hallSeat
      */
     void updateHallSeatOne(HallSeatDto hallSeat);
+    
+    void deleteAllHallSeatsByPerformanceId(int performanceId);
 }

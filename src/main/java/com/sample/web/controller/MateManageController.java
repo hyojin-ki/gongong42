@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sample.dao.ReserveDao;
 import com.sample.dto.JsonHallSeat;
 import com.sample.dto.MateList;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
+import com.sample.service.ReserveService;
 import com.sample.web.form.MateForm;
 import com.sample.web.view.Pagination;
 import com.sample.web.view.PerformanceMain;
+import com.sample.web.view.Reserve;
 
 @Controller
 @RequestMapping("/manager")
@@ -35,6 +38,9 @@ public class MateManageController {
 	
 	@Autowired
 	MateService mateService;
+	
+	@Autowired
+	ReserveService reserveService;
 	
 	@GetMapping("/mateManager.do")
 	public String MateManager() {
@@ -56,10 +62,11 @@ public class MateManageController {
 		
 	}
 	@RequestMapping("/addCat.do")
-	public @ResponseBody void addMateCat(@RequestParam("id") int id,
+	public @ResponseBody String addMateCat(@RequestParam("id") int id,
 										@RequestParam("category") String category) {
 		
 		mateManagerService.addMateCat(id, category);
+		return "redirect:/manager/mateList.do";
 	}
 	@RequestMapping("/countMate.do")
 	public @ResponseBody int countMate(@RequestBody MateForm mateForm) {
@@ -68,7 +75,7 @@ public class MateManageController {
 	}
 	@RequestMapping("/updateMate.do")
 	public @ResponseBody void updateMate(@RequestBody MateForm mateForm) {
-		System.out.println(mateForm);
+		mateManagerService.updateMate(mateForm);
 	}
 	
 	
@@ -98,7 +105,21 @@ public class MateManageController {
 		
 		return map;
 	}
+	@RequestMapping("/deleteMate.do")
+	@ResponseBody
+	public Map<String, Object> deleteMate(@RequestParam("performanceId") int performanceId) {
+		List<Reserve> reserves = reserveService.getReserveByPerformanceId(performanceId);
+		Map<String, Object> map = new HashMap<>();
+		if(reserves.isEmpty()) {
+			mateManagerService.deleteMate(performanceId);
+			map.put("message", "삭제가 완료되었습니다.");
+		} else {
+			map.put("message", "이미 예약된 고객이 있는 공연입니다. 예약취소 처리가 필요합니다.");
+		}
+		
 	
+		return map;
+	}
 	
 	
 	

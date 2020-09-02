@@ -273,16 +273,17 @@ public class MateController {
 	@ResponseBody
 	public void addTimeLine(@RequestParam("mnum") int mateId, 
 							@RequestParam("content") String content,
+							@RequestParam("performanceId") int performanceId,
 									HttpSession session) {
 		User user = (User) session.getAttribute("LOGIN_USER");
 		if(user == null) {
 			throw new RuntimeException("접근 권한이 없습니다.");
 		}
 		MateTimeLine mateTimeLine = new MateTimeLine();
+		mateTimeLine.setPerformanceId(performanceId);
 		mateTimeLine.setUser(user);
 		mateTimeLine.setId(mateId);
 		mateTimeLine.setContent(content);
-
 		mateService.addMateTimeLineByMateIdAndUserId(mateTimeLine);
 	}
 	/**
@@ -310,9 +311,11 @@ public class MateController {
 	@RequestMapping("/addTag.do")
 	@ResponseBody
 	public List<MateTag> addmateTag(@RequestParam("mnum") int mateId, 
-							@RequestParam("tags") List<String> tags, HttpSession session) {
+							@RequestParam("tags") List<String> tags,
+							@RequestParam("performanceId") int performanceId
+							, HttpSession session) {
 		
-		return mateService.addHashTag(mateId, tags);
+		return mateService.addHashTag(mateId, tags, performanceId);
 	}
 	@Auth
 	@RequestMapping("/updateCat.do")

@@ -57,7 +57,7 @@ public class MateServiceImpl implements MateService {
 	 * 특정 메이트 방에 해시태그를 등록하는 서비스 기능
 	 */
 	@Transactional
-	public List<MateTag> addHashTag(int mateId, List<String> mateTags) {
+	public List<MateTag> addHashTag(int mateId, List<String> mateTags, int performanceId) {
 		//mate테이블에 mateId에 따른 해당 메이트가 있는지 검사한다.
 		isExistMateException(mateId);
 
@@ -72,6 +72,7 @@ public class MateServiceImpl implements MateService {
 			for(String tag : mateTags) {
 				MateTag mateTag = new MateTag();
 				mateTag.setMateId(mateId);
+				mateTag.setPerformanceId(performanceId);
 				String tagName = tag.replace("[", "").replace("]", "").replace("\"", "");
 				mateTag.setTagName(tagName);
 				
@@ -150,6 +151,8 @@ public class MateServiceImpl implements MateService {
 			hallSeat.setSeatStatus("N");
 			hallSeat.setMateGroup(mate.getId());
 			hallDao.updateHallSeatStatusByMateId(hallSeat);
+		} else {
+			mate.setStatus("모집중");
 		}
 		System.out.println("mate : " + mate);
 		mateDao.updateMateByMateId(mate);
@@ -157,7 +160,7 @@ public class MateServiceImpl implements MateService {
 		savedReserve.setMate(mate);
 		reserveDao.updateReserve(savedReserve);
 		//해당 유저 인서트
-		mateDao.insertMateMember(newMember.getId(), mateId);
+		mateDao.insertMateMember(newMember.getId(), mateId, performanceId);
 		// 메이트 타임 라인 자동으로 남기기
 		MateTimeLine mateTimeLine = new MateTimeLine();
 		mateTimeLine.setId(mateId);

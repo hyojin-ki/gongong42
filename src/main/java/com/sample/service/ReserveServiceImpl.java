@@ -114,6 +114,9 @@ public class ReserveServiceImpl implements ReserveService{
 	public List<Reserve> getReserveCurrentCnt() {
 		return reserveDao.getReserveCurrentCnt();
 	}
+	public List<Reserve> getReserveByPerformanceId(int performanceId) {
+		return reserveDao.getReserveByPerformanceId(performanceId);
+	}
 
 	
 }

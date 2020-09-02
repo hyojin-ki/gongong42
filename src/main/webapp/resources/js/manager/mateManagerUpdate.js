@@ -678,8 +678,11 @@ $(function(){
 			alert('메이트 그룹을 선택해주세요');
 			return;
 		}
-		
-		
+		var updateConfirm = confirm("수정 시에 해당 메이트 방의 인원들을 모두 리셋 시킵니다. 정말 수정하시겠습니까? ");
+		if(updateConfirm != true){
+			return;
+		}
+		var performanceId = $('#performanceId').val();
 		//performance_info_id
 		var pId = $('#hidden-performance-info-id').val();
 		//hall_info_id
@@ -695,6 +698,7 @@ $(function(){
 		
 		//performance_main 에 필요한 요소 담기
 		var pMainData = new Object();
+		pMainData.id = performanceId;
 		pMainData.infoId = pId;
 		pMainData.hallId = hId;
 		pMainData.showDate = sDate;
@@ -734,10 +738,20 @@ $(function(){
 		$.ajax({
 			type:"POST",
 			url:"/manager/updateMate.do",
-			dataType:"json",
 			contentType:'application/json',
 			data:JSON.stringify(data),
 			success:function(result){
+				alert('수정이 완료되었습니다.');
+				location.href = '/manager/mateList.do';
+			},
+			beforeSend:function(){
+				$('#loading').show();
+			},
+			complete:function(){
+				$('#loading').hide();
+			},
+			error:function(){
+				alert('실패하였습니다.');
 			}
 				
 				

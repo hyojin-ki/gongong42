@@ -117,6 +117,7 @@ $(function(){
 	
 	//chatsubmitFunction
 	$('#chat-submit-btn').click(function(){
+		var performanceId = $("#pid").val();
 		var chatContent = $('#chat-content-box').val();
 		if(chatContent == ''){
 			return;
@@ -128,11 +129,11 @@ $(function(){
 			url:"/mate/timeline.do",
 			dataType:"json",
 			data:{
+				"performanceId":performanceId,
 				"content":chatContent,
 				"mnum":mnum
 			},
 			success:function(data){
-				console.log(data);
 			}
 		})
 	})
@@ -158,21 +159,19 @@ $(function(){
 		
 		//hashTagFunction
 		$('#tag-update-btn').click(function(){
-			console.log($('#tag-update-input-box').val());
-			
+			var performanceId = $('#pid').val();
 			var tagArray = $('#tag-update-input-box').val().replace(/\s/gi,'').replace(/\"/g, "").split(',');
-			console.log(tagArray);
 			var jsonArray = JSON.stringify(tagArray);
 			$.ajax({
 				type:"POST",
 				url:"/mate/addTag.do",
 				dataType:"json",
 				data:{
+					"performanceId":performanceId,
 					"mnum":mnum,
 					"tags":jsonArray
 				},
 				success:function(data){
-					console.log('receiveData',data);
 					var tagName = '';
 					for(var i in data){
 						tagName += data[i].tagName;

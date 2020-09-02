@@ -429,9 +429,9 @@ WHERE mmain.id = 1;
 	<!-- mateTimeLine Insert -->
 	<insert id="addTimeLine" parameterType="MateTimeLine">
 			INSERT INTO mate_timeline
-			(mateId, content, userId)
+			(mateId, content, userId, performanceId)
 			VALUES
-			(#{id}, #{content}, #{user.id} )
+			(#{id}, #{content}, #{user.id}, #{performanceId} )
 	</insert>
 	
 	<!-- mateid에 해당하는 Mate객체 반환쿼리 -->
@@ -449,6 +449,9 @@ WHERE mmain.id = 1;
 		WHERE mmain.id = #{value}
 		
 	</select>
+	<delete id="deleteMateTimeLineByPerformanceId" parameterType="int">
+		DELETE FROM mate_timeline where performanceId = #{value}
+	</delete>
 	<select id="getMateTimeLineCountByMateId" parameterType="int" resultType="int">
 	SELECT COUNT(*) FROM mate_timeline
 	WHERE mateId = #{value}
@@ -465,6 +468,10 @@ WHERE mmain.id = 1;
 	<delete id="deleteMateTagAllByMateId" parameterType="int">
 		DELETE FROM mate_tag WHERE id = #{value}
 	</delete>
+	<delete id="deleteMateTagByPerformanceId" parameterType="int">
+		DELETE FROM mate_tag WHERE performanceId = #{value}
+	</delete>
+	
 	
 	<!-- matecategory Change -->
 	<update id="updateMateCategoryByMateId" parameterType="int">
@@ -490,16 +497,16 @@ WHERE mmain.id = 1;
 	<select id="getMateMemberCountInMateByMateId" resultType="int">
 		SELECT COUNT(*) FROM mate_main mmain
 		JOIN mate_members mmem ON mmain.id = mmem.id
-		WHERE performanceId = #{performanceId}
+		WHERE mmain.performanceId = #{performanceId}
 		AND mmain.id = #{mateId}
 	</select>
 
  	<!-- 해당 메이트를 메이트 멤버 테이블에 인서트 시킨다. -->
 	<insert id="insertMateMember">
 		INSERT INTO mate_members
-			(userId, id)
+			(userId, id, performanceId)
 			VALUES
-			(#{userId}, #{mateId})
+			(#{userId}, #{mateId}, #{performanceId})
 	</insert>
 	
 	<!-- 해당 메이트가 메이트 아이디에 따라서 있는지 확인하는 쿼리 -->
@@ -561,7 +568,7 @@ WHERE mmain.id = 1;
 		INSERT INTO mate_main
 		(performanceId, seatGroup, groupSize, seatRate, category)
 		VALUES
-		(#{performance.id}, #{seatGroup}, #{groupsize}, #{seatRate})
+		(#{performance.id}, #{seatGroup}, #{groupsize}, #{seatRate}, #{categoryId})
 		
 		<selectKey resultType="int" order="AFTER" keyProperty="id">
 		 SELECT LAST_INSERT_ID() as id
@@ -643,7 +650,11 @@ WHERE mmain.id = 1;
 		b.userId = #{userId}
 	</select>
 	
-
-	
+	<delete id="deleteMateMemberByPerformanceId" parameterType="int">
+		delete from mate_members where performanceId = #{value}
+	</delete>
+	<delete id="deleteMateMainByPerformanceId" parameterType="int">
+		delete from mate_main where performanceId = #{value}
+	</delete>
 
 </mapper>
