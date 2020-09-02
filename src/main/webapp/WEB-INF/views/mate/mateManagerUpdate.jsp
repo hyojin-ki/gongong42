@@ -361,16 +361,11 @@
 									</div>
 									<div class="col-12 mt-4 text-right">
 										<button type="button" id="mate-all-update-btn" class="btn btn-warning">수정</button>
-										<button type="button" id="mate-all-delete-btn" class="btn btn-danger">삭제</button>
-									
 									</div>
 								</div>
 							</div>
 						</div>
 				</div>
-			
-			
-			
 		</div>
 	<!-- 공연 리스트 모달 -->
 	<div class="modal fade" id="performance-list-modal" tabindex="-1" aria-labelledby="performance-list-modal-label" aria-hidden="true">

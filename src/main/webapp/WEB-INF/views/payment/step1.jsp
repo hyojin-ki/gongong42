@@ -126,7 +126,7 @@ div#A-seats4 button {
 								<div class="col-12">
 									<div id="fullpage">
 										<div class="section fp-auto-height" data-anchor="section1">
-											<div style="height: 890px;">
+											<div>
 											<!-- 슬라이드 1 : 공연날짜 및 회차 선택 -->
 												<div class="slide" data-anchor="slide1" id="slide1">
 													<div class="row">
@@ -184,7 +184,7 @@ div#A-seats4 button {
 														</div>
 													</div>
 													<div class="row">
-														<div class="col-12">
+														<div class="col-12 mt-5">
 															<table class="table-bordered" style="width: 100%;">
 																<colgroup>
 																	<col width="10%" />
@@ -192,31 +192,25 @@ div#A-seats4 button {
 																</colgroup>
 																<tbody>
 																	<tr>
-																		<th class="text-center">유</th>
+																		<th rowspan="7" class="text-center">유의사항</th>
 																		<td>- 안내되어 있는 잔여석은 결제 진행 중인 좌석을 포함하고 있어 예매 가능 좌석과 다를 수 있습니다.</td>
 																	</tr>
 																	<tr>
-																		<th class="text-center">의</th>
 																		<td>- 할인은 자동선택 되지 않으니, 적용 받고자 하는 할인이 있는 경우 직접 선택해주시기 바랍니다.</td>
 																	</tr>
 																	<tr>
-																		<th class="text-center">사</th>
 																		<td>- 장애인, 국가유공자, 학생 할인 등 증빙서류가 필요한 경우 현장수령만 가능하며, 현장에서 증빙서류 미지참 시 차액 지불하셔야 합니다.</td>
 																	</tr>
 																	<tr>
-																		<th class="text-center">항</th>
 																		<td>- 관람 당일 공연 예매 시에는 변경/취소/환불이 불가합니다.</td>
 																	</tr>
 																	<tr>
-																		<th></th>
 																		<td>- 경우에 따라 ATM 기기에서 가상계좌 입금이 안 될 수 있으니 가급적 인터넷/폰뱅킹 등을 이용해주시기 바랍니다.</td>
 																	</tr>
 																	<tr>
-																		<th></th>
 																		<td>- 예매 취소 시 예매수수료는 예매 당일 밤 12시 이전까지 환불되며, 그 이후 기간에는 환불되지 않습니다.</td>
 																	</tr>
 																	<tr>
-																		<th></th>
 																		<td>- 예매 취소 시점에 따라 취소수수료가 부과될 수 있습니다. 예매 후 취소마감시간과 함께 취소수수료를 꼭 확인해주시기 바랍니다.</td>
 																	</tr>
 																</tbody>
@@ -518,10 +512,10 @@ div#A-seats4 button {
 							</div>
 						</div>
 						<!-- 우측 공연 정보 및 현재 결제 진행 상황창 -->
-						<div class="col-3" style="height: 890px;">
+						<div class="col-3">
 							<div class="row">
-								<div class="col-12">
-									<table class="table-bordered" style="margin-bottom: 10px;">
+								<div class="col-12 text-center">
+									<table class="table-bordered" style="margin-bottom: 10px; width: 100%">
 										<tbody>
 											<tr>
 												<th rowspan="3"><img alt="sample-image"
@@ -531,19 +525,21 @@ div#A-seats4 button {
 													${performanceDto.title}</td>
 											</tr>
 											<tr>
-												<td><fmt:formatDate
+												<td><span><fmt:formatDate
 														value="${performanceDto.startDate }" pattern="yyyy-MM-dd" />
-													~ <br />
+													</span>~<span> 
 												<fmt:formatDate value="${performanceDto.endDate }"
-														pattern="yyyy-MM-dd" /></td>
+														pattern="yyyy-MM-dd" /></span></td>
 											</tr>
 											<tr>
 												<td>${performanceDto.hallinfo.name }</td>
 											</tr>
 										</tbody>
 									</table>
+								</div>
+								<div class="col-12 text-center">
 									<table class="table-bordered"
-										style="width: 270px; height: 200px;">
+										style="width: 100%; height: 150px;">
 										<colgroup>
 											<col width="40%" />
 											<col width="60%" />
@@ -567,8 +563,10 @@ div#A-seats4 button {
 											</tr>
 										</tbody>
 									</table>
+								</div>
+								<div class="col-12">
 									<table class="table-bordered" id="table-paystatus"
-										style="width: 270px; height: 300px; margin-top: 10px;">
+										style="width:100%; height: 300px; margin-top: 10px;">
 										<colgroup>
 											<col width="40%" />
 											<col width="60%" />
@@ -639,8 +637,8 @@ div#A-seats4 button {
 											</tr>
 										</tbody>
 									</table>
-									<br />
-									<table style="width: 270px;">
+									<div class="col-12 mt-2 mb-2 card">
+									<table style="width: 100%;">
 										<tbody>
 											<tr>
 												<th>최종결제금액</th>
@@ -650,12 +648,14 @@ div#A-seats4 button {
 											</tr>
 										</tbody>
 									</table>
-									<br />
-									<div id="all-btns">
-										<button id="prevslide" class="btn btn-secondary"
-											style="width: 125px;" disabled>이전</button>
-										<button id="nextslide" class="btn btn-primary"
-											style="width: 125px;">다음</button>
+									</div>
+									<div class="col-12 text-center">
+										<div id="all-btns">
+											<button id="prevslide" class="btn btn-secondary"
+												style="width: 125px;" disabled>이전</button>
+											<button id="nextslide" class="btn btn-primary"
+												style="width: 125px;">다음</button>
+										</div>
 									</div>
 								</div>
 							</div>
