@@ -23,6 +23,7 @@ import com.sample.service.PaymentService;
 import com.sample.service.PerformanceService;
 import com.sample.service.UserService;
 import com.sample.web.form.PaymentForm;
+import com.sample.web.security.Auth;
 import com.sample.web.view.Coupon;
 import com.sample.web.view.Payment;
 import com.sample.web.view.PerformanceSchedule;

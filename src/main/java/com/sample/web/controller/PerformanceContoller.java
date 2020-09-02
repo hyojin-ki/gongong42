@@ -53,7 +53,8 @@ public class PerformanceContoller {
 	@Autowired
 	private HallService hallService;
 	
-	private String saveDirectory="C:/APP/eGovFrameDev-3.9.0-64bit/workspace/final-project/src/main/webapp/resources/sample-images";
+//	private String saveDirectory="C:/APP/eGovFrameDev-3.9.0-64bit/workspace/final-project/src/main/webapp/resources/sample-images";
+	private String saveDirectory="D:/eGovFrameDev-3.9.0-64bit/workspace/final-project/src/main/webapp/resources/sample-images";
 		
 	
 	@GetMapping("/update/main.do")
