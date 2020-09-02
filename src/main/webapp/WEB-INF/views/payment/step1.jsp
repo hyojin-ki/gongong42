@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -698,6 +699,7 @@ div#A-seats4 button {
 		<input type="hidden" id="r-seat-price" />
 		<input type="hidden" id="s-seat-price" />
 		<input type="hidden" id="a-seat-price" />
+		<input type="hidden" id="pDate" value="${pDate }" />
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.8.9/jquery.fullPage.min.js"></script>
 	<script type="text/javascript">	
@@ -871,9 +873,17 @@ div#A-seats4 button {
 					});					
 				});
 		
+		var dateArray = new Array();
+		dateArray = ($('#datearray').val()).split(',');
+		var ex = ($('#datearray').val()).split(',');
+		console.log('ex', ex);
+		console.log('datearray : ' + dateArray);
+		console.log('con : ',$('#datearray').val());
 		$(".selector").flatpickr({ 
+		
+			enable: $('#pDate').val().split(','),
 			dateFormat: "Y-m-d",
-			minDate: '<fmt:formatDate value="${performanceDto.startDate}" pattern="yyyy-MM-dd" />',
+			minDate: new Date(),
 			maxDate: '<fmt:formatDate value="${performanceDto.endDate}" pattern="yyyy-MM-dd" />',
 			inline: true,
 			onChange: function(selectedDate, selectedDateString, instance) {

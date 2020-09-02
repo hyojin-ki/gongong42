@@ -824,7 +824,5 @@ public class PerformanceContoller {
 		
 		return genres;
 	}
-	
-	
-	
+
 }
