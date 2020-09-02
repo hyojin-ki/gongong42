@@ -16,7 +16,7 @@ public class UserUpdateForm {
     private String password;
 	@NotBlank(message="필수입력값입니다.")
     private String password2;
-	@NotBlank(message="필수입력값입니다.")
+
     private String nickname;
 	@NotNull(message="필수입력값입니다.")
 	
@@ -25,7 +25,7 @@ public class UserUpdateForm {
     private String gender;
     @NotBlank(message="필수입력값입니다.")
     private String email;
-    @NotBlank(message="필수입력값입니다.")
+ 
     private String tel;
     private Date regDate;
     private String postalCode;

@@ -67,4 +67,9 @@
 
 </update>
 
+<delete id="deleteAllHallSeatsByPerformanceId" parameterType="int">
+	DELETE FROM hall_seats WHERE performanceId = #{value}
+
+</delete>
+
 </mapper>

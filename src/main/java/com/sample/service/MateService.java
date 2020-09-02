@@ -15,7 +15,7 @@ import com.sample.web.view.User;
 public interface MateService {
     void addMate(Mate mate);
     void insertMateTimeLine(int mateId, MateTimeLine mateTimeLine);
-    List<MateTag> addHashTag(int mateId, List<String> mateTags);
+    List<MateTag> addHashTag(int mateId, List<String> mateTags, int performanceId);
     
 
 	/**

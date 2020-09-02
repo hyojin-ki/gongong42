@@ -30,7 +30,7 @@
 <div class="container " style="margin-top: 150px;">
 	<div class="row ">
 		<div class="col-8 mx-auto" >
-			<form:form name="form" method="get" id="sns-signup-form" action="userUpdate.do" modelAttribute="userUpdateForm">
+			<form:form name="form" method="post" id="sns-signup-form" action="userUpdate.do" modelAttribute="userUpdateForm">
 				<div class="card border-0">
 					<div class="card-header bg-white text-black font-weight-bolder"><h4>회원정보 수정</h4></div>
 					<div class="card-body">
@@ -46,20 +46,20 @@
 						</div>
 						<div class="form-row mt-3">
 							<div class="form-group col-md-12">
-      							<form:input type="text" class="form-control" id="nickname" path="nickname" value="${LOGIN_USER.nickname }" />
+      							<form:input type="text" class="form-control" id="nickname" path="nickname" value="${LOGIN_USER.nickname }"  />
       							<form:errors path="nickname" cssClass="text-danger"></form:errors>
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-12">
-      							<form:input type="password" class="form-control" id="password" path="password" value="" />
-      							<form:errors path="password" cssClass="text-danger"></form:errors>
+      							<form:input type="password" class="form-control" id="password" path="password" value="" placeholder="패스워드를 입력해주세요"/>
+      						
 							</div>
 						</div>
 						<div class="form-row">
 							<div class="form-group col-md-12">
-      							<form:input type="password" class="form-control" id="password2" path="password2" value="" />
-      							<form:errors path="password2" cssClass="text-danger"></form:errors>
+      							<form:input type="password" class="form-control" id="password2" path="password2" value=""  placeholder="패스워드를 다시 입력해주세요"/>
+      					
 							</div>
 						</div>
 						<div class="form-row">
@@ -80,7 +80,7 @@
 						</div>
 						<div class="form-row border border-top-0 border-right-0 border-left-0">
 							<div class="form-group col-md-12">
-      							<form:input type="text" class="form-control" id="tel" path="tel" maxlength="13" value="${LOGIN_USER.tel }" />
+      							<form:input type="text" class="form-control" id="tel" path="tel" maxlength="13" value="${LOGIN_USER.tel }"  placeholder="전화번호를 입력해주세요"/>
       							<form:errors path="tel" cssClass="text-danger"></form:errors>
 							</div>
 						</div>					

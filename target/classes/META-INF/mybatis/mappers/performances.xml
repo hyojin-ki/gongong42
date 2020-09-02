@@ -697,6 +697,7 @@
 		WHERE id = #{value}
 	</select>
 
+
 	<select id="getPerformanceByCategoryLimit" parameterType="string" resultType="PerformanceDto">
 		SELECT A.title, A.startDate, A.endDate, A.imagePath, C.name as "hallInfo.name"
 		FROM performance_info A
@@ -708,6 +709,11 @@
 		ORDER BY B.registeredDate
 		LIMIT 3
 	</select>
+
+	<delete id="deletePerformanceMainByPerformanceId" parameterType="int">
+		DELETE FROM performance_main where id = #{value}
+	</delete>
+
 
 
 </mapper>

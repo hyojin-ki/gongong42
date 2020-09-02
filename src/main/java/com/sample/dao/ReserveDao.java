@@ -42,8 +42,16 @@ public interface ReserveDao {
      * @param reserve
      */
     void updateReserve(Reserve reserve);
+ 
+    /**
+     * performanceId 에 해당하는 모든 reserve 테이블 요소의 mateId 를 null로 변환한다.
+     * @param performanceId
+     */
+    void updateMateIdToNull(int performanceId);
     
     List<Reserve> getReserveCurrentCnt();
  
     List<Reserve> getReserveMyMateId(int mateId);
+    
+    List<Reserve> getReserveByPerformanceId(int performanceId);
 }

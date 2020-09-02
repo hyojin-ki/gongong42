@@ -196,5 +196,23 @@
 		WHERE mateId = 1290;
 	
 	</select>
+	<select id="getReserveByPerformanceId" parameterType="int" resultType="Reserve">
+		SELECT 
+			id, 
+			reserveUser  			as "reserveUser.id", 
+			performanceId 			as "performance.id", 
+			regDate, 
+			`status`, 
+			receiveType, 
+			mateId 					as "mate.id", 
+			seatRate 
+		FROM reserve_main 
+		WHERE performanceId = #{value}	
+	</select>
+	<update id="updateMateIdToNull" parameterType="int">
+		update reserve_main 
+		set mateId = null
+		where performanceId = #{value}
+	</update>
 	
 </mapper>

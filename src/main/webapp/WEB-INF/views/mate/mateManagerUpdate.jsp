@@ -298,7 +298,7 @@
 											<div class="input-group-append">
 												<button type="button" id="rest-mate-selected-btn" class="btn btn-outline-secondary">리셋</button>
 											</div>
-											
+										
 										</div>
 									</div>
 									<div class="col-12 mt-4">
@@ -360,15 +360,12 @@
 									</div>
 									</div>
 									<div class="col-12 mt-4 text-right">
-										<button type="button" id="mate-all-submit-btn" class="btn btn-primary">등록</button>
+										<button type="button" id="mate-all-update-btn" class="btn btn-warning">수정</button>
 									</div>
 								</div>
 							</div>
 						</div>
 				</div>
-			
-			
-			
 		</div>
 	<!-- 공연 리스트 모달 -->
 	<div class="modal fade" id="performance-list-modal" tabindex="-1" aria-labelledby="performance-list-modal-label" aria-hidden="true">
@@ -423,8 +420,11 @@
 <!-- input hidden -->
 <input type="hidden" id="hidden-performance-info-id" />
 <input type="hidden" id="hidden-hall-id" />
+<input type="hidden" id="performanceId" value="${performanceId }" />
 </div>
 </div>
- 
+ <div id="loading" style="display: none;">
+	<img src="/resources/logo/loading.gif" alt="" style="position: absolute; top: 600px; left: 800px"/>
+</div>
 </body>
 </html>
