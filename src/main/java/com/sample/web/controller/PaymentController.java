@@ -23,6 +23,7 @@ import com.sample.service.PaymentService;
 import com.sample.service.PerformanceService;
 import com.sample.service.UserService;
 import com.sample.web.form.PaymentForm;
+import com.sample.web.security.Auth;
 import com.sample.web.view.Coupon;
 import com.sample.web.view.Payment;
 import com.sample.web.view.PerformanceSchedule;
@@ -42,7 +43,7 @@ public class PaymentController {
 
 	@Autowired
 	private PaymentService paymentService;
-
+	@Auth
 	@RequestMapping("/step1.do")
 	public String detailPerformance(@RequestParam("no") int performanceId, String userId, Model model) {
 		PerformanceDto performanceDto = performanceService.getPerformanceDetail(performanceId);
@@ -84,7 +85,7 @@ public class PaymentController {
 
 		return dto;
 	}
-
+	@Auth
 	@RequestMapping("/add.do")
 	public String paymentInsert(@ModelAttribute PaymentForm paymentForm, HttpSession session, RedirectAttributes redirect) {
 

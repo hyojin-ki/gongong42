@@ -37,4 +37,6 @@ public interface HallDao {
     void updateHallSeatOne(HallSeatDto hallSeat);
     
     void deleteAllHallSeatsByPerformanceId(int performanceId);
+    
+    List<HallSeatDto> getSeatsByMateId(int mateId);
 }

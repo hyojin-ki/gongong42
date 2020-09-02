@@ -17,10 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sample.dto.HallSeatDto;
+import com.sample.dto.JsonHallSeat;
 import com.sample.dto.MateDetailDto;
 import com.sample.dto.MateUserDto;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
+import com.sample.service.HallService;
+import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.service.ReserveService;
@@ -38,11 +42,15 @@ import com.sample.web.view.User;
 public class MateController {
 
 	@Autowired
-	MateService mateService;
+	private MateService mateService;
 	@Autowired
-	PerformanceService performanceService;
+	private PerformanceService performanceService;
 	@Autowired
-	ReserveService reserveService;
+	private ReserveService reserveService;
+	@Autowired
+	private MateManagerService mateManagerService;
+	@Autowired
+	private HallService hallService;
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler(RuntimeException.class)
 	public String runtimeExceptionHandler(RuntimeException e) {
@@ -356,6 +364,20 @@ public class MateController {
 		//세션확인
 		return mateService.beforAddMateIsPassMate(performanceId, mateId, user.getId());
 	}	
+	
+	//좌석 미리보기
+	@RequestMapping("/seatPreview.do")
+	@ResponseBody
+	public Map<String, Object> previewSeat(@RequestParam("performanceId") int performanceId,
+											@RequestParam("mateId") int mateId) {
+		Map<String, Object> map = new HashMap<>();
+		List<JsonHallSeat> seats = mateManagerService.getHallSeats(performanceId);
+		List<HallSeatDto> mateSeats = hallService.getSeatsByMateId(mateId);
+		
+		map.put("seats", seats);
+		map.put("mateSeats", mateSeats);
+		return map;
+	}
 	
 	
 }
