@@ -89,7 +89,9 @@ public class PaymentController {
 	public String paymentInsert(@ModelAttribute PaymentForm paymentForm, HttpSession session, RedirectAttributes redirect) {
 
 		User user = (User) session.getAttribute("LOGIN_USER");
-		user.setPoint(user.getPoint() + paymentForm.getUsedPoint());
+		if(paymentForm.getUsedPoint() != 0) {
+			user.setPoint(user.getPoint() + paymentForm.getUsedPoint());
+		}
 		
 		Payment payment = new Payment();
 		payment.setId(paymentForm.getId());

@@ -188,11 +188,18 @@ public class MyPageController {
 
     @ResponseBody
     @PostMapping("/myCoupon.do")
-    public Map<String, Object> myCoupon(HttpSession session) {
+    public Map<String, Object> myCoupon(HttpSession session, @RequestBody Map<String, Object> param) {
         Map<String, Object> map = new HashMap<>();
+        //get all coupons count
         User user = (User) session.getAttribute("LOGIN_USER");
-        user = userService.getUserDetail(user.getId());
+        String userId = user.getId();
+        user = userService.getUserDetail(userId);
+        param.put("userId",userId);
+        user.setCoupons(userService.getCouponByUserIdForPagination(param));
+
         map.put("coupons", user.getCoupons());
+        map.put("totalRows", userService.getAllUsersCouponCount(userId));
+        System.out.println(map.get("totalRows"));
         return map;
     }
 
@@ -204,14 +211,18 @@ public class MyPageController {
 
     @ResponseBody
     @PostMapping("/myPoint.do")
-    public Map<String, Object> myPoint(HttpSession session) {
+    public Map<String, Object> myPoint(HttpSession session, @RequestBody Map<String, Object> param) {
         Map<String, Object> map = new HashMap<>();
-//        User user = (User) session.getAttribute("LOGIN_USER");
-        User user = userService.getUserDetail("test001");
+        User user = (User) session.getAttribute("LOGIN_USER");
+        String userId = user.getId();
+        user = userService.getUserDetail(userId);
+        param.put("userId", userId);
+        System.out.println(param.toString());
+        user.setUserPointHistory(userService.getUserPointHistoryForPagination(param));
         System.out.println(user.getUserPointHistory().toString());
         map.put("pointHistory", user.getUserPointHistory());
         map.put("currPoint", user.getPoint());
-        System.out.println(user.getPassword());
+        map.put("totalRows", userService.getAllPointHistoryCount(userId));
         return map;
     }
 }

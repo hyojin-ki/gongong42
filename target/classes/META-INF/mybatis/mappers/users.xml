@@ -268,7 +268,35 @@
 		VALUES
 			(#{user.id}, #{payment.id}, #{status}, #{value})
 	</insert>
-
+	<select id="getAllUserPointHistoryCount" parameterType="string" resultType="int">
+		select count(*)
+		from user_point_history
+		where userId = #{userId}
+	</select>
+	<select id="getUserPointHistoryForPagination" parameterType="hashMap" resultType="UserPointHistoryDto" >
+		select a.id, a.regDate, a.value, e.title
+		from user_point_history a
+		join payment_main b on a.paymentId = b.id
+		join reserve_main c on b.reserveId = c.id
+		join performance_main d on c.performanceId = d.id
+		join performance_info e on d.infoId = e.id
+		where a.userId = #{userId}
+		order by id desc
+		limit #{rowPerPage} offset #{startRow}
+	</select>
+	<select id="getAllUserCouponCount" parameterType="string" resultType="int">
+		select count(*)
+		from user_coupon
+		where id = #{userId}
+	</select>
+	<select id="getCouponsByUserIdForPagination" parameterType="hashMap" resultType="Coupon">
+		select b.id as id, name, type, value, getDate, used, expDate 
+		from user_coupon a 
+		join coupon b on b.id = a.couponId 
+		where a.id = #{userId} and used = "N"
+		order by getDate desc
+		limit #{rowPerPage} offset #{startRow}
+	</select>
 </mapper>
 
 

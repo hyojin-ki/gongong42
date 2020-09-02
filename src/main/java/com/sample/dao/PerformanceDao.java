@@ -236,4 +236,11 @@ public interface PerformanceDao {
     */
    void insertPerformanceSchedule(PerformanceSchedule performanceSchedule);
    
+   PerformanceMain getPerformanceMainByPerformanceId(int performanceId);
+   
+   /**
+    * performanceId로 performance_main 테이블 삭제
+    * @param performanceId
+    */
+   void deletePerformanceMainByPerformanceId(int performanceId);
 }

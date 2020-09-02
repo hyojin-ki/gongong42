@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sample.dto.UserInfoDto;
+import com.sample.dto.UserPointHistoryDto;
 import com.sample.web.view.Coupon;
 import com.sample.web.view.User;
 import com.sample.web.view.UserPoint;
@@ -29,5 +30,9 @@ public interface UserService {
     void addUserPointHistory(UserPoint userPoint);
     
     int getAllUsersCount(Map<String, Object> param);
-    
+    int getAllPointHistoryCount(String userID);
+    int getAllUsersCouponCount(String userId);
+    List<UserPointHistoryDto> getUserPointHistoryForPagination(Map<String, Object> param);
+    List<Coupon> getCouponByUserIdForPagination(Map<String, Object> param);
+
 }

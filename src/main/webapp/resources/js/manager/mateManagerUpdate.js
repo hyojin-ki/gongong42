@@ -1,9 +1,5 @@
 $(function(){
 	
-	$('#performance-total-seat').val(480);
-	$('#R-class').val(96);
-	$('#S-class').val(192);
-	$('#A-class').val(192);
 	
 	
 	//버튼 이벤트
@@ -100,6 +96,174 @@ $(function(){
 	$aseatsBtn3.addClass('bg-danger').addClass('A-class-seat');
 	$aseatsBtn4.addClass('bg-danger').addClass('A-class-seat');
 
+	//페이지 로드시 나타남
+	var pId = $('#performanceId').val()
+	$.ajax({
+		url:'/manager/mateManagerUpdateJson.do',
+		Type:'POST',
+		contentType:"application/json",
+		data:{
+			"performanceId":pId
+		},
+		success:function(result){
+			
+			var performanceList = result.performanceList;
+			var pTitle = new Array();
+			for(var i in performanceList){
+				pTitle[i] = performanceList[i].title;
+			}
+			 
+			$( "#performance-search" ).autocomplete({
+				source: pTitle
+			});
+			var categoryList = result.categories;
+			
+			var rows = '';
+			for(var i in categoryList){
+				var catId = categoryList[i].id;
+				var catName = categoryList[i].category;
+				rows += '<option value="'+catId+'">'+catName+'</option>';
+			}
+			
+			$('#mateCategory-select-box').append(rows);
+			$('#next-cat-id').val($("#mateCategory-select-box option").last().val())
+			
+			
+			var mateTotal = result.totalMate;
+			$('#mate-room-cnt').val(mateTotal);
+			
+			//메이트 수정시작
+			
+			//performaceInfo
+			var performance = result.performance;
+			var pTitle = performance.title;
+			var pCat = performance.category;
+			var pStartDate = performance.startDate;
+			var pEndDate = performance.endDate;
+			var pRating = performance.rating;
+			var pRunningTime = performance.runningTime;
+			var pImg = performance.imagePath;
+			$('#pImg').attr('src','/resources/sample-images/'+pImg);
+			$('#pName').text(pTitle);
+			$('#pStartDate').text(pStartDate);
+			$('#pCat').text(pCat);
+			$('#pEndDate').text(pEndDate);
+			$('#pAtho').text(pRating);
+			$('#pRunningTime').text(pRunningTime);
+			//performanceMain
+			var pMain = result.main;
+			var showDate =  $.datepicker.formatDate('yy-mm-dd',new Date(pMain.showDate));
+			var pStartTime = pMain.showTime.substring(0,5);
+			
+			var startTimeVal = timeToSeconds(pStartTime);
+			var runningTimeVal = timeToSeconds(pRunningTime);
+			var endTimeVal = startTimeVal + runningTimeVal;
+			var pEndTime = secondsToTime(endTimeVal);
+			var pShowNumber = pMain.showNumber;
+			
+			$('#show-date-selected').val(showDate);
+			$('#pStartTime').val(pStartTime);
+			$('#pEndTime').val(pEndTime);
+			$('#pShowtime-select').val(pShowNumber);
+			$('#performance-search').val(pTitle);
+			$('#p-search-btn').trigger('click');
+			
+			//seats
+			var seatsArray = result.seats;
+	        var aSeatArray = new Array();
+	        var bSeatArray = new Array();
+	        var cSeatArray = new Array();
+	        var dSeatArray = new Array();
+	        var eSeatArray = new Array();
+	        var fSeatArray = new Array();
+	        var gSeatArray = new Array();
+	        var hSeatArray = new Array();
+	        var iSeatArray = new Array();
+	        var jSeatArray = new Array();
+	        var rSeatRate = new Array();
+	        var sSeatRate = new Array();
+	        var aSeatRate = new Array();
+	        
+			for(var i in seatsArray){
+	        	var seatBlock = seatsArray[i].seatBlock;
+	        	var seatRow = seatsArray[i].seatRow;
+	        	var seatCol = seatsArray[i].seatCol;
+	        	var seatRate = seatsArray[i].seatRate;
+	        	var groupSize = seatsArray[i].groupSize;
+	        	var mateNo = seatsArray[i].mateNo;
+	        	var catId = seatsArray[i].categoryId;
+	        	var seatStatus = seatsArray[i].seatStatus;
+	        	
+	        	if(seatBlock == 'A'){
+	        		aSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'B'){
+	        		bSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'C'){
+	        		cSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'D'){
+	        		dSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'E'){
+	        		eSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'F'){
+	        		fSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'G'){
+	        		gSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'H'){
+	        		hSeatArray.push(seatsArray[i]);
+	        	} else if (seatBlock == 'I'){
+	        		iSeatArray.push(seatsArray[i]);
+	        	} else {
+	        		jSeatArray.push(seatsArray[i]);
+	        	}
+	        	if(seatRate == 'R'){
+	        		rSeatRate.push(seatsArray)
+	        	} else if (seatRate == 'S'){
+	        		sSeatRate.push(seatsArray)
+	        	} else if (seatRate == 'A')
+	        		aSeatRate.push(seatsArray)
+	        }
+			seatSetFunction(aSeatArray, $rseatsBtn1);
+			seatSetFunction(bSeatArray, $rseatsBtn2);
+			seatSetFunction(cSeatArray, $sseatsBtn1);
+			seatSetFunction(dSeatArray, $sseatsBtn2);
+			seatSetFunction(eSeatArray, $sseatsBtn3);
+			seatSetFunction(fSeatArray, $sseatsBtn4);
+			seatSetFunction(gSeatArray, $aseatsBtn1);
+			seatSetFunction(hSeatArray, $aseatsBtn2);
+			seatSetFunction(iSeatArray, $aseatsBtn3);
+			seatSetFunction(jSeatArray, $aseatsBtn4);
+			
+			$('#performance-total-seat').val(seatsArray.length);
+			$('#R-class').val(rSeatRate.length);
+			$('#S-class').val(sSeatRate.length);
+			$('#A-class').val(aSeatRate.length);
+			
+			var $btnArray = $('button.seatBtn:not(.no-class-seat)')
+			var number = 1;
+			for(var i = 0; i < $btnArray.length; i++){
+				$($btnArray[i]).addClass('text-dark').addClass('font-weight-bold').text(number);
+				var mate1 = $($btnArray[i]).data('mate');
+				var mate2 = $($btnArray[i+1]).data('mate');
+				if($($btnArray[i]).data('seatstatus') == 'N'){
+					$($btnArray[i]).text('').removeClass('bg-primary')
+											.removeClass('bg-warning')
+											.removeClass('bg-secondary')
+											.removeClass('bg-danger')
+											.removeClass('S-class-seat')
+											.removeClass('R-class-seat')
+											.removeClass('A-class-seat')
+											.removeClass('no-class-seat')
+											.addClass('bg-secondary')
+											.addClass('no-class-seat');
+				}
+				if(mate1 != mate2){
+					number++;
+				}
+			}
+		}
+		
+		
+	})
 	
 	//드래그 & 버튼 클래스 변경
 	$( ".selectable" ).selectable({
@@ -174,37 +338,7 @@ $(function(){
 	
 	
 	
-	//페이지 로드시 나타남
-	$.ajax({
-		url:'/manager/mateManagerJson.do',
-		Type:'POST',
-		contentType:"application/json",
-		data:{
-			
-		},
-		success:function(result){
-			var performanceList = result.performanceList;
-			var pTitle = new Array();
-			for(var i in performanceList){
-				pTitle[i] = performanceList[i].title;
-			}
-			 
-			$( "#performance-search" ).autocomplete({
-				source: pTitle
-			});
-			var categoryList = result.categories;
-			var rows = '';
-			for(var i in categoryList){
-				var catId = categoryList[i].id;
-				var catName = categoryList[i].category;
-				rows += '<option value="'+catId+'">'+catName+'</option>';
-			}
-			$('#mateCategory-select-box').append(rows);
-			$('#next-cat-id').val($("#mateCategory-select-box option").last().val())
-		}
-		
-		
-	})
+	
 	
 	var $pImg = $('#pImg');
 	var $pName = $('#pName');
@@ -434,7 +568,6 @@ $(function(){
 	})
 	$('#mate-group-selected-btn').click(function(){
 		var $seatArray = $('.seatBtn:not(.no-class-seat)');
-		//var lastIndex = $($seatArray[$seatArray.length-1]).data('mate')
 		var $selectedSeats = $('button.ui-selected');
 		//현재 존재하는 data-mate, date-groupsize 제거
 		$selectedSeats.text('');
@@ -489,6 +622,7 @@ $(function(){
 				contentType:'application/json',
 				data:JSON.stringify(data),
 				success:function(result){
+					console.log('cnt  : ',result);
 					$('#mate-room-cnt').val(result);
 				}
 					
@@ -524,8 +658,8 @@ $(function(){
 		}
 	})
 	
-	//submit
-	$('#mate-all-submit-btn').click(function(){
+	//수정 버튼 클릭
+	$('#mate-all-update-btn').click(function(){
 		//submit 조건
 		if($('#pName').text() == ''){
 			alert('공연을 선택해주세요');
@@ -544,8 +678,11 @@ $(function(){
 			alert('메이트 그룹을 선택해주세요');
 			return;
 		}
-		
-		
+		var updateConfirm = confirm("수정 시에 해당 메이트 방의 인원들을 모두 리셋 시킵니다. 정말 수정하시겠습니까? ");
+		if(updateConfirm != true){
+			return;
+		}
+		var performanceId = $('#performanceId').val();
 		//performance_info_id
 		var pId = $('#hidden-performance-info-id').val();
 		//hall_info_id
@@ -561,6 +698,7 @@ $(function(){
 		
 		//performance_main 에 필요한 요소 담기
 		var pMainData = new Object();
+		pMainData.id = performanceId;
 		pMainData.infoId = pId;
 		pMainData.hallId = hId;
 		pMainData.showDate = sDate;
@@ -599,13 +737,12 @@ $(function(){
 
 		$.ajax({
 			type:"POST",
-			url:"/manager/addMate.do",
+			url:"/manager/updateMate.do",
 			contentType:'application/json',
 			data:JSON.stringify(data),
 			success:function(result){
-				alert('등록 성공 하였습니다.');
-				location.href='/manager/mateList.do';
-				console.log('succes')
+				alert('수정이 완료되었습니다.');
+				location.href = '/manager/mateList.do';
 			},
 			beforeSend:function(){
 				$('#loading').show();
@@ -614,8 +751,7 @@ $(function(){
 				$('#loading').hide();
 			},
 			error:function(){
-				alert('등록에 실패하였습니다.')
-				console.log('fail');
+				alert('실패하였습니다.');
 			}
 				
 				
@@ -715,3 +851,13 @@ $(function(){
 		}
 		
 	}
+	function seatSetFunction(array, targetBtnArray){
+		for(var i = 0; i < array.length; i++ ){
+			$(targetBtnArray[i]).attr('data-groupsize', array[i].groupSize)
+			    		  .attr('data-mate', array[i].mateNo)
+			    		  .attr('data-category', array[i].catId)
+			    		  .attr('data-seatstatus', array[i].seatStatus);
+		}
+	}
+	
+	

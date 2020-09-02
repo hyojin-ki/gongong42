@@ -9,13 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sample.dao.HallDao;
 import com.sample.dao.MateDao;
 import com.sample.dao.PaymentDao;
 import com.sample.dao.PerformanceDao;
 import com.sample.dao.ReserveDao;
 import com.sample.dao.UserDao;
+import com.sample.dto.HallSeatDto;
 import com.sample.dto.MateDetailDto;
 import com.sample.dto.MateList;
+import com.sample.dto.MateOrigin;
 import com.sample.dto.MateUserDto;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.web.form.MateSearchForm;
@@ -47,11 +50,14 @@ public class MateServiceImpl implements MateService {
 	@Autowired
 	PerformanceDao performanceDao;
 	
+	@Autowired
+	HallDao hallDao;
+	
 	/**
 	 * 특정 메이트 방에 해시태그를 등록하는 서비스 기능
 	 */
 	@Transactional
-	public List<MateTag> addHashTag(int mateId, List<String> mateTags) {
+	public List<MateTag> addHashTag(int mateId, List<String> mateTags, int performanceId) {
 		//mate테이블에 mateId에 따른 해당 메이트가 있는지 검사한다.
 		isExistMateException(mateId);
 
@@ -66,6 +72,7 @@ public class MateServiceImpl implements MateService {
 			for(String tag : mateTags) {
 				MateTag mateTag = new MateTag();
 				mateTag.setMateId(mateId);
+				mateTag.setPerformanceId(performanceId);
 				String tagName = tag.replace("[", "").replace("]", "").replace("\"", "");
 				mateTag.setTagName(tagName);
 				
@@ -132,10 +139,28 @@ public class MateServiceImpl implements MateService {
 			throw new RuntimeException("결제되지 않은 회원입니다.");
 		}
 		Mate mate = mateDao.getMateByMateId(mateId);
+		//mate 검사 후 업데이트
+		List<Reserve> existReserve = reserveDao.getReserveMyMateId(mate.getId());
+		//mate Group Count를 한개 업데이트한다.
+		mate.setGroupCnt(mate.getGroupCnt() + 1);
+		//mate Group Count 가 Reserve의 유저의 숫자가 같으면 해당 mate의 status를 '모집완료'로 변경한다.
+		//mateId 에 해당하는 hallSeat의 status를 모두 'N'으로 변경한다.
+		if(existReserve.size()  == mate.getGroupsize()) {
+			mate.setStatus("모집완료");
+			HallSeatDto hallSeat = new HallSeatDto();
+			hallSeat.setSeatStatus("N");
+			hallSeat.setMateGroup(mate.getId());
+			hallDao.updateHallSeatStatusByMateId(hallSeat);
+		} else {
+			mate.setStatus("모집중");
+		}
+		System.out.println("mate : " + mate);
+		mateDao.updateMateByMateId(mate);
+		
 		savedReserve.setMate(mate);
 		reserveDao.updateReserve(savedReserve);
 		//해당 유저 인서트
-		mateDao.insertMateMember(newMember.getId(), mateId);
+		mateDao.insertMateMember(newMember.getId(), mateId, performanceId);
 		// 메이트 타임 라인 자동으로 남기기
 		MateTimeLine mateTimeLine = new MateTimeLine();
 		mateTimeLine.setId(mateId);
@@ -456,8 +481,13 @@ public class MateServiceImpl implements MateService {
 	}
 	
 	
-	public List<MateList> getAllMateListForManagement() {
-		return mateDao.getAllMateTotal();
+	public List<MateList> getAllMateListForManagement(Map<String, Object> map) {
+		return mateDao.getAllMateTotal(map);
 	}
-	
+	public int getAllMateTotalRows() {
+		return mateDao.getAllMateTotalRows();
+	}
+	public List<MateList> getAllMateDetailForManagement(Map<String, Object> map) {
+		return mateDao.getAllMateTotal(map);
+	}
 }

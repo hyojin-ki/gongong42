@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.sample.dto.MateList;
+import com.sample.dto.MateOrigin;
 import com.sample.dto.MateUserDto;
 import com.sample.web.form.MateSearchForm;
 import com.sample.web.view.HallInfo;
@@ -173,7 +174,9 @@ public interface MateDao {
      * @param userId
      * @param mateId
      */
-    void insertMateMember(@Param("userId") String userId, @Param("mateId") int mateId);
+    void insertMateMember(@Param("userId") String userId,
+    			@Param("mateId") int mateId,
+    			@Param("performanceId") int performanceId);
     
     User getMateUserByMateIdAndUserId(@Param("userId") String userId, @Param("mateId") int mateId);
     
@@ -257,10 +260,47 @@ public interface MateDao {
     List<Mate> getMateListByUserId(String userId);
     
     
-    
-    List<MateList> getAllMateTotal();
+    int getAllMateTotalRows();
+    List<MateList> getAllMateTotal(Map<String, Object> map);
     int getAllMateSeatCnt_R(int performanceId);
     int getAllMateSeatCnt_S(int performanceId);
     int getAllMateSeatCnt_A(int performanceId);
     
+    List<Map<String, Object>> getStatusGroupBySeatRateForS();
+    List<Map<String, Object>> getStatusGroupBySeatRateForR();
+    List<Map<String, Object>> getStatusGroupBySeatRateForA();
+    
+    int getTotalHallseatByPerformanceId(int performanceId);
+    List<Map<String, Object>> getAllCategoryByPerformanceId(int performanceId);
+    List<Map<String, Object>> getGroupSizeForR(int performanceId);
+    List<Map<String, Object>> getGroupSizeForS(int performanceId);
+    List<Map<String, Object>> getGroupSizeForA(int performanceId);
+    
+    /**
+     * mateId로  mate를 모두 업뎃시킨다.
+     * @param mate
+     */
+    void updateMateByMateId(Mate mate);
+    
+    /**
+     * performaceI에 해당하는 mateMameber를 모두 삭제시킨다.
+     * @param performanceId
+     */
+    void deleteMateMemberByPerformanceId(int performanceId);
+    /**
+     * performanceId에 댕하는 모든 mateMain 튜플을 모두 삭제한다.
+     * @param performanceId
+     */
+    void deleteMateMainByPerformanceId(int performanceId);
+    /**
+     * performanceId에 해당하는 모든 mate_tag들을 모두 삭제한다.
+     * @param performanceId
+     */
+    void deleteMateTagByPerformanceId(int performanceId);
+    
+    /**
+     * performanceId에 해당하는 모든 mate_timeline을 삭제한다.
+     * @param performanceId
+     */
+    void deleteMateTimeLineByPerformanceId(int performanceId);
 }

@@ -158,4 +158,6 @@ public interface PerformanceService {
 	List<Performance> getUserLikeList(int offset,String userId);
 	
 	String saveImage(String strUrl, String fileName, String saveDirectory);
+	
+	PerformanceMain getPerformanceMainByPerformanceId(int performanceId);
 }

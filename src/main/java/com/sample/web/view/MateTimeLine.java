@@ -3,6 +3,8 @@ package com.sample.web.view;
 import java.util.Date;
 
 public class MateTimeLine {
+	
+	private int performanceId;
 	private int id;
     private String content;
     private Date regDate;
@@ -40,10 +42,18 @@ public class MateTimeLine {
     public void setUser(User user) {
         this.user = user;
     }
+	public int getPerformanceId() {
+		return performanceId;
+	}
+	public void setPerformanceId(int performanceId) {
+		this.performanceId = performanceId;
+	}
 
 	@Override
 	public String toString() {
-		return "MateTimeLine [id=" + id + ", content=" + content + ", regDate=" + regDate + ", user=" + user + "]";
+		return "MateTimeLine [performanceId=" + performanceId + ", id=" + id + ", content=" + content + ", regDate="
+				+ regDate + ", user=" + user + "]";
 	}
+
     
 }

@@ -685,8 +685,21 @@
 	 </selectKey>
 	</insert>
 
+	<select id="getPerformanceMainByPerformanceId" parameterType="int" resultType="PerformanceMain">
+		SELECT 
+			id,
+			infoId,
+			hallId,
+			showDate,
+			showTime,
+			showNumber 
+		FROM performance_main
+		WHERE id = #{value}
+	</select>
 
-
+	<delete id="deletePerformanceMainByPerformanceId" parameterType="int">
+		DELETE FROM performance_main where id = #{value}
+	</delete>
 
 
 </mapper>

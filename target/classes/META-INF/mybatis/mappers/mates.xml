@@ -66,24 +66,107 @@ WHERE mmain.id = 1;
 		<collection property="mateTags" select="getMateTagByMateId" column="id"/>
 	</resultMap>
 
+	<!-- mateMAnagement For Detail -->
+	
 	<!-- mateManagemanent For list -->	
-	<!-- 모튼 mate TotalCnt -->
+	<!-- 모든 mate TotalCnt -->
 	<resultMap type="com.sample.dto.MateList" id="mateListMap">
 		<result property="totalCnt" column="TotalCnt"/>
+		<association property="totalHallSeat" column="performanceId" select="getTotalHallseatByPerformanceId"/>
 		<association property="performance" column="performanceId" select="getMatePerformanceByPerformanceId" />
 		<association property="Rseats" column="performanceId" select="getAllMateSeatCnt_R"/>
 		<association property="Sseats" column="performanceId" select="getAllMateSeatCnt_S"/>
 		<association property="Aseats" column="performanceId" select="getAllMateSeatCnt_A"/>
+		<collection property="categories" column="performanceId" select="getAllCategoryByPerformanceId"/>
+		<collection property="rStatus" column="performanceId" select="getStatusGroupBySeatRateForR"/>
+		<collection property="sStatus" column="performanceId" select="getStatusGroupBySeatRateForS"/>
+		<collection property="aStatus" column="performanceId" select="getStatusGroupBySeatRateForA"/>
+		<collection property="rGroupsize" column="performanceId" select="getGroupSizeForR"/>
+		<collection property="sGroupsize" column="performanceId" select="getGroupSizeForS"/>
+		<collection property="aGroupsize" column="performanceId" select="getGroupSizeForA"/>
+	
 	</resultMap>
-	<select id="getAllMateTotal" resultMap="mateListMap">
+	<!-- 그룹 사이즈별 -->
+	<select id="getGroupSizeForR" resultType="map">
+		SELECT seatRate,groupSize, COUNT(*) groupSizecnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('R')
+		GROUP BY groupSize
+	</select>
+	<select id="getGroupSizeForS" resultType="map">
+		SELECT seatRate,groupSize, COUNT(*) groupSizecnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('S')
+		GROUP BY groupSize
+	</select>
+	<select id="getGroupSizeForA" resultType="map">
+		SELECT seatRate,groupSize, COUNT(*) groupSizecnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('A')
+		GROUP BY groupSize
+	</select>
+	<!-- 해당 메이트의 모든 카테고리 숫자 -->
+	<select id="getAllCategoryByPerformanceId" resultType="map">
+		SELECT mcat.category, COUNT(*) catCnt
+		FROM mate_main mmain 
+		JOIN mate_category mcat ON mmain.category = mcat.id
+		WHERE mmain.performanceId = #{performanceId}
+		GROUP BY mmain.category
+	
+	</select>
+	<!-- 모든 좌석 수  -->
+	<select id="getTotalHallseatByPerformanceId" resultType="int">
+		SELECT COUNT(*) FROM hall_seats
+		WHERE performanceId = #{performanceId}
+	</select>
+	<!-- 등급별 status -->
+	<select id="getStatusGroupBySeatRateForR" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('R')
+		GROUP BY `status`
+	</select>
+	<select id="getStatusGroupBySeatRateForS" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('S')
+		GROUP BY `status`
+	</select>
+	<select id="getStatusGroupBySeatRateForA" resultType="map">
+		SELECT seatRate , `status` ,COUNT(*) AS statusCnt
+		FROM mate_main
+		WHERE performanceId = #{performanceId}
+		AND seatRate IN ('A')
+		GROUP BY `status`
+	</select>
+	<!-- 모든 메이트 방 숫자 -->
+	<select id="getAllMateTotalRows" resultType="int">
+		SELECT COUNT(a.cnt) FROM 
+			(SELECT COUNT(*) cnt
+			FROM mate_main mmain
+			GROUP BY mmain.performanceId) a
+	</select>
+	<!-- 메이트 리스트, 디테일 쿼리 -->
+	<select id="getAllMateTotal" parameterType="map" resultMap="mateListMap">
 		SELECT 
 			mmain.performanceId,
 			COUNT(*) TotalCnt
 		FROM mate_main mmain
+		<if test="performanceId != null">
+			where mmain.performanceId = #{performanceId}
+		</if>
 		GROUP BY mmain.performanceId
 		order by mmain.performanceId desc
+		<if test="beginIndex != null and endIndex != null">
+			limit #{beginIndex}, #{endIndex}
+		</if>
 	</select>
-	
+	<!-- seatRate 에 따른 쿼리 -->
 	<select id="getAllMateSeatCnt_R" resultType="int">
 		SELECT 
 			COUNT(mmain.seatRate) as cnt
@@ -108,6 +191,7 @@ WHERE mmain.id = 1;
 		and mmain.seatRate in ('A')
 		GROUP BY mmain.seatRate
 	</select>
+	
 	
 	
 <!-- mateSeach -->
@@ -345,17 +429,18 @@ WHERE mmain.id = 1;
 	<!-- mateTimeLine Insert -->
 	<insert id="addTimeLine" parameterType="MateTimeLine">
 			INSERT INTO mate_timeline
-			(mateId, content, userId)
+			(mateId, content, userId, performanceId)
 			VALUES
-			(#{id}, #{content}, #{user.id} )
+			(#{id}, #{content}, #{user.id}, #{performanceId} )
 	</insert>
 	
 	<!-- mateid에 해당하는 Mate객체 반환쿼리 -->
 	<select id="getMateByMateId" parameterType="int" resultType="Mate">
 		SELECT 
 				mmain.id, 
-				mmain.performanceId,
+				mmain.performanceId 	as "performance.id",
 				mmain.seatGroup, 
+				mcat.id 				as "categoryId",
 				mcat.category,
 				mmain.groupSize, 
 				mmain.seatRate
@@ -364,6 +449,9 @@ WHERE mmain.id = 1;
 		WHERE mmain.id = #{value}
 		
 	</select>
+	<delete id="deleteMateTimeLineByPerformanceId" parameterType="int">
+		DELETE FROM mate_timeline where performanceId = #{value}
+	</delete>
 	<select id="getMateTimeLineCountByMateId" parameterType="int" resultType="int">
 	SELECT COUNT(*) FROM mate_timeline
 	WHERE mateId = #{value}
@@ -380,6 +468,10 @@ WHERE mmain.id = 1;
 	<delete id="deleteMateTagAllByMateId" parameterType="int">
 		DELETE FROM mate_tag WHERE id = #{value}
 	</delete>
+	<delete id="deleteMateTagByPerformanceId" parameterType="int">
+		DELETE FROM mate_tag WHERE performanceId = #{value}
+	</delete>
+	
 	
 	<!-- matecategory Change -->
 	<update id="updateMateCategoryByMateId" parameterType="int">
@@ -387,21 +479,34 @@ WHERE mmain.id = 1;
 			SET category = #{catId}
 		WHERE id = #{mateId}
 	</update>
+	<update id="updateMateByMateId" parameterType="Mate">
+	UPDATE 
+		mate_main
+			set
+			performanceId = #{performance.id},
+			category = #{categoryId},
+			groupSize = #{groupsize},
+			seatRate = #{seatRate},
+			`status` = #{status},
+			groupCnt = #{groupCnt}
+	WHERE id = #{id}
+	
+	</update>
 	
 	<!--  해당 메이트방의 멤버의 숫자를 구한다.-->
 	<select id="getMateMemberCountInMateByMateId" resultType="int">
 		SELECT COUNT(*) FROM mate_main mmain
 		JOIN mate_members mmem ON mmain.id = mmem.id
-		WHERE performanceId = #{performanceId}
+		WHERE mmain.performanceId = #{performanceId}
 		AND mmain.id = #{mateId}
 	</select>
 
  	<!-- 해당 메이트를 메이트 멤버 테이블에 인서트 시킨다. -->
 	<insert id="insertMateMember">
 		INSERT INTO mate_members
-			(userId, id)
+			(userId, id, performanceId)
 			VALUES
-			(#{userId}, #{mateId})
+			(#{userId}, #{mateId}, #{performanceId})
 	</insert>
 	
 	<!-- 해당 메이트가 메이트 아이디에 따라서 있는지 확인하는 쿼리 -->
@@ -463,7 +568,7 @@ WHERE mmain.id = 1;
 		INSERT INTO mate_main
 		(performanceId, seatGroup, groupSize, seatRate, category)
 		VALUES
-		(#{performance.id}, #{seatGroup}, #{groupsize}, #{seatRate})
+		(#{performance.id}, #{seatGroup}, #{groupsize}, #{seatRate}, #{categoryId})
 		
 		<selectKey resultType="int" order="AFTER" keyProperty="id">
 		 SELECT LAST_INSERT_ID() as id
@@ -545,7 +650,11 @@ WHERE mmain.id = 1;
 		b.userId = #{userId}
 	</select>
 	
-
-	
+	<delete id="deleteMateMemberByPerformanceId" parameterType="int">
+		delete from mate_members where performanceId = #{value}
+	</delete>
+	<delete id="deleteMateMainByPerformanceId" parameterType="int">
+		delete from mate_main where performanceId = #{value}
+	</delete>
 
 </mapper>

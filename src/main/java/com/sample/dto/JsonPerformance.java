@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class JsonPerformance {
 
+	private int id;
 	private int infoId;
 	private int hallId;
 	private Date showDate;
@@ -64,10 +65,18 @@ public class JsonPerformance {
 		this.index = index;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
-		return "JsonPerformance [infoId=" + infoId + ", hallId=" + hallId + ", showDate=" + showDate + ", showTime="
-				+ showTime + ", showNumber=" + showNumber + ", index=" + index + "]";
+		return "JsonPerformance [id=" + id + ", infoId=" + infoId + ", hallId=" + hallId + ", showDate=" + showDate
+				+ ", showTime=" + showTime + ", showNumber=" + showNumber + ", index=" + index + "]";
 	}
  
 

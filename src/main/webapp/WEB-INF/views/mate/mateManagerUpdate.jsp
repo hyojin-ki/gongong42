@@ -24,7 +24,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script type="text/javascript" src="/resources/js/jquery.color.js"></script>
 <script type="text/javascript" src="/resources/js/custom.js"></script>
-<script type="text/javascript" src="/resources/js/manager/mateManager.js"></script>
+<script type="text/javascript" src="/resources/js/manager/mateManagerUpdate.js"></script>
 <style>
   .selectable .ui-selecting { background: white  !important; }
   .selectable .ui-selected { background: white !important; color: white; }
@@ -40,7 +40,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12 mt-5 p-3 text-center ">					
-					<h1>메이트 등록</h1>				
+					<h1>메이트 수정</h1>				
 				<hr />
 				</div>
 			</div>
@@ -221,6 +221,7 @@
 										</div>
 									</div>
 									<!-- 공연등록 end -->
+									
 									<!-- 공연좌석수 -->
 									<div class="col-12 mt-4">
 										<div class="input-group">
@@ -297,7 +298,7 @@
 											<div class="input-group-append">
 												<button type="button" id="rest-mate-selected-btn" class="btn btn-outline-secondary">리셋</button>
 											</div>
-											
+										
 										</div>
 									</div>
 									<div class="col-12 mt-4">
@@ -359,7 +360,9 @@
 									</div>
 									</div>
 									<div class="col-12 mt-4 text-right">
-										<button type="button" id="mate-all-submit-btn" class="btn btn-primary">등록</button>
+										<button type="button" id="mate-all-update-btn" class="btn btn-warning">수정</button>
+										<button type="button" id="mate-all-delete-btn" class="btn btn-danger">삭제</button>
+									
 									</div>
 								</div>
 							</div>
@@ -422,12 +425,11 @@
 <!-- input hidden -->
 <input type="hidden" id="hidden-performance-info-id" />
 <input type="hidden" id="hidden-hall-id" />
-<div id="loading" style="display: none;">
+<input type="hidden" id="performanceId" value="${performanceId }" />
+</div>
+</div>
+ <div id="loading" style="display: none;">
 	<img src="/resources/logo/loading.gif" alt="" style="position: absolute; top: 600px; left: 800px"/>
 </div>
-
-</div>
-</div>
- 
 </body>
 </html>

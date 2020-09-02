@@ -1,7 +1,7 @@
 package com.sample.web.view;
 
 public class MateTag {
-
+	private int performanceId;
 	private int mateId;
 	private String tagName;
 	
@@ -24,9 +24,17 @@ public class MateTag {
 		this.tagName = tagName;
 	}
 
+	public int getPerformanceId() {
+		return performanceId;
+	}
+
+	public void setPerformanceId(int performanceId) {
+		this.performanceId = performanceId;
+	}
+
 	@Override
 	public String toString() {
-		return "MateTag [mateId=" + mateId + ", tagName=" + tagName + "]";
+		return "MateTag [performanceId=" + performanceId + ", mateId=" + mateId + ", tagName=" + tagName + "]";
 	}
 
 	

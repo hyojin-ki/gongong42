@@ -15,7 +15,7 @@ import com.sample.web.view.User;
 public interface MateService {
     void addMate(Mate mate);
     void insertMateTimeLine(int mateId, MateTimeLine mateTimeLine);
-    List<MateTag> addHashTag(int mateId, List<String> mateTags);
+    List<MateTag> addHashTag(int mateId, List<String> mateTags, int performanceId);
     
 
 	/**
@@ -109,8 +109,11 @@ public interface MateService {
     
     List<Mate> mateListForMypage(String userId);
 
-    List<MateList> getAllMateListForManagement();
+    List<MateList> getAllMateListForManagement(Map<String, Object> map);
     
+    public int getAllMateTotalRows();
+    
+    List<MateList> getAllMateDetailForManagement(Map<String, Object> map);
     
     
 }

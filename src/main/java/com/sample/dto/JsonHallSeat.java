@@ -11,6 +11,7 @@ public class JsonHallSeat {
 	private String seatRate;
 	private int mateNo;
 	private int categoryId;
+	private String seatStatus;
 	
 	public JsonHallSeat() {}
 
@@ -81,23 +82,23 @@ public class JsonHallSeat {
 	public int getCategoryId() {
 		return categoryId;
 	}
-
-
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
-
-
+	public String getSeatStatus() {
+		return seatStatus;
+	}
+	public void setSeatStatus(String seatStatus) {
+		this.seatStatus = seatStatus;
+	}
 
 	@Override
 	public String toString() {
 		return "JsonHallSeat [performanceId=" + performanceId + ", hallId=" + hallId + ", groupSize=" + groupSize
 				+ ", seatBlock=" + seatBlock + ", seatRow=" + seatRow + ", seatCol=" + seatCol + ", seatRate="
-				+ seatRate + ", mateNo=" + mateNo + ", categoryId=" + categoryId + "]";
+				+ seatRate + ", mateNo=" + mateNo + ", categoryId=" + categoryId + ", seatStatus=" + seatStatus + "]";
 	}
 
-
-	@Override
 	public int hashCode() {
 		return (mateNo+seatRow+seatCol+seatRate).hashCode();
 	}
@@ -111,7 +112,6 @@ public class JsonHallSeat {
 			return false;
 		}
 	}
-	
 	
 
 	
