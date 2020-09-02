@@ -243,8 +243,8 @@
 		update 
 			user_main
 		set 
-			nickname = #{nickname}
-			password = #{password}
+			nickname = #{nickname},
+			password = #{password},
 			tel      = #{tel}
 		where 
 			id = #{id}
@@ -254,9 +254,9 @@
 		update
 			user_address
 		set
-			postalCode = #{postalCode}
-			sido       = #{sido}
-			sigungu    = #{sigungu}
+			postalCode = #{postalCode},
+			sido       = #{sido},
+			sigungu    = #{sigungu},
 			addr       = #{addr}
 		where 
 			id = #{id}
