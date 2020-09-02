@@ -238,6 +238,10 @@ public interface PerformanceDao {
    
    PerformanceMain getPerformanceMainByPerformanceId(int performanceId);
    
+
+   List<PerformanceDto> getPerformanceByCategoryLimit(String category);
+   
+
    /**
     * performanceId로 performance_main 테이블 삭제
     * @param performanceId
