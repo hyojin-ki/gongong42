@@ -80,7 +80,7 @@
 														</span>요일
 														</p>
 														<div class="text-center">
-															<button class="btn btn-primary mt-2" style="width: 130px;">좌석미리보기</button>
+															<button data-mate="${mate.id }" class="btn btn-primary mt-2 seat-preview-btn" style="width: 130px;">좌석미리보기</button>
 															<a href="matedetail.do?pid=${mate.performance.id }&mnum=${mate.id}" class="btn btn-warning show-mate-btn mt-2" style="width: 130px;" type="button">들어가기</a>
 														</div>
 														<div class="mt-3"></div>
@@ -169,7 +169,7 @@
 														</span>요일
 														</p>
 														<div class="text-center">
-															<button class="btn btn-primary mt-2" style="width: 130px;">좌석미리보기</button>
+															<button data-mate="${mate.id }" class="btn btn-primary mt-2 seat-preview-btn" style="width: 130px;">좌석미리보기</button>
 														<c:choose>
 															<c:when test="${LOGIN_USER.id eq mateUser.user.id && mate.id eq mateUser.mate.id }">
 																<a href="matedetail.do?pid=${mate.performance.id }&mnum=${mate.id}" 
@@ -360,7 +360,7 @@
 						<span class="h5">빈방</span> <form:checkbox id="isEmpty" checked="${mateSearchForm.isEmpty eq null ? '': 'checked' }" path="isEmpty"
 							class="input-control"  value="Y" />
 					</div>
-					<form:input type="hidden" path="pid" name="pid" value="${mateUser.performance.id }" />
+					<form:input type="hidden" path="pid" name="pid" id="performance-id" value="${mateUser.performance.id }" />
 					<form:input type="hidden" path="pageNo" name="pageNo" id="pageNo" value="${pagination.pageNo }"/>
 					<div class="mt-1">
 						<button type="submit" class="btn btn-primary btn-lg btn-block">찾기</button>
@@ -376,15 +376,90 @@
 	<div>
 	</div>
 	<!-- 해당 공연의 정보가 있는 카드 end -->
+	<!-- seat preview modal -->
+	<div class="modal fade" id="seat-preview-modal" tabindex="-1"
+		aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+								<div class="card">
+									<div class="card-body text-center">
+										<span>좌석 현황</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="row">
+									<div class="col-12">
+										<div class="card">
+											<div class="card-header text-center">
+												<span style="font-size: 50px;"><strong>STAGE</strong></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="row">
+									<div class="offset-3 col-6 offset-3">
+										<div class="row">
+											<div id="R-seats1" class="col-6"></div>
+											<div id="R-seats2" class="col-6"></div>
+										</div>
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-12">
+										<div class="row">
+											<div id="S-seats1" class="col-3"></div>
+											<div id="S-seats2" class="col-3"></div>
+											<div id="S-seats3" class="col-3"></div>
+											<div id="S-seats4" class="col-3"></div>
+										</div>
+									</div>
+								</div>
+								<br />
+								<div class="row">
+									<div class="col-12">
+										<div class="row">
+											<div id="A-seats1" class="col-3"></div>
+											<div id="A-seats2" class="col-3"></div>
+											<div id="A-seats3" class="col-3"></div>
+											<div id="A-seats4" class="col-3"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"
+						data-dismiss="modal">닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script type="text/javascript">
-	 	$('#card-x-btn').click(function(){
-	 		$('#mate-override-card').hide();
-	 		$('#mate-card-left').show();
-	 	});
-	 	$('#mate-card-left').click(function(){
-	 		$('#mate-override-card').show();
-	 		$('#mate-card-left').hide();
-	 	});
+		$('#card-x-btn').click(function() {
+			$('#mate-override-card').hide();
+			$('#mate-card-left').show();
+		});
+		$('#mate-card-left').click(function() {
+			$('#mate-override-card').show();
+			$('#mate-card-left').hide();
+		});
 	</script>
 </body>
 </html>

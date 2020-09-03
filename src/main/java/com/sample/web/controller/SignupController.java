@@ -1,6 +1,6 @@
 package com.sample.web.controller;
 
-import java.security.Principal;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+
 
 import com.sample.service.UserService;
 import com.sample.web.form.FindUserInfo;
@@ -176,6 +176,7 @@ public class SignupController {
 	}
 
 	@RequestMapping("/userUpdate.do")
+
 	public String updateUserInfo(@ModelAttribute("userUpdateForm") @Valid UserUpdateForm userUpdateForm,
 			BindingResult errors, HttpSession session) {
 
@@ -233,6 +234,9 @@ public class SignupController {
 		userService.deleteUser(userId);
 		session.invalidate();
 		
-		
-	}
+	}	
+
+	
+
+	
 }

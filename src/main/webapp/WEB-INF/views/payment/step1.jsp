@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>	
 <!DOCTYPE html>
 <html>
 <head>
@@ -402,7 +403,7 @@ div#A-seats4 button {
 																<div class="col-12">
 																	<div class="card">
 																		<div class="card-body">
-																			* 주의 사항 * 부정확한 정보 입력으로 인한 문제 발생 시 예스24는 책임을 지지 않습니다.
+																			* 주의 사항 * 부정확한 정보 입력으로 인한 문제 발생 시 공공연한사이는 책임을 지지 않습니다.
 																			<br /> 1) 배송 선택 시 티켓 수령자의 배송지 정보를 정확히 입력해주시기 바랍니다. <br />
 																			2) 티켓은 유가증권으로 본인에게 직접 전달해야하며, 분실된 티켓은 재발권 되지 않습니다. <br />
 																			3) 일괄배송의 경우 정해진 날짜에 티켓 배송이 시작되며, 주소 수정은 일괄배송일 2일 전까지
@@ -698,6 +699,7 @@ div#A-seats4 button {
 		<input type="hidden" id="r-seat-price" />
 		<input type="hidden" id="s-seat-price" />
 		<input type="hidden" id="a-seat-price" />
+		<input type="hidden" id="pDate" value="${pDate }" />
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/2.8.9/jquery.fullPage.min.js"></script>
 	<script type="text/javascript">	
@@ -872,8 +874,10 @@ div#A-seats4 button {
 				});
 		
 		$(".selector").flatpickr({ 
+		
+			enable: $('#pDate').val().split(','),
 			dateFormat: "Y-m-d",
-			minDate: '<fmt:formatDate value="${performanceDto.startDate}" pattern="yyyy-MM-dd" />',
+			minDate: new Date(),
 			maxDate: '<fmt:formatDate value="${performanceDto.endDate}" pattern="yyyy-MM-dd" />',
 			inline: true,
 			onChange: function(selectedDate, selectedDateString, instance) {

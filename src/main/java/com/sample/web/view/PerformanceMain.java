@@ -2,10 +2,13 @@ package com.sample.web.view;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class PerformanceMain {
 	private int id;
 	private int infoId;
 	private int hallId;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date showDate;
 	private String showTime;
 	private int showNumber;

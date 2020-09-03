@@ -10,6 +10,7 @@ import com.sample.web.form.MateSearchForm;
 import com.sample.web.view.Mate;
 import com.sample.web.view.MateTag;
 import com.sample.web.view.MateTimeLine;
+import com.sample.web.view.Performance;
 import com.sample.web.view.User;
 
 public interface MateService {
@@ -115,5 +116,5 @@ public interface MateService {
     
     List<MateList> getAllMateDetailForManagement(Map<String, Object> map);
     
-    
+	Performance getMatePerformanceByPerformanceId(int performanceId);
 }

@@ -17,6 +17,7 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/mypage/**"/>
 			<mvc:mapping path="/mate/**"/>
+			<mvc:mapping path="/payment/**"/>
 			<bean class="com.sample.web.interceptor.AuthInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>

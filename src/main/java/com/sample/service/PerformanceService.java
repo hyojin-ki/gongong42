@@ -160,4 +160,7 @@ public interface PerformanceService {
 	String saveImage(String strUrl, String fileName, String saveDirectory);
 	
 	PerformanceMain getPerformanceMainByPerformanceId(int performanceId);
+	
+	List<PerformanceDto> getPerformanceByCategoryLimit(String category);
+	
 }

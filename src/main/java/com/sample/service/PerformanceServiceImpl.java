@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -403,30 +405,40 @@ public class PerformanceServiceImpl implements PerformanceService {
 	@Override
 	public String saveImage(String strUrl, String title, String saveDirectory) {
 
-		String realFilename = System.currentTimeMillis() + title;
+		String realFilename = System.currentTimeMillis() + title + ".";
 		
 		try {
 			
 			URL url = new URL(strUrl);
 			
-			BufferedImage image =  ImageIO.read(url);
+//			BufferedImage image =  ImageIO.read(url); 얘 계속 null 뱉음 도저히 이유를 모르겠음
 			
 			System.out.println("url은 대체 뭐냐 : " + url);
 			
 			
-			// realFilename = realFilename + strUrl.substring(strUrl.length() - 4);
-			String ext = strUrl.substring(strUrl.lastIndexOf(".")+1, strUrl.length());
+			realFilename = realFilename + strUrl.substring(strUrl.lastIndexOf(".")+1, strUrl.length());
 			
-			System.out.println("image는 도대체 머냐 : " + image);
+			System.out.println("realFilename이 대체 뭐야 : " + realFilename);
+//			String ext = strUrl.substring(strUrl.lastIndexOf(".")+1, strUrl.length());
 			
-			System.out.println("ext는 대체 뭐냐 : " + ext);
+//			System.out.println("image는 도대체 머냐 : " + image);
 			
-			ImageIO.write(image, ext, new File(saveDirectory + realFilename));
+//			System.out.println("ext는 대체 뭐냐 : " + ext);
 			
-
-//			InputStream in = url.openStream();
-			/*FileOutputStream out = new FileOutputStream(new File(saveDirectory, realFilename));
-			FileCopyUtils.copy(in, out);*/
+//			ImageIO.write(image, ext, new File(saveDirectory + realFilename)); 얘도 안됨
+			
+			URLConnection connection = url.openConnection();
+			connection.setReadTimeout(3000);
+			
+			InputStream in = connection.getInputStream();
+			
+			System.out.println("in은 또 뭐야 : " + in);
+			
+//			FileUtils.copyURLToFile(url, new File(saveDirectory + realFilename)); 이것도 안됨 ㅋㅋㅋ
+			
+			FileOutputStream out = new FileOutputStream(new File(saveDirectory, realFilename));
+			
+			FileCopyUtils.copy(in, out);
 
 		} catch (Exception e){
 			e.printStackTrace();
@@ -439,4 +451,9 @@ public class PerformanceServiceImpl implements PerformanceService {
 		return performanceDao.getPerformanceMainByPerformanceId(performanceId);
 	}
 
+	@Override
+	public List<PerformanceDto> getPerformanceByCategoryLimit(String category) {
+		return performanceDao.getPerformanceByCategoryLimit(category);
+	}
+ 
 }
