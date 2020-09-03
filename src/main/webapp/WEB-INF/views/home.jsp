@@ -35,7 +35,7 @@
 			<div class="section" id="section1">
 				<c:forEach var="concert" items="${concerts }">
 					<div class="slide slide-background-img"
-					style="background-image: url('/resources/sample-images/${concert.imagePath}'); cursor:pointer;" onclick="location.href='http://localhost:8080/performance/list.do?order=dateOrder&category=콘서트&pageNo=&changed=Y&title=${concert.title}&genre=전체&startDay=&endDay=&age=0'">
+					style="background-image: url('/resources/sample-images/${concert.imagePath}'); cursor:pointer;" onclick="location.href='/performance/list.do?order=dateOrder&category=콘서트&pageNo=&changed=Y&title=${concert.title}&genre=전체&startDay=&endDay=&age=0'">
 					<div class="container">
 						<div class="row">
 							<div class="col-6">
@@ -78,7 +78,7 @@
 			<div class="section" id="section1">
 				<c:forEach var="musical" items="${musicals }">
 				<div class="slide slide-background-img"
-					style="background-image: url('/resources/sample-images/${musical.imagePath}'); cursor:pointer;" onclick="location.href='http://localhost:8080/performance/list.do?order=dateOrder&category=뮤지컬&pageNo=&changed=Y&title=${musical.title}&genre=전체&startDay=&endDay=&age=0'">
+					style="background-image: url('/resources/sample-images/${musical.imagePath}'); cursor:pointer;" onclick="location.href='/performance/list.do?order=dateOrder&category=뮤지컬&pageNo=&changed=Y&title=${musical.title}&genre=전체&startDay=&endDay=&age=0'">
 					<div class="container">
 						<div class="row">
 							<div class="col-6">
@@ -121,7 +121,7 @@
 			<div class="section" id="section1">
 			<c:forEach var="theater" items="${theaters }">
 				<div class="slide slide-background-img"
-					style="background-image: url('/resources/sample-images/${theater.imagePath}'); cursor:pointer;" onclick="location.href='http://localhost:8080/performance/list.do?order=dateOrder&category=연극&pageNo=&changed=Y&title=${theater.title}&genre=전체&startDay=&endDay=&age=0'">
+					style="background-image: url('/resources/sample-images/${theater.imagePath}'); cursor:pointer;" onclick="location.href='/performance/list.do?order=dateOrder&category=연극&pageNo=&changed=Y&title=${theater.title}&genre=전체&startDay=&endDay=&age=0'">
 					<div class="container">
 						<div class="row">
 							<div class="col-6">
