@@ -28,6 +28,7 @@ public interface UserService {
     UserInfoDto getUserInfoDetail(String id);
     
     void addUserPointHistory(UserPoint userPoint);
+    void deleteUser(String userId);
     
     int getAllUsersCount(Map<String, Object> param);
     int getAllPointHistoryCount(String userID);

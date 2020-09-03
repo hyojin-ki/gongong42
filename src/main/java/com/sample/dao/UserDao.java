@@ -3,7 +3,7 @@ package com.sample.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
+
 
 import com.sample.dto.UserInfoDto;
 import com.sample.dto.UserPointHistoryDto;
@@ -23,8 +23,7 @@ public interface UserDao {
     // 회원정보 수정
     void fixUserMain(User user);
     void fixUserAddr(User user);
-    
-    
+    void deleteUser(String userId);   
     
     User getUserById(String id);
     User getUserByCondition(Map<String, Object> condition);

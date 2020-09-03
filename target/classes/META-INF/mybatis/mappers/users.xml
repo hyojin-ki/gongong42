@@ -74,7 +74,8 @@
 		FROM user_main A
 		JOIN user_sub B ON A.id = B.id
 		left outer JOIN user_address C ON A.id = C.id
-		WHERE A.id = #{id}
+		WHERE B.deleted = 'N'
+		AND A.id = #{id}
 	</select>
 	
 	<select id="getUserByCondition" parameterType="map" resultType="User">
@@ -239,6 +240,12 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="deleteUser" parameterType="User">
+		UPDATE user_sub
+			SET deleted = 'Y'
+		WHERE id = #{id}
+	</update>
+	
 	<update id="fixUserMain" parameterType="User">
 		update 
 			user_main
@@ -297,6 +304,8 @@
 		order by getDate desc
 		limit #{rowPerPage} offset #{startRow}
 	</select>
+	
+
 </mapper>
 
 

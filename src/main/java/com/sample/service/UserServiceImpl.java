@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService{
 		if (!user.getPassword().equals(password)) {
 			return null;
 		}
+		
 		return user;
 	}
 
@@ -121,5 +122,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<Coupon> getCouponByUserIdForPagination(Map<String, Object> param) {
 		return userDao.getCouponsByUserIdForPagination(param);
+	}
+
+	@Override
+	public void deleteUser(String userId) {
+		userDao.deleteUser(userId);
 	}
 }

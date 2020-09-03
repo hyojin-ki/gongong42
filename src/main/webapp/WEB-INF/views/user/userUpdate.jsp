@@ -110,7 +110,9 @@
       							<form:input type="text" class="form-control" id="sample4_detailAddress" path="addr" value=" ${LOGIN_USER.addr}" />
 							</div>
 						</div>
-
+						<div>
+							<button type="button" class="btn btn-outline-secondary btn-sm" id="delete-user">회원탈퇴</button>
+						</div>
 						<div class="form-row">
 							<div class="form-group col-md-12 text-center mt-4">
       							<button type="submit" class="btn btn-primary btn-lg">회원수정</button>
@@ -123,6 +125,7 @@
 	</div>
 </div>
 <input type="hidden" id="login_gender" value="${LOGIN_USER.gender }" />
+<input type="hidden" id="login_id" value="${LOGIN_USER.id }" />
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="/resources/jquery/jquery.min.js"></script>
 <script type="text/javascript">
@@ -187,6 +190,26 @@ $(function(){
 	})
 })
 
+	$('#delete-user').on('click', function() {
+		var loginUser = $('#login_id').val();
+				var up;
+				
+				up=confirm("회원탈퇴를 진행하시겠습니까?");
+				
+				if(up) {
+					$.ajax({
+						type:"GET",
+						url:"deleteUser.do",
+						data:{id:loginUser},
+						dataType:"json",
+						success:function(data) {
+							location.href="/home.do";
+						}
+					})
+					location.href="/home.do";
+				}
+		
+	});
 
 //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
 function sample4_execDaumPostcode() {
