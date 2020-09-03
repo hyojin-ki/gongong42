@@ -873,12 +873,6 @@ div#A-seats4 button {
 					});					
 				});
 		
-		var dateArray = new Array();
-		dateArray = ($('#datearray').val()).split(',');
-		var ex = ($('#datearray').val()).split(',');
-		console.log('ex', ex);
-		console.log('datearray : ' + dateArray);
-		console.log('con : ',$('#datearray').val());
 		$(".selector").flatpickr({ 
 		
 			enable: $('#pDate').val().split(','),
