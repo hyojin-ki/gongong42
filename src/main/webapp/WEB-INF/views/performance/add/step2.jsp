@@ -179,6 +179,11 @@ $(function() {
 		$("#newForm").show();
 	} 
 	
+	if ($('#hallName') != '') {
+		$('#newSelect').prop('checked', true);
+		$("#existingForm").hide();
+		$("#newForm").show();
+	}
 })
 
 $("#addHallForm input[name=hallInputType]").change(function() {
