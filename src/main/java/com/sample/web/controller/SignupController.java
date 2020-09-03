@@ -183,47 +183,59 @@ public class SignupController {
 	}
 	
 	@RequestMapping("/userUpdate.do")
-	public String updateUserInfo(@ModelAttribute("userUpdateForm") @Valid UserUpdateForm userUpdateForm,BindingResult errors) {
-		
-		Map<String, Object> condition = new HashMap<String, Object>();
-		
-		condition.put("column", "nickname");
-		condition.put("value", userUpdateForm.getNickname());	
-		User savedUser = userService.getUserDetailByCondition(condition);
-		savedUser = userService.getUserDetailByCondition(condition);
-		
-		condition.put("column", "nickname");
-		condition.put("value", userUpdateForm.getNickname());		
-		savedUser = userService.getUserDetailByCondition(condition);
-	
-		if (savedUser != null) {
-			errors.rejectValue("nickname", null, "이미 사용중인 닉네임입니다.");
-		}
-		
-			
-		condition.put("column", "tel");
-		condition.put("value", userUpdateForm.getTel());
-		savedUser = userService.getUserDetailByCondition(condition);
-		if (savedUser != null ) {
-			errors.rejectValue("tel", null, "이미 사용중인 전화번호입니다.");
-			
-			}
-		System.out.println("유효성 체크결과 에러가 발견되었는가? " + errors.hasErrors());
-		if (errors.hasErrors()) {
-			return "user/userUpdate"; //입력화면으로 내부이동하기
-		}
-		
-		User user = new User();
-		BeanUtils.copyProperties(userUpdateForm, user);
-		System.out.println(user);
-		
-		// 회원 정보 수정 처리
-		userService.fixUser(user);
-	
-			
-			return "mypage/mypagemain";
-		}
-		
+	public String updateUserInfo(@ModelAttribute("userUpdateForm") @Valid UserUpdateForm userUpdateForm,BindingResult errors, HttpSession session) {
+	      
+	      Map<String, Object> condition = new HashMap<String, Object>();
+	      
+	      condition.put("column", "nickname");
+	      condition.put("value", userUpdateForm.getNickname());   
+	      User savedUser = userService.getUserDetailByCondition(condition);
+	      savedUser = userService.getUserDetailByCondition(condition);
+	      
+	      condition.put("column", "nickname");
+	      condition.put("value", userUpdateForm.getNickname());      
+	      savedUser = userService.getUserDetailByCondition(condition);
+	      
+	      User sessionUser = (User)session.getAttribute("LOGIN_USER");
+	      
+	      if(sessionUser.getNickname() != userUpdateForm.getNickname()) {
+	            
+	            if (savedUser != null) {
+	               errors.rejectValue("nickname", null, "이미 사용중인 닉네임입니다.");
+	            }
+	            
+	         }
+	      
+	         
+	      condition.put("column", "tel");
+	      condition.put("value", userUpdateForm.getTel());
+	      savedUser = userService.getUserDetailByCondition(condition);
+	      
+	      if(sessionUser.getTel() != userUpdateForm.getTel()) {
+	            
+	          if (savedUser != null) {
+	                  errors.rejectValue("tel", null, "이미 사용중인 전화번호입니다.");
+	               }
+	            
+	         }
+	      
+	      
+	      System.out.println("유효성 체크결과 에러가 발견되었는가? " + errors.hasErrors());
+	      if (errors.hasErrors()) {
+	         return "user/userUpdate"; //입력화면으로 내부이동하기
+	      }
+	      
+	      User user = new User();
+	      BeanUtils.copyProperties(userUpdateForm, user);
+	      System.out.println(user);
+	      
+	      // 회원 정보 수정 처리
+	      userService.fixUser(user);
+	   
+	         
+	         return "mypage/mypagemain";
+	      }
+	      
 	}
 	
 	

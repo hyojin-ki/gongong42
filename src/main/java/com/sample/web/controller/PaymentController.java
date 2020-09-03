@@ -1,6 +1,7 @@
 package com.sample.web.controller;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.sample.web.form.PaymentForm;
 import com.sample.web.security.Auth;
 import com.sample.web.view.Coupon;
 import com.sample.web.view.Payment;
+import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.PerformanceSchedule;
 import com.sample.web.view.PerformanceSeatPrice;
 import com.sample.web.view.User;
@@ -43,15 +45,24 @@ public class PaymentController {
 
 	@Autowired
 	private PaymentService paymentService;
-
+	@Auth
 	@RequestMapping("/step1.do")
 	public String detailPerformance(@RequestParam("no") int performanceId, String userId, Model model) {
 		PerformanceDto performanceDto = performanceService.getPerformanceDetail(performanceId);
 		List<Coupon> coupons = userService.getCouponByUserId(userId);
 		User user = userService.getUserDetail(userId);
-
+		List<PerformanceMain> data = performanceService.getPerformanceMain(performanceId);
+		
+		StringBuffer bf = new StringBuffer();
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+		for(PerformanceMain p : data) {
+			bf.append(sd.format(p.getShowDate()));
+			bf.append(",");
+		}
+		
 		PaymentForm paymentForm = new PaymentForm();
-
+		
+		model.addAttribute("pDate", bf);
 		model.addAttribute("performanceDto", performanceDto);
 		model.addAttribute("coupons", coupons);
 		model.addAttribute("user", user);
@@ -85,7 +96,7 @@ public class PaymentController {
 
 		return dto;
 	}
-
+	@Auth
 	@RequestMapping("/add.do")
 	public String paymentInsert(@ModelAttribute PaymentForm paymentForm, HttpSession session, RedirectAttributes redirect) {
 
@@ -142,7 +153,5 @@ public class PaymentController {
 		
 		return paymentService.getTotalSales(paymentDto);
 	}
-	
-	
 
 }

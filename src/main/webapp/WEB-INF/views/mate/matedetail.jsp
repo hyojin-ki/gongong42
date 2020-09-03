@@ -68,7 +68,7 @@
 								
 							</ul>
 							<div class="col-12">
-								<a href="mate.do" class="btn btn-warning btn-lg">
+								<a href="mate.do?pid=${pid }" class="btn btn-warning btn-lg">
 									<i class="fas fa-arrow-left fa-2x"></i>
 								</a>
 								<span class="text-white">이전</span>

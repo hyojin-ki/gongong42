@@ -17,10 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sample.dto.HallSeatDto;
+import com.sample.dto.JsonHallSeat;
 import com.sample.dto.MateDetailDto;
 import com.sample.dto.MateUserDto;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
+import com.sample.service.HallService;
+import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.service.ReserveService;
@@ -38,11 +42,15 @@ import com.sample.web.view.User;
 public class MateController {
 
 	@Autowired
-	MateService mateService;
+	private MateService mateService;
 	@Autowired
-	PerformanceService performanceService;
+	private PerformanceService performanceService;
 	@Autowired
-	ReserveService reserveService;
+	private ReserveService reserveService;
+	@Autowired
+	private MateManagerService mateManagerService;
+	@Autowired
+	private HallService hallService;
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler(RuntimeException.class)
 	public String runtimeExceptionHandler(RuntimeException e) {
@@ -105,7 +113,10 @@ public class MateController {
 		if(performance == null) {
 			return "redirect:/home.do";
 		}
-
+		List<Reserve> reserve = reserveService.getReserveByUserIdAndPerformanceId(user.getId(), performanceId);
+		if(reserve.isEmpty()) {
+			return "redirect:/home.do";
+		}
 		
 		Map<String, Object> searchMap = mateService.getMatesByPerformanceIdSearch(performanceId, user.getId(), mateSearchForm);
 		int totalRows = (int) searchMap.get("searchCount");
@@ -117,12 +128,10 @@ public class MateController {
 		List<Map<Integer, String>> mateCat = mateService.getMateAllCategory();
 		Integer mateCount = mateService.getCountMateByPerformanceId(performanceId, user.getId());
 		MateUserDto mateUser = mateService.getUserExistMate(performanceId, user.getId());
-		System.out.println("mateUserDTO : " + mateUser);
 		if(mateUser == null) {
 			return "redirect:/home.do";
 		}
 
-		System.out.println("pagination"+pagination);
 		
 		Mate mate = mateService.getMate(performanceId, user.getId());
 			
@@ -168,11 +177,11 @@ public class MateController {
 			return "redirect:/home.do";
 		}
 		
-//		Reserve reserve = reserveService.getReserveByUserIdAndPerformanceId(user.getId(), performanceId);
-//		if(reserve == null) {
-//			return "redirect:/home.do";
-//		}
-//		
+		List<Reserve> reserve = reserveService.getReserveByUserIdAndPerformanceId(user.getId(), performanceId);
+		if(reserve.isEmpty()) {
+			return "redirect:/home.do";
+		}
+		
 		MateSearchForm mateSearchForm = new MateSearchForm();
 		mateSearchForm.setPageNo(1);
 		mateSearchForm.setIsEmpty("Y");
@@ -189,13 +198,13 @@ public class MateController {
 		Integer mateCount = mateService.getCountMateByPerformanceId(performanceId, user.getId());
 		
 		MateUserDto mateUser = mateService.getUserExistMate(performanceId, user.getId());
-		System.out.println("mateUserDTO : " + mateUser);
+
 		if(mateUser == null) {
 			return "redirect:/home.do";
 		}
 		
 		Mate mate = mateService.getMate(performanceId, user.getId());
-			
+		
 		model.addAttribute("mate", mate);
 		
 		model.addAttribute("MateProgressCount", mateService.getStatusByPerformanceId(performanceId, user.getId(), "모집중"));
@@ -212,12 +221,6 @@ public class MateController {
 		model.addAttribute("mateSearchForm", mateSearchForm);
 		
 		return "mate/matelist";
-	}
-	@GetMapping("/jsonmate.do")
-	public @ResponseBody MateUserDto jsonMate(@RequestParam("pid") int performanceId, HttpSession session){
-		User user = (User) session.getAttribute("LOGIN_USER");
-		
-		return mateService.getUserExistMate(performanceId, user.getId());
 	}
 	/**
 	 * 해당 방의 정보를 ajax 데이터와 연결하여 불러온다.
@@ -247,19 +250,6 @@ public class MateController {
 			detail.setSessionUserId(userId);
 		}
 		
-		return detail;
-	}
-	@Auth
-	@RequestMapping("/Jmatedetail.do")
-	@ResponseBody
-	public MateDetailDto mateRoomJson(@RequestParam("pid") int performanceId, 
-							@RequestParam("mnum") int mateId) {
-		//전부 ajax로 가져온다.
-		//메이트 조건 -> 메이트 아이디, 공연 아이디
-		//해당 메이트 방의 공연 정보, 유저정보, 메이트 정보, 타임라인 정보를 가져온다.
-		//제약조건 : 메이트 방에 해당하는 유저가 있는지 검사한다.
-		//제약조건 : 세션값이 있는지 해당하고, 글을 올리는 유저를 검사한다.
-		MateDetailDto detail = mateService.getMateRoomDetail(mateId, performanceId);
 		return detail;
 	}
 	/**
@@ -337,10 +327,10 @@ public class MateController {
 		//유저 입장
 		mateService.addMateMember(mateId, user, performanceId);
 
-	//	Reserve reserve = reserveService.getReserveByUserIdAndPerformanceId(user.getId(), performanceId);
-	//	if(reserve == null) {
-	//		return "redirect:/home.do";
-	//	}
+		List<Reserve> reserve = reserveService.getReserveByUserIdAndPerformanceId(user.getId(), performanceId);
+		if(reserve.isEmpty()) {
+			return "redirect:/home.do";
+		}
 		
 		model.addAttribute("mnum",mateId);
 		model.addAttribute("pid", performanceId);
@@ -356,6 +346,20 @@ public class MateController {
 		//세션확인
 		return mateService.beforAddMateIsPassMate(performanceId, mateId, user.getId());
 	}	
+	
+	//좌석 미리보기
+	@RequestMapping("/seatPreview.do")
+	@ResponseBody
+	public Map<String, Object> previewSeat(@RequestParam("performanceId") int performanceId,
+											@RequestParam("mateId") int mateId) {
+		Map<String, Object> map = new HashMap<>();
+		List<JsonHallSeat> seats = mateManagerService.getHallSeats(performanceId);
+		List<HallSeatDto> mateSeats = hallService.getSeatsByMateId(mateId);
+		
+		map.put("seats", seats);
+		map.put("mateSeats", mateSeats);
+		return map;
+	}
 	
 	
 }

@@ -713,7 +713,5 @@
 	<delete id="deletePerformanceMainByPerformanceId" parameterType="int">
 		DELETE FROM performance_main where id = #{value}
 	</delete>
-
-
-
+ 
 </mapper>

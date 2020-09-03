@@ -72,4 +72,20 @@
 
 </delete>
 
+<select id="getSeatsByMateId" parameterType="int" resultType="com.sample.dto.HallSeatDto">
+	SELECT 
+		a.performanceId, 
+		a.hallId, 
+		a.seatBlock, 
+		a.seatRow, 
+		a.seatCol, 
+		a.seatRate, 
+		a.seatStatus, 
+		a.mateGroup 
+	FROM hall_seats a 
+	WHERE mateGroup = #{value}
+
+</select>
+
+
 </mapper>

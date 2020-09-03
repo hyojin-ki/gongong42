@@ -490,4 +490,10 @@ public class MateServiceImpl implements MateService {
 	public List<MateList> getAllMateDetailForManagement(Map<String, Object> map) {
 		return mateDao.getAllMateTotal(map);
 	}
+	/**
+	 * performanceId로 Performance 반환 받는다.
+	 */
+	public Performance getMatePerformanceByPerformanceId(int performanceId) {
+		return mateDao.getMatePerformanceByPerformanceId(performanceId);
+	}
 }
