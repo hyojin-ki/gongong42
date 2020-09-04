@@ -747,7 +747,9 @@
 
 	</div>
 	<!-- body 끝 -->
-	<div class="footer" style="height: 200px;"></div>
+	<div class="footer" style="height: 200px;">
+		 <%@ include file="../common/footer.jsp" %>
+	</div>
 
 <script type="text/javascript" src="/resources/jquery/jquery.min.js"></script>
 <script type="text/javascript"
