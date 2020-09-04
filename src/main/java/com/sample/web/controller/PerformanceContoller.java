@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.HttpRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -430,7 +431,9 @@ public class PerformanceContoller {
 	
 	
 	@PostMapping("/add/step1.do")
-	public String addStep1Submit(@ModelAttribute("performanceForm") PerformanceForm performanceForm ) throws Exception {
+	public String addStep1Submit(@ModelAttribute("performanceForm") PerformanceForm performanceForm,HttpServletRequest request ) throws Exception {
+		
+		String imageSaveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources/sample-images/";
 		
 		System.out.println("왔다");
 		System.out.println("이곳은 step1 submit 이후입니다.");
@@ -457,13 +460,12 @@ public class PerformanceContoller {
 		if (!upFile.isEmpty()) {
 			String filename = upFile.getOriginalFilename();
 			filename = System.currentTimeMillis()+filename;	
-			File file = new File(saveDirectory, filename);
+			File file = new File(imageSaveDirectory, filename);
 			FileCopyUtils.copy(upFile.getInputStream(), new FileOutputStream(file));	
 			performanceForm.setImagePath(filename);
-//			performance.setImagePath(filename);		
 		} else {
-			String downloadFile = performanceService.saveImage(performanceForm.getImagePath(), performanceForm.getTitle(), saveDirectory);
-			System.out.println("downloadFile : " + downloadFile);
+			String downloadFile = performanceService.saveImage(performanceForm.getImagePath(), performanceForm.getTitle(), imageSaveDirectory);
+			System.out.println(imageSaveDirectory);
 			performanceForm.setImagePath(downloadFile);
 		}
 		

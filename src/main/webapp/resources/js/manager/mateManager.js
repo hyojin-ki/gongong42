@@ -259,7 +259,7 @@ $(function(){
 							}
 						}
 						//hall_info_id
-						var hallId = list.seatPrices[0].infoId;
+						var hallId = list.hallInfoId;
 						$('#hidden-hall-id').val(hallId);
 						
 						$pImg.attr('src','/resources/sample-images/'+imagePath);
