@@ -19,7 +19,7 @@
 						<div class="sidebar-submenu">
 							<ul>
 								<li><a href="/performance/add/step1.do" class="font-weight-bold">공연등록 </a></li>
-								<li><a href="#">공연리스트</a></li>
+								<li><a href="/performance/adminList.do">공연리스트</a></li>
 							</ul>
 						</div></li>
 					<li class="sidebar-dropdown"><a href="#"> <i

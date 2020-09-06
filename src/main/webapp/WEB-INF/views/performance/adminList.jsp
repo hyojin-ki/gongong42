@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -15,7 +14,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 <link rel="stylesheet" href="/resources/css/style.css" />
-
+<link rel="stylesheet" href="/resources/css/manager.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -25,144 +24,55 @@
 <script type="text/javascript" src="/resources/js/custom.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<style type="text/css">
 
+	.title-inactive {
+		color: #424242;
+	}
+	
+	
+	.title-active {
+		color: #DF013A;
+	}
+	
+	
+</style>
 </head>
 <body>
-	<div class="header">
-		<%@ include file="../common/navi.jsp"%>
-	</div>
-	
-	<!-- 테스트용 db -->
-	  
-	
-	
-	<div class="body" style="margin-top: 50px;">
+	<c:set var="topName" value="performance"/>
+	<%@ include file="../manager/common/managerTop.jsp" %>
+	<div class="page-wrapper chiller-theme toggled">
+  <%@ include file="../manager/common/managernavi.jsp" %>
+   <div class="page-content">
+   	<div class="container">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-12 mt-5 p-3 text-center">				
-					<h1 class="pl-3 font-weight-bold">
-					<c:choose>
-						<c:when test="${category eq '콘서트' }">
-							Consert
-						</c:when>
-						<c:when test="${category eq '뮤지컬' }">
-							Musical
-						</c:when>
-						<c:when test="${category eq '연극' }">
-							Play
-						</c:when>						
-					</c:choose>						
-					</h1>
+				<div class="col-12 mt-5 p-3 text-center">	
+					<ul class="nav navbar-nav d-inline-flex">
+				      <li class="nav-item">
+				        <ul class="list-inline-mb-0">
+				          <li class="list-inline-item">
+				          	<a href="/performance/adminList.do?category=콘서트" class="h1 pl-3 font-weight-bold 
+				          	${category eq '콘서트'? 'title-active' : 'title-inactive' }">Consert</a>
+				          </li>
+				          <li class="list-inline-item">
+				          	<a href="/performance/adminList.do?category=뮤지컬" class="h1 pl-3 font-weight-bold 
+				          	${category eq '뮤지컬'? 'title-active' : 'title-inactive' }">Musical</a>
+				          </li>
+				          <li class="list-inline-item">
+				          	<a href="/performance/adminList.do?category=연극" class="h1 pl-3 font-weight-bold 
+				          	${category eq '연극'? 'title-active' : 'title-inactive' }">Play</a>
+				          </li>       
+				        </ul>
+				      </li>
+				    </ul>
+							
+					
 				</div>
 			</div>
-			<div class="row h-50">
-				<div class="col-12">
-					<!-- 배너광고 슬라이드 시작  -->
-					<div id="demo" class="carousel slide " data-ride="carousel">
-						<ol class="carousel-indicators">
-							<li data-target="#demo" data-slide-to="0" class="active"></li>
-							<li data-target="#demo" data-slide-to="1"></li>
-							<li data-target="#demo" data-slide-to="2"></li>
-						</ol>
-						<div class="carousel-inner ">
-							<!--  한 슬라이드당 이미지 3개 -->
-						
-							<div class="carousel-item active bg-dark"> 
-								<div class="row"
-									style="width: 70%; float: none; margin: 0 auto;">
-									<div class="col-12">
-										<div class="row">
-											<div class="col-4">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4 ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image3.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div> <!-- 한 슬라이드 끝 -->
-							<div class="carousel-item bg-dark">
-								<div class="row"
-									style="width: 70%; float: none; margin: 0 auto;">
-									<div class="col-12">
-										<div class="row">
-											<div class="col-4">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample_musical1.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample-consert1.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4 ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample_musical2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="carousel-item bg-dark">
-								<div class="row"
-									style="width: 70%; float: none; margin: 0 auto;">
-									<div class="col-12">
-										<div class="row">
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample_musical2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4 ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image3.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<a class="carousel-control-prev" href="#demo" role="button"
-							data-slide="prev"> <span class="carousel-control-prev-icon"
-							aria-hidden="true"></span> <span class="sr-only">Previous</span>
-						</a> <a class="carousel-control-next" href="#demo" role="button"
-							data-slide="next"> <span class="carousel-control-next-icon"
-							aria-hidden="true"></span> <span class="sr-only">Next</span>
-						</a>
-					</div>
-					<!-- 배너광고 슬라이드 끝  -->
-				</div>
-			</div>
-			<!-- 배너 광고 끝 -->
+			
 			<div class="row mt-5 justify-content-center">
-				<div class="col-8">
+				<div class="col-12">
 					<div class="d-flex justify-content-between">
 						<div class="p-2">
 							<h5 class="text-danger d-inline bolder">${category }</h5>
@@ -183,7 +93,7 @@
 
 
 			<div class="row mt-2 justify-content-center">
-				<div class="col-8 border p-3">
+				<div class="col-12 border p-3">
 					<form method="get" id="search-form">
 						<input type="hidden" name="order" id="listOrder" value="dateOrder" />
 						<input type="hidden" name="category" value="${category }" />
@@ -269,7 +179,7 @@
 			<!-- 공연 목록 row시작 -->
 			<div class="row mt-5 justify-content-center">
 				<!-- 공연 목록 시작 -->
-				<div class="col-8 mt-3">
+				<div class="col-12 mt-3">
 
 				<c:forEach var="performance" items="${performances }">
 					<div class="row mt-2 mb-3"> <!-- 공연정보 카드 1 시작 -->				
@@ -358,7 +268,6 @@
 													</table>
 												</div>
 												<!-- 공연 간단 정보창 끝 -->
-												<!-- 메이트 정보(보여주지 않음) -->
 												<div class="col-5">
 													<div class="row justify-content-center">
 														<div class="col-12">
@@ -399,7 +308,7 @@
 												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
 												<div class="d-inline mr-2">
 													<i class='fas fa-heart mr-2'
-														style='font-size: 24px; color: red;'></i><label id="${performance.id }likes">${performance.likes }</label>
+														style='font-size: 24px; color: red;'></i><label>${performance.likes }</label>
 												</div>
 												<!-- 뒷풀이게시판 -->
 												<!--  
@@ -411,22 +320,17 @@
 											<div>
 												<button type="button" class="btn btn-outline-danger mr-2"
 													onclick="buyTicket(${performance.id})">예매하기</button>
-												<button type="button" class="btn btn-outline-dark"
+												<button type="button" class="btn btn-outline-dark mr-2"
 													onclick="showDetail(${performance.id})">상세보기</button>
+												<button type="button" class="btn btn btn-info mr-2"
+													onclick="updatePerformance(${performance.id})">수정하기</button>
+												<button type="button" class="btn btn btn-danger mr-2"
+													onclick="deletePerformance(${performance.id})">삭제하기</button>
 											</div>
 										</div>
-									</div>	<!-- 예매하기 상세보기 버튼그룹 끝 -->
-									<!-- 사용자가 보는 창에선 수정하기와 삭제하기가 보이지 않도록 한다 -->
-									<!--  
-									<div class="row mt-2 p-2">
-										<div class="col-12 d-flex justify-content-end">
-											<button type="button" class="btn btn btn-info mr-2"
-													onclick="updatePerformance(${performance.id})">수정하기</button>
-											<button type="button" class="btn btn btn-danger "
-													onclick="deletePerformance(${performance.id})">삭제하기</button>
-										</div>
-									</div>
-									-->
+									</div>	<!-- 예매하기 상세보기 수정하기 삭제하기 버튼그룹 끝 -->
+									
+									
 									<!--  
 									<div class="row">
 										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
@@ -562,8 +466,7 @@
 											<div>
 												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
 												<div class="d-inline mr-2">
-													<button type="button" class="btn btn-sm" id="clickLike"
-													data-no="" data-able="">
+													<button type="button" class="btn btn-sm" id="clickLike">
 														<i class='far fa-heart mr-2'
 														style='font-size: 24px;'></i>
 													</button>
@@ -594,18 +497,19 @@
 									
 										<button type="button" class="btn btn-outline-danger mr-4 btn-lg"
 											id="modalBuyBtn" data-no="">예매하기</button>
+									<!-- 
 										<button type="button" class="btn btn-outline-dark btn-lg" style="display:none;"
 											id="modalMateGroupBtn" data-no="">메이트 그룹</button>
-									</div>
-									
-									<!--  
-									<div class="row justify-content-end mt-3">
+									-->
 										<button type="button" class="btn btn btn-info mr-4 btn-lg"
 												id="modalUpdateBtn" data-no="" >수정하기</button>
-										<button type="button" class="btn btn btn-danger mr-2 btn-lg"
+										<button type="button" class="btn btn btn-danger mr-4 btn-lg"
 												id="modalDeleteBtn" data-no="">삭제하기</button>	
 									</div>
-									-->
+									
+									  
+									
+									
 									
 									<!-- 태그 창 끝 -->
 								</div>
@@ -714,12 +618,7 @@
 			</div>
 			-->
 			
-			<div class="row mt-5 justify-content-center">
-				<div class="col-8 text-right justify-content-end " >					
-					<button type="button" class="btn btn-primary mr-2" 
-					onclick="goAddPerformanceForm('${category}')">등록</button>					
-				</div>				
-			</div>
+			
 			
 			<div class="row mt-5 justify-content-center">
 				<!-- 페이지네이션 -->
@@ -746,13 +645,10 @@
 				</nav>
 			</div>
 			<!-- 페이지네이션 끝 -->
-		</div>
-		<!-- container 끝 -->
-
-	</div>
-	<!-- body 끝 -->
-	<div class="footer" style="height: 200px;"></div>
-
+		</div> <!-- container-fluid 끝 -->
+</div>
+</div>
+</div>
 <script type="text/javascript" src="/resources/jquery/jquery.min.js"></script>
 <script type="text/javascript"
 	src="/resources/bootstrap/js/bootstrap.min.js"></script>
@@ -830,11 +726,7 @@ $(":input[name=age]").closest('label').click(function(event) {
 	//console.log("변경후 formChanged값: "+$($changed).val());
 });
 
-function goAddPerformanceForm(category) {
-	console.log("등록버튼");
-	console.log(category);
-	location.href='/performance/add/step1.do?category='+category;
-}
+
 
 function goPage(no) {
 	console.log("page 링크를 눌렀다.");
@@ -956,14 +848,12 @@ function numberWithComma(num)
 }
 
 function showDetail(performanceId) {	
-	console.log("showDetail(performanceId="+performanceId+")");
-	var loginUser="${ LOGIN_USER.id}";
-	console.log("loginUserId: "+loginUser);
+	console.log("showDetail(performanceId="+performanceId+")");	
 	
 	$.ajax({
 		type:"GET",
 		url:"/performance/detail.do",
-		data: {id:performanceId, userId:loginUser},
+		data: {id:performanceId},
 		dataType: 'json',
 		success: function(data) {
 			var hallInfo = data.hallInfo;
@@ -1036,8 +926,6 @@ function showDetail(performanceId) {
 			$("#showMateGroupBtn").data("no", performance.id);
 			$("#modalDeleteBtn").data("no", performance.id);
 			$("#modalUpdateBtn").data("no", performance.id);
-			$("#clickLike").data("no", performance.id);
-			$("#clickLike").data("able", performance.id);	// 수정가능 여부 
 			
 			console.log("성공함");
 			console.log(performance);
@@ -1150,22 +1038,10 @@ $("#clickLike").click(function(){
 	
 	if (loginUser == "") {
 		console.log("로그인필요");
-		location.href="/signin.do";
-		return;
 	} else {
 		console.log("로그인됨");
 		// 아래의 작업을 수행한다.
 	}
-	
-	var no = $("#clickLike").data("no");
-	var modalLike = $("#modalLikes").text();
-	var listModalLike=$("#"+no+"likes").text();
-	
-	console.log("clickLike-info-no:"+no);
-	console.log("modalLike:"+modalLike);
-	console.log("listModalLike:"+listModalLike);
-	
-	//$('#myModal').modal('hide');
 	
 	$("#clickLike").find("i").hasClass("far")
 	if ($(this).find("i").hasClass("far")){	// 빈 하트라면, 좋아요를 하지 않았다면,

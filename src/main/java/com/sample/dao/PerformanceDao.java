@@ -38,6 +38,13 @@ public interface PerformanceDao {
 	String[] getGenreByCategory(String category);
 	
 	/**
+	 * 공연장 정보아이디에 해당하는 좋아요수를 반환한다.
+	 * @param performanceId
+	 * @return
+	 */
+	int getLikesByPerformanceInfoId(int performanceId);
+	
+	/**
 	 * 해당 카테고리에 속하는 모든 공연들을 조회한다. 
 	 * @param category
 	 * @return 해당 카테고리에 속한 공연들의 상세정보가 담긴 PerformanceDetailDto 배열
