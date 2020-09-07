@@ -56,9 +56,10 @@ public class NoticeController {
 	
 	@Autowired
 	private UserService userService;
-	
+	/*
 	@Value("${directory.save.noticeImg}")
 	private String saveDirectory;
+	*/
 	
 	/**
 	 * 
@@ -261,16 +262,20 @@ public class NoticeController {
 	
 	@PostMapping("/addImage.do")
 	@ResponseBody
-	public List<Image> addNoticeImage(@RequestParam("cate") String cate, @RequestParam("myFile") List<MultipartFile> myFile) throws Exception {
+	public List<Image> addNoticeImage(@RequestParam("cate") String cate
+			, @RequestParam("myFile") List<MultipartFile> myFile
+			, HttpServletRequest req) throws Exception {
 		
 		String category = cate;
+		HttpSession session = req.getSession();
 		
 		for (MultipartFile multipartFile : myFile) {
 			
 			if (!multipartFile.isEmpty()) {
 				String filename = multipartFile.getOriginalFilename();
+				String savedDirectory = session.getServletContext().getRealPath("/") + "resources/sample-images/";
 				
-				File file = new File(saveDirectory, filename);
+				File file = new File(savedDirectory, filename);
 				
 				FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(file));
 				
