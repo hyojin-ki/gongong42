@@ -1,6 +1,8 @@
 package com.sample.web.controller;
 
+ 
 import java.util.*;
+ 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
@@ -137,6 +139,7 @@ public class MyPageController {
         User user = (User) session.getAttribute("LOGIN_USER");
         String id = user.getId();
         if("intro".equals(param.get("req"))){
+
         	List<String> list = new ArrayList<>();
             String introText = param.get("tags").toString();
             if(!"".equals(introText)){
@@ -147,14 +150,15 @@ public class MyPageController {
                 introParam.put("list", list);
                 userService.updateUserIntro(introParam);
             }
+
         }else if("interest".equals(param.get("req"))){
-        	 List<UserIntrest> list = new ArrayList<>();
-             Map<String, Object> interestParam = new HashMap<>();
+            UserIntrest interest = new UserIntrest();
             String genreStr =  param.get("genre").toString();
             String artistStr = param.get("artist").toString();
             String performanceStr = param.get("performance").toString();
 
             if(!"".equals(genreStr)) {
+
             	 Arrays.stream(genreStr.substring(1).split("#")).forEach(s -> list.add(new UserIntrest(id,"#"+s,"genre")));
             }
             System.out.println();
@@ -164,6 +168,7 @@ public class MyPageController {
             System.out.println();
             if(!"".equals(performanceStr)) {
             	 Arrays.stream(performanceStr.substring(1).split("#")).forEach(s -> list.add(new UserIntrest(id,"#"+s,"performance")));
+
             }
             userService.deleteUserInterest(id);
             interestParam.put("list", list);

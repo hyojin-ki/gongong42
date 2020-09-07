@@ -7,7 +7,10 @@ import java.util.Map;
 
 import com.sample.dto.UserInfoDto;
 import com.sample.dto.UserPointHistoryDto;
-import com.sample.web.view.*;
+import com.sample.web.view.Coupon;
+import com.sample.web.view.User;
+import com.sample.web.view.UserBadge;
+import com.sample.web.view.UserPoint;
 
 public interface UserDao {
     void insertUser(User user);
@@ -17,10 +20,8 @@ public interface UserDao {
     void updateUser(User user);
     void insertUserPoint(UserPoint userPoint);
 
-    void updateUserInterest(Map<String, Object> param);
-    void updateUserIntro(Map<String, Object> param);
-    void deleteUserInterest(String userId);
-    void deleteUserIntro(String userId);
+    void updateUserInterest(User user);
+    void updateUserIntro(User user);
     // 회원정보 수정
     void fixUserMain(User user);
     void fixUserAddr(User user);

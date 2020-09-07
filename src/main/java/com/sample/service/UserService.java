@@ -15,10 +15,8 @@ public interface UserService {
     User loginUser(String id, String password);
     // 유저 포인트 업데이트 
     void updateUser(User user);
-    void updateUserInterest(Map<String, Object> param);
-    void updateUserIntro(Map<String, Object> param);
-    void deleteUserInterest(String userId);
-    void deleteUserIntro(String userId);
+    void updateUserInterest(User user);
+    void updateUserIntro(User user);
     User getUserDetail(String id);
     User getUserDetailByCondition(Map<String, Object> condition);
     List<Coupon> getCouponByUserId(String userId);

@@ -304,28 +304,7 @@
 		order by getDate desc
 		limit #{rowPerPage} offset #{startRow}
 	</select>
-	<delete id="deleteUserInterest" parameterType="string">
-		delete from user_interest where id = #{userId}
-	</delete>
-	<delete id="deleteUserIntro" parameterType="string">
-		delete from user_intro where id = #{userId}
-	</delete>
-	<insert id="updateUserInterest" parameterType="map">
-		insert into user_interest
-		(interestTag, id, interestCategory)
-		value 
-		<foreach collection="list" item="item" separator=",">
-		( #{item.interestTag},#{item.id},#{item.interestCategory} )
-		</foreach>
-	</insert>
-	<insert id="updateUserIntro" parameterType="map">
-		insert into user_intro
-		(id, introTag)
-		value
-		<foreach collection="list" item="item" separator=",">
-		(#{id}, #{item})
-		</foreach>
-	</insert>
+	
 
 </mapper>
 
