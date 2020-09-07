@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.sample.dto.UserPointHistoryDto;
-import com.sample.web.view.UserIntrest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -131,22 +130,12 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void updateUserInterest(Map<String, Object> param) {
-		userDao.updateUserInterest(param);
+	public void updateUserInterest(User user) {
+		userDao.updateUserInterest(user);
 	}
 
 	@Override
-	public void updateUserIntro(Map<String, Object> param) {
-		userDao.updateUserIntro(param);
-	}
-
-	@Override
-	public void deleteUserInterest(String userId) {
-		userDao.deleteUserInterest(userId);
-	}
-
-	@Override
-	public void deleteUserIntro(String userId) {
-		userDao.deleteUserIntro(userId);
+	public void updateUserIntro(User user) {
+		userDao.updateUserIntro(user);
 	}
 }

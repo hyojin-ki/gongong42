@@ -1,6 +1,8 @@
 package com.sample.web.controller;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
@@ -135,40 +137,34 @@ public class MyPageController {
     @ResponseBody
     public Map<String, Object> myProfile(HttpSession session, @RequestBody Map<String, Object> param){
         Map<String, Object> map = new HashMap<>();
-        User user = (User) session.getAttribute("LOGIN_USER");
-        String id = user.getId();
         if("intro".equals(param.get("req"))){
-            List<String> list = new ArrayList<>();
-            String introText = param.get("tags").toString();
-            if(!"".equals(introText)){
-                Arrays.stream(introText.substring(1).split("#")).forEach(s ->list.add("#" + s));
-                Map<String, Object> introParam = new HashMap<>();
-                userService.deleteUserIntro(id);
-                introParam.put("id", id);
-                introParam.put("list", list);
-                userService.updateUserIntro(introParam);
-            }
+
         }else if("interest".equals(param.get("req"))){
-            List<UserIntrest> list = new ArrayList<>();
-            Map<String, Object> interestParam = new HashMap<>();
+            UserIntrest interest = new UserIntrest();
             String genreStr =  param.get("genre").toString();
             String artistStr = param.get("artist").toString();
             String performanceStr = param.get("performance").toString();
 
             if(!"".equals(genreStr)) {
-                Arrays.stream(genreStr.substring(1).split("#")).forEach(s -> list.add(new UserIntrest(id,"#"+s,"genre")));
+                String[] genres = genreStr.substring(1).split("#");
+                for (String str : genres) {
+                    System.out.print(str);
+                }
             }
             System.out.println();
             if(!"".equals(artistStr)) {
-                Arrays.stream(artistStr.substring(1).split("#")).forEach(s -> list.add(new UserIntrest(id,"#"+s,"artist")));
+                String[] artists = artistStr.substring(1).split("#");
+                for (String str : artists) {
+                    System.out.print(str);
+                }
             }
             System.out.println();
             if(!"".equals(performanceStr)) {
-                Arrays.stream(performanceStr.substring(1).split("#")).forEach(s -> list.add(new UserIntrest(id,"#"+s,"performance")));
+                String[] performances = performanceStr.substring(1).split("#");
+                for (String str : performances) {
+                    System.out.print(str);
+                }
             }
-            userService.deleteUserInterest(id);
-            interestParam.put("list", list);
-            userService.updateUserInterest(interestParam);
         }
 
         return map;
