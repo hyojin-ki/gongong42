@@ -137,8 +137,9 @@ $(function() {
 		// $('#performance-place').val(place);
 		$('#performanceName').val(title);
 		$('#performanceStartDay').val(getFormatDate(numberToDate(startDate)));
-		$('#performanceEndDay').val(getFormatDate(numberToDate(endDate)));
+		$('#performanceEndDay').val(getFormatDate(numberToDate(endDate)));	
 		$('#performance-imgurl').val(imgUrl);
+		$("#image-preview").attr('src',imgUrl);
 		// $('#hallName').val(place);
 		$('.modal-backdrop').remove();
 		$('#performance-list-modal').modal('hide');

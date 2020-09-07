@@ -24,53 +24,11 @@
 <script type="text/javascript" src="/resources/js/jquery.color.js"></script>
 </head>
 <style>
-.card-bg {
-  display: block; 
-    margin-bottom: 20px;
-    line-height: 1.42857143;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12); 
-    transition: box-shadow .25s; 
-}
-.card-bg:hover {
-  box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-}
-.img-card {
-  width: 100%;
-  height:100%;
-  border-top-left-radius:2px;
-  border-top-right-radius:2px;
-  display:block;
-    overflow: hidden;
-}
-.img-card img{
-  width: 100%;
-  height: 100%;
-  object-fit:cover; 
-  transition: all .25s ease;
-} 
-.card-bg-content {
-  padding:15px;
-  text-align:left;
-}
-.card-bg-title {
-  margin-top:0px;
-  font-weight: 700;
-  font-size: 1.65em;
-}
-.card-bg-title a {
-  color: #000;
-  text-decoration: none !important;
-}
-.card-bg-read-more {
-  border-top: 1px solid #D4D4D4;
-}
-.card-bg-read-more a {
-  text-decoration: none !important;
-  padding:10px;
-  font-weight:600;
-  text-transform: uppercase
+.card-img-top:hover{
+	 cursor:pointer;
+	 transform: scale(1.1);
+	 -webkit-transition: transform 0.7s ease-in-out;
+	 background-color: rgba(1,1,1,0.7);
 }
 </style>
 <body>
@@ -84,25 +42,46 @@
 		<div id="fullpage">
 			<div class="section" id="section1">
 				<c:forEach var="consert" items="${concerts }">
-					<div class="slide slide-background-img"
-					 style="background-color:rgba(1,1,1,0.9); background-size:40% 100%; background-position:right;
-					 		background-image: url('/resources/sample-images/${consert.imagePath}'); cursor:pointer;" onclick="location.href='/performance/list.do?order=dateOrder&category=콘서트&pageNo=&changed=Y&title=${concert.title}&genre=전체&startDay=&endDay=&age=0'">
-					<div class="container-fluid">
+					<div class="slide">
 						<div class="row">
-								<div class="col-8 ele-opacity">
-									<div class="text-white font-weight-bold" style="font-size: 8rem;" >${consert.title }</div>
-										<div class="text-white" style="font-size: 4rem;">
-											<span><fmt:formatDate value="${consert.startDate }"
-													pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
-													value="${consert.endDate }" pattern="yyyy.MM.dd" /></span>
-											<div>${consert.hallinfo.name }</div>
+							<div class="col-4 text-center" style="margin: auto 0;">
+								<div class="text-white font-weight-bold" style="font-size: 4rem;" >${consert.title }</div>
+								<div class="text-white" style="font-size: 2rem;">
+									<span><fmt:formatDate value="${consert.startDate }"
+											pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
+										value="${consert.endDate }" pattern="yyyy.MM.dd" /></span>
+									<div>${consert.hallinfo.name }</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="d-flex justify-content-center">
+								<!-- card -->
+									<div class="card shadow transfrom-card" style="width: 30rem;">
+										<div class="card-body">
+											<img class="card-img-top" style="width: 438px; height: 613px;" src="/resources/sample-images/${consert.imagePath}" alt="" />
+										</div>
+										<div class="card-footer">
+											<div class="row">
+												<div class="col-12 text-center">
+												 <c:forEach var="genre" items="${consert.genres }"> 
+													<button class="btn btn-link" onclick="searchGenre('${genre}')">#${genre }</button>
+												</c:forEach>
+												</div>
+											</div>
+										</div>
+									</div>
+								<!-- card -->
+								</div>
+							</div>
+							<div class="col-4 text-center" style="margin: auto 0; padding: 100px;">
+								<div class="row">
+									<div class="col-12 bg-white card shadow" style="padding: 30px;">
+										Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minima perferendis reiciendis eius provident aut eveniet consectetur voluptates dicta soluta praesentium debitis non ab enim quis at ipsum officia iusto! Delectus totam accusamus quibusdam? Repellendus nulla vero consequuntur fugiat autem quidem rem. Quod necessitatibus corporis est explicabo sit perspiciatis illum mollitia laudantium consequatur dolores dolore aliquid molestiae consectetur quia nisi odio quae odit placeat a iusto hic ducimus voluptatem excepturi. Hic veritatis dicta esse possimus non quam eius? Aspernatur deserunt ratione cupiditate quasi aperiam. Minima modi dolores deserunt dolore ut assumenda quo omnis soluta. Eveniet qui ea in nemo quam!
 									</div>
 								</div>
-							<div class="col-4">
 							</div>
 						</div>
 					</div>
-				</div>
 				</c:forEach>
 			</div>
 			<div class="section" id="section1">
@@ -120,7 +99,7 @@
 													value="${musical.endDate }" pattern="yyyy.MM.dd" /></span>
 											<div>${musical.hallinfo.name }</div>
 										</div>
-								</div>
+							</div>
 							<div class="col-4">
 							</div>
 						</div>
@@ -178,17 +157,17 @@
 				navigation : true,
 				controlArrows : false,
 				navigationPosition : 'right',
-				sectionsColor : [ '#fff', '#fff', '#fff', '#000000' ],
-				keyboardScrolling : true,
-				afterRender: function () {
-					setInterval(function () {
-				    	$.fn.fullpage.moveSlideRight();
-				    	$('.ele-opacity').css('opacity','0').animate({
-							opacity:'1'
-						}, 2000);
-				    }, 5000);
-			   }
-
+				sectionsColor : [ '#4F5051', '#C87D26', '#fff', '#000000' ],
+				keyboardScrolling : true
+//				afterRender: function () {
+//					setInterval(function () {
+//				    	$.fn.fullpage.moveSlideRight();
+//				    	$('.ele-opacity').css('opacity','0').animate({
+//							opacity:'1'
+//						}, 2000);
+//				    }, 5000);
+//			   }
+//
 			});
 
 		});

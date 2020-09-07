@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -278,7 +279,15 @@
 								<div class="card-body">
 									<div class="row">
 										<div class="col-3">
-											<img src="/resources/sample-images/${performance.imagePath }" 
+										 <c:choose>
+											 <c:when test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
+											 	<c:set var="path" value="${performance.imagePath }"/>
+											 </c:when>
+											 <c:otherwise>
+											 	<c:set var="path" value="/resources/sample-images/${performance.imagePath }"/>
+											 </c:otherwise>
+										 </c:choose>
+											<img src="${path }" 
 												class="img-thumbnail">
 										</div>
 										<div class="col-9">

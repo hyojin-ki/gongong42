@@ -163,6 +163,7 @@ public class MateServiceImpl implements MateService {
 		mateDao.insertMateMember(newMember.getId(), mateId, performanceId);
 		// 메이트 타임 라인 자동으로 남기기
 		MateTimeLine mateTimeLine = new MateTimeLine();
+		mateTimeLine.setPerformanceId(performanceId);
 		mateTimeLine.setId(mateId);
 		mateTimeLine.setUser(newMember);
 		mateTimeLine.setContent(newMember.getId()+" 님이 입장하셨습니다. 환영해주세요!");
