@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<!-- 
-/*해당 메이트 방의 공연 */
-SELECT pmain.id, pmain.showdate, pmain.showTime, pmain.showNumber, pinfo.title, pinfo.category, pinfo.startDate, pinfo.endDate, 
-		 pinfo.rating, pinfo.runningTime, pinfo.provider, pinfo.imagePath, pinfo.`explain`,
-		 pgenre.genre, hmain.name, hmain.address, hmain.gpsX, hmain.gpsY
-FROM performance_main pmain
-JOIN performance_info pinfo ON pmain.infoId = pinfo.id
-JOIN performance_genre pgenre ON pgenre.id = pinfo.id
-JOIN hall_info_main hmain ON pmain.hallId = hmain.id
-WHERE pmain.id = 11;
-/* 해당 공연, 회차의, 해당 메이트 방의 유저 리스트 */
 
-SELECT umain.id, umain.nickname  FROM mate_main mmain
-JOIN mate_members mmem ON mmain.id = mmem.id
-JOIN user_main umain ON umain.id = mmem.userId
-WHERE mmain.id = 1;
-/* 해당 공연, 회차의  메이트 방 리스트 all */
-SELECT mmain.id, mmain.performanceId, mmain.seatGroup, mcat.id, mcat.category, mmain.groupSize, mmain.seatRate
-FROM mate_main mmain
-JOIN mate_category mcat ON mmain.category = mcat.id
-WHERE mmain.performanceId = 11;
-/*메이트방 태그들*/
-SELECT mmain.id, mtag.tag
-FROM mate_tag mtag
-right outer JOIN mate_main mmain ON mmain.id = mtag.id
-WHERE mmain.id = 1;
- -->
 
 <mapper namespace="com.sample.dao.MateDao">
 	

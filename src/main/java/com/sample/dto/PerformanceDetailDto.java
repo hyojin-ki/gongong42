@@ -25,6 +25,7 @@ public class PerformanceDetailDto {
     private String hallAddress;
     private List<String> genres;
     private List<PerformanceSeatPrice> seatPrices;
+    private int hallInfoId;
     // 예매횟수 추가해야함 
     private int reserveCount;
     
@@ -181,4 +182,13 @@ public class PerformanceDetailDto {
 	public void setReserveCount(int reserveCount) {
 		this.reserveCount = reserveCount;
 	}
+
+	public int getHallInfoId() {
+		return hallInfoId;
+	}
+
+	public void setHallInfoId(int hallInfoId) {
+		this.hallInfoId = hallInfoId;
+	}
+	
 }

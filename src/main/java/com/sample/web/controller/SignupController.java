@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.sample.service.UserService;
 import com.sample.web.form.FindUserInfo;
@@ -27,7 +27,7 @@ import com.sample.web.form.UserUpdateForm;
 import com.sample.web.view.User;
 
 @Controller
-
+@SessionAttributes({"LOGIN_USER", "LOGIN_TYPE"})
 public class SignupController {
 
 	@Autowired
@@ -176,9 +176,8 @@ public class SignupController {
 	}
 
 	@RequestMapping("/userUpdate.do")
-
 	public String updateUserInfo(@ModelAttribute("userUpdateForm") @Valid UserUpdateForm userUpdateForm,
-			BindingResult errors, HttpSession session) {
+			BindingResult errors, HttpSession session, Model model) {
 
 		Map<String, Object> condition = new HashMap<String, Object>();
 
@@ -224,8 +223,11 @@ public class SignupController {
 
 		// 회원 정보 수정 처리
 		userService.fixUser(user);
+		session.invalidate();
+		model.addAttribute("LOGIN_USER", user);
+		model.addAttribute("LOGIN_TYPE", "web");
 
-		return "mypage/mypagemain";
+		return "redirect:/mypage/mypagemain.do";
 	}
 		
 	@RequestMapping("/deleteUser.do")

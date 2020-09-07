@@ -950,6 +950,10 @@ a:hover {
 		</div>
 	</div>
 </div>
+<div class="footer" style="height: 200px;">
+		 <%@ include file="../common/footer.jsp" %>
+	</div>
+
 <script type="text/javascript">
 $(function() {
 	
