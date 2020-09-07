@@ -1,8 +1,6 @@
 package com.sample.web.controller;
-
  
 import java.util.*;
- 
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
@@ -139,26 +137,24 @@ public class MyPageController {
         User user = (User) session.getAttribute("LOGIN_USER");
         String id = user.getId();
         if("intro".equals(param.get("req"))){
-
-        	List<String> list = new ArrayList<>();
-            String introText = param.get("tags").toString();
-            if(!"".equals(introText)){
-                Arrays.stream(introText.substring(1).split("#")).forEach(s ->list.add("#" + s));
-                Map<String, Object> introParam = new HashMap<>();
-                userService.deleteUserIntro(id);
-                introParam.put("id", id);
-                introParam.put("list", list);
-                userService.updateUserIntro(introParam);
-            }
-
+        	 List<String> list = new ArrayList<>();
+             String introText = param.get("tags").toString();
+             if(!"".equals(introText)){
+                 Arrays.stream(introText.substring(1).split("#")).forEach(s ->list.add("#" + s));
+                 Map<String, Object> introParam = new HashMap<>();
+                 userService.deleteUserIntro(id);
+                 introParam.put("id", id);
+                 introParam.put("list", list);
+                 userService.updateUserIntro(introParam);
+             }
         }else if("interest".equals(param.get("req"))){
-            UserIntrest interest = new UserIntrest();
+        	 List<UserIntrest> list = new ArrayList<>();
+             Map<String, Object> interestParam = new HashMap<>();
             String genreStr =  param.get("genre").toString();
             String artistStr = param.get("artist").toString();
             String performanceStr = param.get("performance").toString();
 
             if(!"".equals(genreStr)) {
-
             	 Arrays.stream(genreStr.substring(1).split("#")).forEach(s -> list.add(new UserIntrest(id,"#"+s,"genre")));
             }
             System.out.println();
