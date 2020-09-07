@@ -239,7 +239,9 @@
                 dataType:'JSON'
             }).done(
                 console.log('done')
-            ).fail().always()
+            ).fail().always(function(){
+                location.reload();
+            })
 
         })
         $('#update-intro').on('click', function(){
@@ -255,9 +257,9 @@
                     dataType:'JSON'
                 }
 
-            ).done(
-                console.log('done')
-            ).fail().always()
+            ).done().fail().always(function(){
+                location.reload();
+            })
 
 
         })
