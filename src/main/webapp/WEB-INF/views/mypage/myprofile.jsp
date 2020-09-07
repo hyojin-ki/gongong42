@@ -204,64 +204,6 @@
     </div>
     <script type="text/javascript">
 
-        $('#interest-modal').on('show.bs.modal', function (event) {
-
-            const genreText = $('#interest-genre').children().text()
-            const artistText = $('#interest-artist').children().text()
-            const performanceText = $('#interest-performance').children().text()
-
-            const modal = $(this)
-
-            modal.find('#genre-tag').val(genreText)
-            modal.find('#artist-tag').val(artistText)
-            modal.find('#performance-tag').val(performanceText)
-        })
-        $('#intro-tag-update-modal').on('show.bs.modal', function (event) {
-
-            const tagText = $('#intro-tags').children().text()
-
-            const modal = $(this)
-
-            modal.find('.modal-body input').val(tagText)
-        })
-        $('#update-interest').on('click',function(){
-            let genreText =$('#genre-tag').val()
-            let artistText =$('#artist-tag').val()
-            let performanceText =$('#performance-tag').val()
-
-            let updateMap = {'req':'interest','genre':genreText,'artist':artistText,'performance':performanceText}
-            console.log(updateMap)
-
-            $.ajax({
-                url: '/mypage/myProfileUpdate.do',
-                contentType: 'application/json; charset=utf-8',
-                data:JSON.stringify(updateMap),
-                type:'POST',
-                dataType:'JSON'
-            }).done(
-                console.log('done')
-            ).fail().always()
-
-        })
-        $('#update-intro').on('click', function(){
-            let text = $('#introduce-tag').val()
-            let updateMap = {'req':'intro','tags': text}
-            console.log(updateMap)
-            $.ajax(
-                {
-                    url: '/mypage/myProfileUpdate.do',
-                    contentType: 'application/json; charset=utf-8',
-                    data:JSON.stringify(updateMap),
-                    type:'POST',
-                    dataType:'JSON'
-                }
-
-            ).done(
-                console.log('done')
-            ).fail().always()
-
-
-        })
 
     </script>
 </div>

@@ -130,7 +130,7 @@ public class MyPageController {
         return map;
     }
 
-    @PostMapping("/myProfileUpdate.do")
+    @RequestMapping("/myProfileUpdate.do")
     @ResponseBody
     public Map<String, Object> myProfile(HttpSession session, @RequestBody Map<String, Object> param){
         Map<String, Object> map = new HashMap<>();
