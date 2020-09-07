@@ -1,5 +1,7 @@
 package com.sample.web.form;
 
+import java.util.List;
+
 public class QnaForm {
 	
 	private String qnaCategory;
@@ -51,12 +53,11 @@ public class QnaForm {
 	public void setQnaOpened(boolean qnaOpened) {
 		this.qnaOpened = qnaOpened;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "QnaForm [qnaCategory=" + qnaCategory + ", qnaTitle=" + qnaTitle + ", qnaContent=" + qnaContent
-				+ ", qnaOpened=" + qnaOpened + "]";
+				+ ", qnaOpened=" + qnaOpened + ", qnaId=" + qnaId + "]";
 	}
-	
 
 }

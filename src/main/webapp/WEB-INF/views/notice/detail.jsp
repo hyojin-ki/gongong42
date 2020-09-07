@@ -94,8 +94,6 @@ a:hover {
 						<div class="row category" id="category" align="center">
 							<div class="col" id="notice-list"><a href="/notice/list.do">공지사항</a></div>
 							<div class="col" id="QnA-list"><a href="/qna/list.do">QnA</a></div>
-							<div class="col">자주하는질문</div>
-							<div class="col">나의문의내역</div>
 						</div>
 					</div>
 				</div>
@@ -177,7 +175,6 @@ a:hover {
 									<img src="../resources/sample-images/${detail.images[1].imagePath }" style="width: 125px; height: 100px;">
 									<img src="../resources/sample-images/${detail.images[2].imagePath }" style="width: 125px; height: 100px; margin-top: 5px;">
 									<div><button type="button" class="btn btn-info btn-sm" data-toggle='modal' data-target="#detail-image-sizeUp" style="margin-top: 10px;">크게보기</button></div>
-									
 								</div>
 							</c:when>
 							<c:when test="${detail.images.size() == 4 }">
@@ -393,17 +390,6 @@ a:hover {
 						</div>
 						<c:set var="index" value="${index + 1 }"/>
 					</c:forEach>
-					<!--  
-						<div class="carousel-item">
-							<img class="d-block w-100" src="../resources/sample-images/${detail.images[1].imagePath }">
-						</div>
-						<div class="carousel-item">
-							<img class="d-block w-100" src="../resources/sample-images/${detail.images[2].imagePath }">
-						</div>
-						<div class="carousel-item">
-							<img class="d-block w-100" src="../resources/sample-images/${detail.images[3].imagePath }">
-						</div>
-					-->
 					</div>
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -456,11 +442,11 @@ $(function () {
 			$(element).addClass("active")
 		}
 	})
-	*/
+	
 	$(".carousel-item").on("change", function () {
 		console.log(this);
 	})
-	
+	*/
 	
 })
 </script>

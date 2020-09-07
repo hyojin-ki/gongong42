@@ -96,8 +96,6 @@ a:hover {
 						<div class="row category" id="notice-category" align="center">
 							<div class="col" id="notice-list"><a href="/notice/list.do?pageNo=1&rows=10&status=blank&keyword=blank">공지사항</a></div>
 							<div class="col" id="QnA-list"><a href="/qna/list.do">QnA</a></div>
-							<div class="col" id="">자주하는질문</div>
-							<div class="col" id="">나의문의내역</div>
 						</div>
 					</div>
 				</div>
@@ -238,7 +236,7 @@ a:hover {
 	</div>
 	</div>
 	</div>
-<%@ include file="noticeModifyModal.jsp" %>
+<%@ include file="imageModifyModal.jsp" %>
 </div>
 <script type="text/javascript">
 $(function() {
@@ -421,8 +419,6 @@ $(function() {
 			  lang: "ko-KR",					// 한글 설정
 			  placeholder: '최대 자까지 가능합니다.'	//placeholder 설정
 	});
-	
-	
 })
 	
 </script>

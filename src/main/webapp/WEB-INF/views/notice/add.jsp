@@ -100,8 +100,6 @@ a:hover {
 						<div class="row category" id="notice-category" align="center">
 							<div class="col" id="notice-list"><a href="/notice/list.do">공지사항</a></div>
 							<div class="col" id="QnA-list"><a href="/qna/list.do">QnA</a></div>
-							<div class="col" id="">자주하는질문</div>
-							<div class="col" id="">나의문의내역</div>
 						</div>
 					</div>
 				</div>
@@ -197,9 +195,9 @@ a:hover {
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-3 form-group">
+						<div class="col-4 form-group">
 							<strong><label>본문제목</label></strong>(필수)
-							<input class="form-control" type="text" name="subTitle"  />
+							<input class="form-control" type="text" name="subTitle" placeholder="본문제목, 최대  25자까지 가능합니다." />
 						</div>
 					</div>
 					<div class="row">
@@ -240,7 +238,7 @@ a:hover {
 		</div>
 	</div>
 	</div>
-<%@ include file="noticeSearchModal.jsp" %>
+<%@ include file="imageSearchModal.jsp" %>
 </div>
 </div>
 <script type="text/javascript">
@@ -335,7 +333,7 @@ $(function() {
 			  maxHeight: null,             // 최대 높이
 			  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
 			  lang: "ko-KR",					// 한글 설정
-			  placeholder: '최대 자까지 가능합니다.'	//placeholder 설정
+			  placeholder: '최대 50자까지 가능합니다.'	//placeholder 설정
 	});
 	
 	$("#form-title").on('keyup', function() {
