@@ -46,6 +46,7 @@ import com.sample.web.view.PerformanceGenre;
 import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.PerformanceSchedule;
 import com.sample.web.view.PerformanceSeatPrice;
+import com.sample.web.view.UserLikes;
 import com.sun.mail.iap.ByteArray;
 
 @Service
@@ -464,6 +465,24 @@ public class PerformanceServiceImpl implements PerformanceService {
 	@Override
 	public List<PerformanceDetailDto> getPerformanceByCategoryLimit(String category) {
 		return performanceDao.getPerformanceByCategoryLimit(category);
+	}
+
+	@Override
+	public UserLikes getUserLikesByUserIdAndPerformanceInfoId(UserLikes userLikes) {
+		// TODO Auto-generated method stub
+		return performanceDao.getUserLikesByUserIdAndPerformanceInfoId(userLikes);
+	}
+
+	@Override
+	public void insertPerformanceLikes(UserLikes userLikes) {
+		// TODO Auto-generated method stub
+		performanceDao.insertPerformanceLikes(userLikes);
+	}
+
+	@Override
+	public void deletePerformanceLikes(UserLikes userLikes) {
+		// TODO Auto-generated method stub
+		performanceDao.deletePerformanceLikes(userLikes);
 	}
  
 }

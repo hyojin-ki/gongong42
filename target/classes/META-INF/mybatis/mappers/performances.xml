@@ -70,7 +70,7 @@
 			and A.rating = #{age}
 		</if>
 		ORDER BY 
-			A.id	
+			A.startDate		
 	</select>
 		
 	<select id="searchPerformanceByPage" parameterType="map" resultMap="PerformanceDetailDtoResultMap">
@@ -120,7 +120,7 @@
 			and A.rating = #{age}
 		</if>
 		ORDER BY 
-			A.id	
+			A.startDate		
 		LIMIT 
 			#{endIndex} OFFSET #{beginIndex}	
 		
@@ -176,7 +176,7 @@
 				and A.rating = #{age}
 			</if>
 			ORDER BY 
-				A.id
+				A.startDate	
 		) F
 	</select>
 	
@@ -210,7 +210,7 @@
 		AND
 			endDate >= NOW()
 		ORDER BY 
-			A.id	
+			A.startDate		
 		LIMIT 
 			#{endIndex} OFFSET #{beginIndex}	
 	</select>
@@ -247,7 +247,7 @@
 			AND
 				endDate >= NOW()
 			ORDER BY 
-				A.id
+				A.startDate	
 		) F
 	
 	</select>
@@ -399,7 +399,7 @@
 		AND 
 			A.endDate >= NOW()
 		ORDER BY 
-			A.id	
+			A.startDate		
 	</select>
 
 	<select id="getPerformanceById" parameterType="int" resultMap="PerformanceDetailDtoResultMap">
@@ -440,6 +440,18 @@
 		AND 
 			seatRate LIKE #{seatRate}
 	
+	</select>
+	
+	<select id="getUserLikesByUserIdAndPerformanceInfoId" parameterType="UserLikes" resultType="UserLikes">
+		SELECT 
+			id, infoId
+		FROM 
+			user_likes
+		WHERE 
+			id LIKE #{id}
+		AND 
+			infoId = #{performanceInfoId}
+		
 	</select>
 	
 	
@@ -485,6 +497,14 @@
 		</selectKey>		
 	</insert>
 	
+	<insert id="insertPerformanceLikes" parameterType="UserLikes" >
+		INSERT INTO 
+			user_likes
+			(id, infoId)
+		VALUES
+			(#{id}, #{performanceInfoId})		
+	</insert>
+	
 	<select id="getPerformanceMain" parameterType="int" resultType="PerformanceMain">
 		SELECT 
 			id, infoId, hallId, showDate, showTime, showNumber
@@ -510,6 +530,14 @@
 		DELETE FROM performance_info
 		WHERE 
 			id = #{value};
+	</delete>
+	
+	<delete id="deletePerformanceLikes" parameterType="UserLikes">
+		DELETE FROM user_likes
+		WHERE
+			id LIKE #{id}
+		AND
+			infoId = #{performanceInfoId}
 	</delete>
 	
 	<update id="updatePerformanceInfo" parameterType="Performance">

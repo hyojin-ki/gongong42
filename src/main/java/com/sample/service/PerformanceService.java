@@ -13,6 +13,7 @@ import com.sample.web.view.Performance;
 import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.PerformanceSchedule;
 import com.sample.web.view.PerformanceSeatPrice;
+import com.sample.web.view.UserLikes;
 
 public interface PerformanceService {
     void addPerformance(Performance performance);
@@ -102,15 +103,14 @@ public interface PerformanceService {
      */
     PerformanceSeatPrice getPerformanceSeatPriceByPerformanceInfoAndSeatRate(PerformanceSeatPrice performceSeatPrice);	
     
-    
     /**
-     * 공연정보아이디에 해당하는 공연정보를 삭제한다.
-     * 공연정보장르, 공연정보과석가격, 공연정보테이블에서 공연정보아이디에 해당하는 행들이 삭제된다. 
-     * @param performaneInfoId
-     */
-    void deletePerformance(int performanceInfoId);
+	 * 사용자아이디와 공연정보아이디를 통해 특정공연에대한 사용자의 좋아요 정보를 반환한다.
+	 * @param userLikes
+	 * @return
+	 */
+	UserLikes getUserLikesByUserIdAndPerformanceInfoId(UserLikes userLikes);
     
-    /**
+	/**
      * 공연정보를 데이터베이스에 저장한다.
      * 공연정보, 공연장소, 좌석정보에 해당하는 정보들이 저장된다.
      * @param performance
@@ -122,6 +122,29 @@ public interface PerformanceService {
     void insertPerformance(Performance performance, HallInfo hallInfo, String insertHallYn
     		,Map<String, Integer> seatPrices)
     				throws Exception;
+    
+    /**
+	 * 공연정보아이디와 사용자아이디가 담긴 UserLikes 객체를 입력으로 받아 사용자가 해당공연에 대한 좋아요를 추가한다.
+	 * @param userLikes
+	 */
+	void insertPerformanceLikes(UserLikes userLikes);
+	
+    
+    /**
+     * 공연정보아이디에 해당하는 공연정보를 삭제한다.
+     * 공연정보장르, 공연정보과석가격, 공연정보테이블에서 공연정보아이디에 해당하는 행들이 삭제된다. 
+     * @param performaneInfoId
+     */
+    void deletePerformance(int performanceInfoId);
+    
+    /**
+	 * 공연정보아이디와 사용자아이디가 담긴 UserLikes 객체를 입력으로 받아 사용자가 해당공연에 대한 좋아요를 삭제한다.
+	 * @param userLikes
+	 */
+	void deletePerformanceLikes(UserLikes userLikes);
+    
+    		
+    
     /**
      * 공연정보를 업데이트한다.
      * 공연정보, 공연장르 테이블이 업데이트 된다.

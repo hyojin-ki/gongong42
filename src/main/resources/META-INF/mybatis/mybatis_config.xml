@@ -45,6 +45,7 @@
 		<typeAlias type="com.sample.web.form.PerformanceUpdateForm" alias="PerformanceUpdateForm"/>
 		<typeAlias type="com.sample.dto.UserPointHistoryDto" alias="UserPointHistoryDto"/>
 		<typeAlias type="com.sample.web.view.QnaImage" alias="QnaImage"/>
+		<typeAlias type="com.sample.web.view.UserLikes" alias="UserLikes"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="META-INF/mybatis/mappers/users.xml"/>

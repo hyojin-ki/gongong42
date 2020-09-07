@@ -34,8 +34,12 @@
 	</div>
 	
 	<!-- 테스트용 db -->
-	  
-	
+	 <c:forEach var="performance" items="${performances }" varStatus="status">
+	 	<p>	${status.count} ${performance.title } </p>
+	 	
+	 	
+	 </c:forEach>
+	<!-- 테스트용 db끝 -->
 	
 	<div class="body" style="margin-top: 50px;">
 		<div class="container-fluid">
@@ -572,7 +576,7 @@
 												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
 												<div class="d-inline mr-2">
 													<button type="button" class="btn btn-sm" id="clickLike"
-													data-no="" data-able="">
+													data-no="" data-liked="">
 														<i class='far fa-heart mr-2'
 														style='font-size: 24px;'></i>
 													</button>
@@ -979,6 +983,7 @@ function showDetail(performanceId) {
 		success: function(data) {
 			var hallInfo = data.hallInfo;
 			var performance = data.performance;
+			var userLiked = data.userLiked;
 			console.log("디테일을 눌렀다.");
 			
 			$("#modalImg").attr("src", "/resources/sample-images/${performance.imagePath }"+performance.imagePath);			
@@ -1048,7 +1053,14 @@ function showDetail(performanceId) {
 			$("#modalDeleteBtn").data("no", performance.id);
 			$("#modalUpdateBtn").data("no", performance.id);
 			$("#clickLike").data("no", performance.id);
-			$("#clickLike").data("able", performance.id);	// 수정가능 여부 
+			$("#clickLike").data("liked", userLiked);	// 이전에 좋아요를 눌렀는지 여부 
+			
+			// 이전에 좋아요 했으면 빨간 하트
+			if (userLiked == "Y") {
+				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red");
+			} else {
+				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");
+			}
 			
 			console.log("성공함");
 			console.log(performance);
@@ -1156,7 +1168,7 @@ $("#clickLike").click(function(){
 	//console.log($(this).find("i"));
 	
 	// 로그인 여부 확인하고 로그인 상태이면, 좋아요 표시
-	var loginUser="${ LOGIN_USER}";
+	var loginUser="${ LOGIN_USER.id}";
 	console.log(loginUser);
 	
 	if (loginUser == "") {
@@ -1168,21 +1180,63 @@ $("#clickLike").click(function(){
 		// 아래의 작업을 수행한다.
 	}
 	
-	var no = $("#clickLike").data("no");
-	var modalLike = $("#modalLikes").text();
-	var listModalLike=$("#"+no+"likes").text();
+	var performanceId = $("#clickLike").data("no");
+	var liked = $("#clickLike").data("liked")
+	var modalLike = parseInt($("#modalLikes").text());
+	var listModalLike = parseInt($("#"+performanceId+"likes").text());
 	
-	console.log("clickLike-info-no:"+no);
+	console.log("clickLike-info-no:"+performanceId);
+	console.log("clickLike-info-liked:"+liked);	// 이미 좋아요를 했으면 Y, 아니면 N
 	console.log("modalLike:"+modalLike);
 	console.log("listModalLike:"+listModalLike);
 	
 	//$('#myModal').modal('hide');
-	
-	$("#clickLike").find("i").hasClass("far")
-	if ($(this).find("i").hasClass("far")){	// 빈 하트라면, 좋아요를 하지 않았다면,
-		$(this).find("i").removeClass("far").addClass("fas").css("color", "red");
-	} else {	// 좋아요 취소
-		$(this).find("i").removeClass("fas").addClass("far").css("color", "black");
+	// $(this).find("i").hasClass("far") 빈하트 표시	
+	if (liked == "N"){	// 빈 하트라면, 좋아요를 하지 않았다면,
+			
+		$.ajax({
+			type:"GET",
+			url:"/performance/insertLikes.do",
+			data: {id:performanceId, userId:loginUser},
+			dataType: 'json',
+			success: function(data) {
+				var successYn = data.successYn;
+				console.log("successYn: "+ successYn);
+				
+				$("#clickLike").data("liked","Y");	// 좋아요를 눌렀다고 정보변경
+				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red"); // 하트 색깔 변경
+				
+				var updateLikes = modalLike+1;
+				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
+				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
+				
+				console.log("liked: "+$("#clickLike").data("liked"));
+			}
+		})
+		
+	} else if (liked == "Y"){	// 좋아요 취소
+			
+		$.ajax({
+			type:"GET",
+			url:"/performance/deleteLikes.do",
+			data: {id:performanceId, userId:loginUser},
+			dataType: 'json',
+			success: function(data) {
+				var successYn = data.successYn;
+				console.log("successYn: "+ successYn);
+				
+				$("#clickLike").data("liked", "N");	// 좋아요를 취소햇다고 정보변경
+				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");	// 하트 색깔 변경
+				
+				var updateLikes = modalLike-1;
+				
+				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
+				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
+				
+				console.log("liked: "+$("#clickLike").data("liked"));
+			}
+		})
+		
 	}
 	
 	

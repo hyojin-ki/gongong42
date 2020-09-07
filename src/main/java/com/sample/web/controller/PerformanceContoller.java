@@ -39,6 +39,7 @@ import com.sample.web.view.Pagination;
 import com.sample.web.view.Performance;
 import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.PerformanceSeatPrice;
+import com.sample.web.view.UserLikes;
 
 
 
@@ -857,6 +858,8 @@ public class PerformanceContoller {
 			//performanceForm.setAge(age);
 		}
 		
+		// 정렬 정리 
+		
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
 		
@@ -914,18 +917,31 @@ public class PerformanceContoller {
 			@RequestParam("userId") String userId) {
 		PerformanceDetailDto performance = performanceService.getPerformanceDetailById(performanceId);
 		HallInfo hallInfo = hallService.getHallInfoByPerformanceId(performanceId);
+		UserLikes userLikes = new UserLikes();
+		String userLiked = ""; // 좋아요를 이미 눌렀는지 여부
 		
 		System.out.println("여긴 performance/detail.do 입니다.");
 		
 		if ("".equals(userId)) {
 			System.out.println("로그인되지 않았습니다.");
+			userLiked = "N";
 		}else {
-			System.out.println("loginUserId:" + userId);			
+			System.out.println("loginUserId:" + userId);
+			userLikes.setId(userId);
+			userLikes.setPerformanceInfoId(performanceId);
+			UserLikes resultUserLikes = performanceService.getUserLikesByUserIdAndPerformanceInfoId(userLikes);
+			
+			if (resultUserLikes != null) {
+				userLiked ="Y";
+			}else {
+				userLiked = "N";
+			}
 		}
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("performance", performance);
 		map.put("hallInfo", hallInfo);
+		map.put("userLiked", userLiked);
 		System.out.println("detail옴");
 		
 		return map;
@@ -958,4 +974,35 @@ public class PerformanceContoller {
 		return genres;
 	}
 
+	@GetMapping("/insertLikes.do")
+	public @ResponseBody Map<String, Object> insertLikes(@RequestParam("id") int performanceId,
+			@RequestParam("userId") String userId) {
+	
+		UserLikes userLikes = new UserLikes();
+		userLikes.setId(userId);
+		userLikes.setPerformanceInfoId(performanceId);
+		
+		performanceService.insertPerformanceLikes(userLikes);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("successYn", "Y");
+		return map;
+	}
+	
+	@GetMapping("/deleteLikes.do")
+	public @ResponseBody Map<String, Object> deleteLikes(@RequestParam("id") int performanceId,
+			@RequestParam("userId") String userId) {
+	
+		UserLikes userLikes = new UserLikes();
+		userLikes.setId(userId);
+		userLikes.setPerformanceInfoId(performanceId);
+		
+		performanceService.deletePerformanceLikes(userLikes);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("successYn", "Y");
+		return map;
+	}
+	
+	
 }

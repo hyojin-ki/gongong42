@@ -14,6 +14,7 @@ import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.Performance;
 import com.sample.web.view.PerformanceSchedule;
 import com.sample.web.view.PerformanceSeatPrice;
+import com.sample.web.view.UserLikes;
 import com.sample.dto.PerformanceDetailDto;
 
 public interface PerformanceDao {
@@ -43,6 +44,15 @@ public interface PerformanceDao {
 	 * @return
 	 */
 	int getLikesByPerformanceInfoId(int performanceId);
+	
+	
+	/**
+	 * 사용자아이디와 공연정보아이디를 통해 특정공연에대한 사용자의 좋아요 정보를 반환한다.
+	 * @param userLikes
+	 * @return
+	 */
+	UserLikes getUserLikesByUserIdAndPerformanceInfoId(UserLikes userLikes);
+	
 	
 	/**
 	 * 해당 카테고리에 속하는 모든 공연들을 조회한다. 
@@ -187,6 +197,18 @@ public interface PerformanceDao {
 	 * @param performance
 	 */
 	void updatePerformanceHallInfoId(Performance performance);
+	
+	/**
+	 * 공연정보아이디와 사용자아이디가 담긴 UserLikes 객체를 입력으로 받아 사용자가 해당공연에 대한 좋아요를 추가한다.
+	 * @param userLikes
+	 */
+	void insertPerformanceLikes(UserLikes userLikes);
+	
+	/**
+	 * 공연정보아이디와 사용자아이디가 담긴 UserLikes 객체를 입력으로 받아 사용자가 해당공연에 대한 좋아요를 삭제한다.
+	 * @param userLikes
+	 */
+	void deletePerformanceLikes(UserLikes userLikes);
 	
 	
    /**
