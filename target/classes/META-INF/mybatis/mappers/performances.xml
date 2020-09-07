@@ -12,7 +12,7 @@
 		<result column="startDate" property="startDate"/>
 		<result column="endDate" property="endDate"/>
 		<result column="point" property="point"/>
-		<result column="likes" property="likes"/>
+		
 		<result column="imagePath" property="imagePath"/>
 		<result column="explain" property="explain"/>
 		<result column="hallName" property="hallName"/>
@@ -20,6 +20,7 @@
 		<result column="reserveCount" property="reserveCount" />
 		<collection property="genres" select="getGenreById" column="id" ofType="string"/>
 		<collection property="seatPrices" select="getPerformanceSeatPrice" column="id" ofType="PerformanceSeatPrice"/>
+		<collection property="likes" select="getLikesByPerformanceInfoId" column="id" ofType="int" />
 	</resultMap>
 
 	<select id="searchPerformance" parameterType="map" resultMap="PerformanceDetailDtoResultMap">
@@ -41,6 +42,8 @@
 					A.reserveCount  as reserveCount	
 		FROM 
 			performance_info A		
+		JOIN
+			performance_main B ON B.infoId = A.id
 		JOIN 
 			hall_info_main C ON C.id =A.hallInfoId
 		JOIN 
@@ -62,7 +65,7 @@
 		<if test="endDate != null">
 			and #{endDate} > A.endDate
 		</if>
-			and endDate > NOW()		
+			and endDate >= NOW()		
 		<if test="age != null">
 			and A.rating = #{age}
 		</if>
@@ -89,6 +92,8 @@
 					A.reserveCount  as reserveCount						
 		FROM 
 			performance_info A		
+		JOIN
+			performance_main B ON B.infoId = A.id	
 		JOIN 
 			hall_info_main C ON C.id = A.hallInfoId
 		JOIN 
@@ -110,7 +115,7 @@
 		<if test="endDate != null">
 			and #{endDate} > A.endDate
 		</if>			
-			and A.endDate > NOW()
+			and A.endDate >= NOW()
 		<if test="age != null">
 			and A.rating = #{age}
 		</if>
@@ -143,6 +148,8 @@
 						A.reserveCount  as reserveCount						
 			FROM 
 				performance_info A		
+			JOIN
+				performance_main B ON B.infoId = A.id
 			JOIN 
 				hall_info_main C ON C.id =A.hallInfoId
 			JOIN 
@@ -164,7 +171,7 @@
 			<if test="endDate != null">
 				and #{endDate} > A.endDate
 			</if>		
-				and A.endDate > NOW()	
+				and A.endDate >= NOW()	
 			<if test="age != null">
 				and A.rating = #{age}
 			</if>
@@ -192,6 +199,8 @@
 					A.reserveCount  as reserveCount						
 		FROM 
 			performance_info A		
+		JOIN
+			performance_main B ON B.infoId = A.id
 		JOIN 
 			hall_info_main C ON C.id = A.hallInfoId
 		JOIN 
@@ -199,7 +208,7 @@
 		WHERE 
 			A.title like CONCAT('%', #{title}, '%') 
 		AND
-			endDate > NOW()
+			endDate >= NOW()
 		ORDER BY 
 			A.id	
 		LIMIT 
@@ -226,7 +235,9 @@
 						C.address		as hallAddress,
 						A.reserveCount  as reserveCount						
 			FROM 
-				performance_info A		
+				performance_info A	
+			JOIN
+				performance_main B ON B.infoId = A.id	
 			JOIN 
 				hall_info_main C ON C.id =A.hallInfoId
 			JOIN 
@@ -234,7 +245,7 @@
 			WHERE 
 				A.title like CONCAT('%', #{title}, '%') 
 			AND
-				endDate > NOW()
+				endDate >= NOW()
 			ORDER BY 
 				A.id
 		) F
@@ -308,6 +319,14 @@
 		WHERE category= #{value}	
 	</select>
 	
+	<select id="getLikesByPerformanceInfoId" parameterType="int" resultType="int">
+		SELECT COUNT(*) AS likes
+		FROM 
+			user_likes
+		WHERE 
+			infoid=#{value}
+	</select>
+	
 	<select id="getAllHallInfos" resultType="HallInfo">
 		SELECT 
 			id 			as id, 
@@ -371,6 +390,8 @@
 					A.reserveCount  as reserveCount						
 		FROM 
 			performance_info A		
+		JOIN
+			performance_main B ON B.infoId = A.id
 		JOIN 
 			hall_info_main C ON C.id = A.hallInfoId
 		WHERE 
@@ -399,7 +420,7 @@
 					C.address		as hallAddress,
 					A.reserveCount  as reserveCount						
 		FROM 
-			performance_info A		
+			performance_info A					
 		JOIN 
 			hall_info_main C ON C.id = A.hallInfoId
 		WHERE 

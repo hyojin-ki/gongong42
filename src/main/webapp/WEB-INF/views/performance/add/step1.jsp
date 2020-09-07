@@ -88,11 +88,11 @@
 							<label class="mr-3">공연분류</label> 		
 							<div>
 								<label class="mr-4"><input type="radio" name="category" value="콘서트"  
-								${category eq "콘서트"? "checked" : "disabled" } class="mr-1">콘서트</label>												
+								 checked class="mr-1">콘서트</label>												
 								<label class="mr-4"><input type="radio" name="category" value="뮤지컬" 
-								${category eq "뮤지컬"? "checked" : "disabled" } class="mr-1">뮤지컬</label>											
+								 class="mr-1">뮤지컬</label>											
 								<label class="mr-4"><input type="radio" name="category" value="연극" 
-								${category eq "연극"? "checked" : "disabled" } class="mr-1">연극</label>	
+								 class="mr-1">연극</label>	
 							</div>																	   						
 						</div>												
 									
@@ -102,6 +102,7 @@
 								name="title" id="performanceName"/>
 						</div>	
 						
+						<!-- 기존 장르폼(사용안함)
 						<div class="form-group">
 							<label>공연장르</label> 
 							<div>
@@ -110,6 +111,14 @@
 										<input type="checkbox" name="genre" value="${genre }" class="mr-1" />${genre }
 									</label>
 								</c:forEach>
+							</div>
+						</div>
+						-->
+						
+						<!-- 수정된 공연장르 폼 -->
+						<div class="form-group">
+							<label>공연장르</label> 
+							<div id="genreForm">
 							</div>
 						</div>
 						
@@ -207,6 +216,57 @@ $(function() {
 	$("#performanceStartDay").val(now);
 	$("#performanceEndDay").val(now);
 	
+	
+	$.ajax({
+		type:"GET",
+		url:"/performance/update/getGenres.do",
+		data: {category:"콘서트"},
+		dataType: 'json',
+		success: function(genres) {
+			console.log("성공했다");		
+			var text ="";
+			for (var i=0; i<genres.length; i++) {
+				
+				
+				text += "<label class='mr-4'>"
+				text += "<input type='checkbox' name='genre' value='"+genres[i]+"' class='mr-1' />" + genres[i];
+				text += "</label>";				
+			}
+			
+			$("#genreForm").empty();
+			$("#genreForm").html(text);
+		}
+	});
+	
+	
+	
+	
+})
+
+$("#addForm input[name=category]").change(function() {
+	var cat = $(this).val();
+	console.log("category: " + cat);
+	
+	$.ajax({
+		type:"GET",
+		url:"/performance/update/getGenres.do",
+		data: {category:cat},
+		dataType: 'json',
+		success: function(genres) {
+			console.log("성공했다");		
+			var text ="";
+			for (var i=0; i<genres.length; i++) {
+				
+				
+				text += "<label class='mr-4'>"
+				text += "<input type='checkbox' name='genre' value='"+genres[i]+"' class='mr-1' />" + genres[i];
+				text += "</label>";				
+			}
+			
+			$("#genreForm").empty();
+			$("#genreForm").html(text);
+		}
+	});
 	
 })
 
@@ -317,6 +377,9 @@ $("#runningTimeMinute").change(function() {
 	
 	$("#runningTime").val(txt);
 })
+
+
+
 
 
 	

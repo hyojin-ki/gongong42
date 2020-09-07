@@ -54,9 +54,10 @@ public class PerformanceContoller {
 	@Autowired
 	private HallService hallService;
 	
+//  해당 프로젝트 폴더위치	
 //	private String saveDirectory="C:/APP/eGovFrameDev-3.9.0-64bit/workspace/final-project/src/main/webapp/resources/sample-images";
-	private String saveDirectory="D:/eGovFrameDev-3.9.0-64bit/workspace/final-project/src/main/webapp/resources/sample-images";
-		
+//	private String saveDirectory="D:/eGovFrameDev-3.9.0-64bit/workspace/final-project/src/main/webapp/resources/sample-images";
+	private String saveDirectory="D:/egovframe_workspace/final-project/src/main/webapp/resources/sample-images";	
 	
 	@GetMapping("/update/main.do")
 	public String updateMain(@RequestParam("performanceId") int performanceId, 
@@ -666,6 +667,125 @@ public class PerformanceContoller {
 		return "performance/totalList";
 	}
 	
+	@GetMapping("/adminList.do")
+	public String adminList(Model model
+			, @RequestParam(value="category", defaultValue="콘서트") String category
+			, @RequestParam(value = "pageNo", defaultValue="1") int pageNo
+			, @RequestParam(value = "rows", defaultValue = "5") int rows
+			, @RequestParam(value= "order", defaultValue = "dateOrder") String listOrder
+			, @RequestParam(value = "title", defaultValue="") String title
+			, @RequestParam(value = "genre", required=false) String[] searchGenres
+			, @RequestParam(value = "startDay", defaultValue = "") String startDay 
+			, @RequestParam(value = "endDay", defaultValue = "") String endDay
+			, @RequestParam(value= "age", defaultValue="0") String age
+			, @RequestParam(value="changed", defaultValue="N", required=false) String changed) {
+		
+		System.out.println("pageNo: " +pageNo);
+		System.out.println("rows: " + rows);
+		System.out.println("order: " + listOrder);
+		System.out.println("title: " + title);
+		System.out.println("genres: " + Arrays.toString(searchGenres));
+		
+		System.out.println(Arrays.toString(searchGenres));
+		System.out.println("startDate: " + startDay);
+		System.out.println("endDate: " + endDay);
+		System.out.println("age: " + age);
+		
+		// 검색조건 표시하기 위한 폼 만들기
+		//PerformanceSearchForm performanceForm = new PerformanceSearchForm();
+		//performanceForm.setCategory(category);
+		
+		//만약 폼이 변경된 뒤에 페이지번호나 검색버튼을 눌렀을 시
+		if ("Y".equals(changed)) {
+			pageNo = 1;
+		}
+		
+		// 조회하기 위한 맵 만들기 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+		
+		// 페이징처리용 map
+		Map<String, Object> pagingmap = new HashMap<String, Object>();
+		pagingmap.put("category", category);
+		
+		if (!title.isEmpty()) {
+			map.put("title", title);
+			pagingmap.put("title", title);
+			
+			//performanceForm.setTitle(title);
+		}
+		if (searchGenres != null && searchGenres.length > 0 && !"전체".equals(searchGenres[0])) {
+			map.put("genres", searchGenres);
+			pagingmap.put("genres", searchGenres);			
+			//performanceForm.setGenres(searchGenres);
+		}
+		if (!startDay.isEmpty()) {
+			map.put("startDate", startDay);			
+			pagingmap.put("startDate", startDay);			
+			//performanceForm.setStartDay(startDay);
+		}
+		if (!endDay.isEmpty()) {
+			map.put("endDate", endDay);			
+			pagingmap.put("endDate", endDay);			
+			//performanceForm.setEndDay(endDay);
+		}
+		if (!"0".equals(age)) {
+			map.put("age", age);
+			pagingmap.put("age", age);
+			//performanceForm.setAge(age);
+		}
+		
+		pagingmap.put("pageNo", pageNo);
+		pagingmap.put("rows", rows);		
+		
+		System.out.println(map);		
+		System.out.println("pagingmap: "+ pagingmap);		
+		List<PerformanceDetailDto> performances = performanceService.searchPerformances(map);
+		
+		// 페이징 처리된 map을 조회한다.(검색조건에 해당하고, 특정 페이지 범위내의 자료를 가져온다.
+		Map<String, Object> resultMap = performanceService.getPerformanceForPaging(pagingmap);
+		
+		System.out.println("Controller에서 페이징처리된 결과 테스트");
+		Pagination pagination = (Pagination) resultMap.get("pagination");
+		
+		List<PerformanceDetailDto> performancesWithPaging 
+			= (List<PerformanceDetailDto>) resultMap.get("performances");
+		
+		int totalRows = (Integer)resultMap.get("totalRows");
+		int totalPageCount = (int)Math.ceil(((double)totalRows/(double)rows));
+	
+		// 전체 누르면 전체 12개의 줄이 나오는 오류
+		System.out.println("totalRows: "+totalRows);
+		System.out.println("totalPageCount: "+totalPageCount);
+		
+		String genreCat = "";
+		if (category.equals("콘서트")) {
+			genreCat = "콘서트";
+		} else if(category.equals("뮤지컬") || category.equals("연극")) {
+			genreCat = "뮤지컬/연극";
+		}			
+		
+		String[] genres = performanceService.getGenreByCategory(genreCat);	
+		
+		model.addAttribute("category", category);
+		model.addAttribute("genres", genres );
+		// 페이징 처리가 안된 것
+		//model.addAttribute("performances", performances);
+		// 페이징 처리가 된 것
+		model.addAttribute("performances", performancesWithPaging);
+		model.addAttribute("pagination", pagination);
+		model.addAttribute("pageNo", pageNo);
+		model.addAttribute("totalPageCount", totalPageCount);
+		model.addAttribute("rows", rows);
+		
+		//model.addAttribute("performanceForm", performanceForm);
+		
+				
+		return "/performance/adminList";
+		
+		
+	}
+	
 	
 	
 	@GetMapping("/list.do")
@@ -790,9 +910,19 @@ public class PerformanceContoller {
 	
 	
 	@GetMapping("/detail.do")
-	public @ResponseBody Map<String, Object> getProduct(@RequestParam("id") int performanceId) {
+	public @ResponseBody Map<String, Object> getProduct(@RequestParam("id") int performanceId,
+			@RequestParam("userId") String userId) {
 		PerformanceDetailDto performance = performanceService.getPerformanceDetailById(performanceId);
 		HallInfo hallInfo = hallService.getHallInfoByPerformanceId(performanceId);
+		
+		System.out.println("여긴 performance/detail.do 입니다.");
+		
+		if ("".equals(userId)) {
+			System.out.println("로그인되지 않았습니다.");
+		}else {
+			System.out.println("loginUserId:" + userId);			
+		}
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("performance", performance);
 		map.put("hallInfo", hallInfo);

@@ -73,8 +73,6 @@ a:hover {
 						<div class="row category" id="category" align="center">
 							<div class="col" id="notice-list"><a href="/notice/list.do">공지사항</a></div>
 							<div class="col" id="QnA-list"><a href="/qna/list.do">QnA</a></div>
-							<div class="col">자주하는질문</div>
-							<div class="col">나의문의내역</div>
 						</div>
 					</div>
 				</div>
@@ -101,7 +99,7 @@ a:hover {
 							<div class="col-6">
 								<div class="row">
 									<div class="col-12" align="right">
-										<select class="form-control" id="notice-list-numberToShow" style="width: 130px;" name="rows">
+										<select class="form-control" id="notice-list-numberToShow" style="width: 140px;" name="rows">
 											<option value="10" ${rows eq '10' ? 'selected' : '' }> 10개씩 보기</option>
 											<option value="20" ${rows eq '20' ? 'selected' : '' }> 20개씩 보기</option>
 											<option value="50" ${rows eq '50' ? 'selected' : '' }> 50개씩 보기</option>
@@ -358,10 +356,6 @@ a:hover {
 		</div>
 	</div>
 </div>
-<div class="footer" style="height: 200px;">
-		 <%@ include file="../common/footer.jsp" %>
-	</div>
-
 <script type="text/javascript">
 $(function() {
 

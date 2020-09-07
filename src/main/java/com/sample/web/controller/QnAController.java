@@ -1,5 +1,9 @@
 package com.sample.web.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,19 +15,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.service.QnaService;
 import com.sample.service.UserService;
+import com.sample.utils.NumberUtil;
 import com.sample.utils.StringUtil;
 import com.sample.web.form.AnswerForm;
 import com.sample.web.form.QnaForm;
 import com.sample.web.view.Pagination;
 import com.sample.web.view.Qna;
+import com.sample.web.view.QnaImage;
 import com.sample.web.view.User;
 
 import oracle.jdbc.proxy.annotation.Post;
@@ -101,11 +109,34 @@ public class QnAController {
 	
 	@PostMapping("/addqna.do")
 	public String addQna(QnaForm qnaForm
-			, HttpSession session) {
+			, HttpSession session
+			, @RequestParam("uploadFiles") List<MultipartFile> uploadFiles
+			, @RequestParam("imgCategory") String imgCate) throws Exception {
+		
+		List<String> Images = new ArrayList<>();
+		
+		for (MultipartFile multipartFile : uploadFiles) {
+			
+			if (!multipartFile.isEmpty()) {
+				String filename = multipartFile.getOriginalFilename();
+				
+				Images.add(filename);
+				
+				File file = new File(saveDirectory, filename);
+				
+				FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(file));
+				
+				filename = System.currentTimeMillis() + filename;
+				Map<String, String> containsFileNameAndCategoryName = new HashMap<>();
+				
+				containsFileNameAndCategoryName.put("filename", filename);
+				containsFileNameAndCategoryName.put("category", imgCate);
+				
+				qnaService.addNewImage(containsFileNameAndCategoryName);
+			}
+		}
 		
 		User user = (User) session.getAttribute("LOGIN_USER");
-		
-		//BeanUtils.copyProperties(qnaForm, qna);
 		
 		Qna qna = new Qna();
 		
@@ -116,15 +147,47 @@ public class QnAController {
 		qna.setOpened(qnaForm.isQnaOpened());
 		
 		qnaService.addNewQna(qna);
+		qnaService.addQnaImages(Images);
 		
-		return "redirect:/admin/qna/list.do";
+		return "redirect:list.do";
 	}
 	
 	@PostMapping("/modifyquestion.do")
-	public String modifyQna(QnaForm qnaForm) {
+	public String modifyQna(QnaForm qnaForm
+			, @RequestParam("uploadFiles") List<MultipartFile> uploadFiles
+			, @RequestParam("imgCategory") String imgCate) throws Exception {
+		
+		List<String> images = new ArrayList<>();
+		
+		for (MultipartFile multipartFile : uploadFiles) {
+			
+			if (!multipartFile.isEmpty()) {
+				String filename = multipartFile.getOriginalFilename();
+				
+				images.add(filename);
+				
+				File file = new File(saveDirectory, filename);
+				
+				FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(file));
+				
+				filename = System.currentTimeMillis() + filename;
+				Map<String, String> containsFileNameAndCategoryName = new HashMap<>();
+				
+				containsFileNameAndCategoryName.put("filename", filename);
+				containsFileNameAndCategoryName.put("category", imgCate);
+				
+				qnaService.addNewImage(containsFileNameAndCategoryName);
+			}
+		}
 		
 		qnaService.updateQna(qnaForm);
 		
+		Map<String, Object> map = new HashMap<>();
+		int qnaId = NumberUtil.stringToInt(qnaForm.getQnaId());
+		map.put("qnaId", qnaId);
+		map.put("images", images);
+		
+		qnaService.updateQnaImages(map);
 		
 		return "redirect:/admin/qna/list.do";
 	}
@@ -171,6 +234,20 @@ public class QnAController {
 		qnaService.modifyAnswer(answerForm);
 		
 		return "redirect:/admin/qna/list.do";
+	}
+	
+	@GetMapping("/getImages.do")
+	@ResponseBody
+	public Map<String, Object> getImagesById (@RequestParam("id") int id) {
+		
+		List<QnaImage> images = qnaService.getIamgesById(id);
+		Qna qna = qnaService.getQnaDetail(id);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("images", images);
+		map.put("qna", qna);
+		
+		return map;
 	}
 	
 }
