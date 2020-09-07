@@ -34,18 +34,32 @@
 	</div>
 	
 	<!-- 테스트용 db -->
+	
+	<div style="display:none;">
+	<c:set var="loop" value="false" />
 	 <c:forEach var="performance" items="${performances }" varStatus="status">
-	 	<p>	${status.count} ${performance.title } </p>
+	 	<c:if test="${not loop }">
+	 		<c:choose>
+	 			<c:when test="${status.count eq 4}">
+	 				<c:set var="loop" value="true" />
+	 			</c:when>
+	 			<c:otherwise>
+	 				<p>	${status.count} ${performance.title }, 예매수: ${performance.reserveCount } </p>
+	 			</c:otherwise>
+	 		</c:choose>	 	
+	 	</c:if>
 	 	
 	 	
 	 </c:forEach>
+	 </div>
 	<!-- 테스트용 db끝 -->
+	
 	
 	<div class="body" style="margin-top: 50px;">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-12 mt-5 p-3 text-center">				
-					<h1 class="pl-3 font-weight-bold">
+				<div class="col-12 mt-5 p-3 text-center">						
+					<div class="pl-3 font-weight-bold" style="font-size: 4rem;" >
 					<c:choose>
 						<c:when test="${category eq '콘서트' }">
 							Consert
@@ -57,7 +71,7 @@
 							Play
 						</c:when>						
 					</c:choose>						
-					</h1>
+					</div>
 				</div>
 			</div>
 			<div class="row h-50">
@@ -71,88 +85,123 @@
 						</ol>
 						<div class="carousel-inner ">
 							<!--  한 슬라이드당 이미지 3개 -->
-						
-							<div class="carousel-item active bg-dark"> 
-								<div class="row"
-									style="width: 70%; float: none; margin: 0 auto;">
-									<div class="col-12">
-										<div class="row">
-											<div class="col-4">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4 ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image3.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div> <!-- 한 슬라이드 끝 -->
-							<div class="carousel-item bg-dark">
-								<div class="row"
-									style="width: 70%; float: none; margin: 0 auto;">
-									<div class="col-12">
-										<div class="row">
-											<div class="col-4">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample_musical1.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample-consert1.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4 ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample_musical2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="carousel-item bg-dark">
-								<div class="row"
-									style="width: 70%; float: none; margin: 0 auto;">
-									<div class="col-12">
-										<div class="row">
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4  ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/sample_musical2.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-											<div class="col-4 ">
-												<a href="링크주소"> <img
-													src="/resources/sample-images/movie_image3.jpg"
-													style="width: 380px; height: 540px;">
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+							<c:set var="doneLoop" value="false" />
+							<c:forEach var="performance" items="${slidePerformances }" varStatus="status">
+								<c:if test="${not doneLoop }">	
+														
+									<c:choose>
+										<c:when test="${status.count eq 4}">
+											<c:set var="doneLoop" value="true" />
+										</c:when>
+										<c:otherwise>
+											<div class="carousel-item active bg-dark mb-5 pb-4 pt-4"> 
+												<div class="row"
+													style="width: 70%; float: none; margin: 0 auto;">
+													<div class="col-12">
+														<div class="row d-flex justify-content-center">
+															<div class="col-4 text-center ele-opacity" style="margin: auto 0;">
+																<div class="text-white font-weight-bolder" style="font-size: 2rem;">${performance.category }</div>
+																<hr style="background-color: #fff;"/>
+																<div class="text-white font-weight-bold" style="font-size: 4rem;" >${performance.title }</div>
+																<div class="text-white" style="font-size: 2rem;">
+																	<span>
+																		<fmt:formatDate value="${performance.startDate }" pattern="yyyy년 M월 d일" />
+																			~
+																		<fmt:formatDate value="${performance.endDate }" pattern="yyyy년 M월 d일" />
+																	</span>
+																	<div>${performance.hallName }</div>
+																</div>
+															</div>
+															<div class="col-4">
+																<div class="d-flex justify-content-center">
+																<!-- card -->
+																	<div class="card shadow transfrom-card" style="width: 30rem;">
+																		<div class="card-body">
+																		  
+																		<c:choose>
+																			 <c:when test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
+																			 	<c:set var="path" value="${performance.imagePath }"/>
+																			 </c:when>
+																			 <c:otherwise>
+																			 	<c:set var="path" value="/resources/sample-images/${performance.imagePath }"/>
+																			 </c:otherwise>
+																		</c:choose>
+																		 
+																		 	<button type="button" onclick="showDetail(${performance.id})">
+																				<img class="card-img-top img-thumbnail" src="${path }" alt="" />
+																		 	</button>
+																		 	<div class="row">
+																				<div class="col-9  mt-2">
+																				 <c:forEach var="genre" items="${performance.genres }"> 
+																				 <a	class="btn btn-link" href="/performance/list.do?category=${performance.category }&genre=${genre }">
+																				 	#${genre }
+																				 </a>
+																				</c:forEach>											
+																					
+																				</div>
+																				
+																			</div>
+																		</div>
+																		
+																	</div>
+																<!-- card -->
+																</div>
+															</div>
+															<div class="col-4 text-center ele-opacity" style="margin: auto 0;">
+																
+																<div class="text-white font-weight-bold" style="font-size: 3rem;" >개봉임박!</div>
+																<hr style="background-color: #fff;"/>
+																<div class="text-white font-weight-bolder" style="font-size: 2rem;">
+																	<c:choose>
+																		<c:when test="${performance.rating eq 0 }">
+																			전체관람가
+																		</c:when>
+																		<c:when test="${performance.rating eq 12 }">
+																			만 12세이상 관람
+																		</c:when>
+																		<c:when test="${performance.rating eq 15 }">
+																			만 15세이상 관람
+																		</c:when>
+																		<c:when test="${performance.rating eq 19 }">
+																			청소년관람불가
+																		</c:when>
+																	</c:choose>
+																
+																</div>
+																<div class="text-white" style="font-size: 2rem;">
+																	<div>좋아요수: ${performance.likes }</div>
+																	<div>예매횟수: ${performance.reserveCount }</div>													
+																</div>
+																<div class="text-white mt-3" style="font-size: 1.5rem;">
+																	<c:forEach var="seat" items="${performance.seatPrices }">
+																		<div>
+																			${seat.seatRate }석 
+																			<fmt:formatNumber value="${seat.price }" />원	
+																		</div>															
+																	</c:forEach>
+																</div>
+																<div class="mt-5">
+																	
+																	<button type="button" class="btn btn-info btn-lg mr-3"
+																		onclick="showDetail(${performance.id})">상세보기</button>
+																	<button type="button" class="btn btn-danger btn-lg"
+																		onclick="buyTicket(${performance.id})">예매하기</button>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+												</div>
+											</div> <!-- 한 슬라이드 끝 -->
+										
+										</c:otherwise>
+									</c:choose>
+								
+								</c:if>
+							
+							
+							</c:forEach>
+							
 						</div>
 						<a class="carousel-control-prev" href="#demo" role="button"
 							data-slide="prev"> <span class="carousel-control-prev-icon"
@@ -690,11 +739,14 @@
 												<div class="card-body"> 
 													<canvas id="chartGender">
 													</canvas>
+													<div id="defaultChart" class="text-center" style="display:none;" >
+													
+													</div>
 												</div> 
 											</div>
 										</div>
 										<div class="col-5">
-											<div class="card"> 
+											<div class="card" style="display:none;"> 
 												<div class="card-body"> 
 													<canvas id="chartAge">
 													</canvas>
@@ -715,24 +767,7 @@
 				</div>
 			</div> <!-- 공연 상세정보 모달창 끝 -->
 			
-			<!--  
-			<div>
-				테스트용
-				
-				pageNo:  ${pageNo }
-				totalPageCount: ${totalPageCount }
-				rows: ${rows }
-				pagination.beginPage: ${pagination.beginPage }
-				pagination.endPage: ${pagination.endPage }
-			</div>
-			-->
 			
-			<div class="row mt-5 justify-content-center">
-				<div class="col-8 text-right justify-content-end " >					
-					<button type="button" class="btn btn-primary mr-2" 
-					onclick="goAddPerformanceForm('${category}')">등록</button>					
-				</div>				
-			</div>
 			
 			<div class="row mt-5 justify-content-center">
 				<!-- 페이지네이션 -->
@@ -975,6 +1010,7 @@ function showDetail(performanceId) {
 	var loginUser="${ LOGIN_USER.id}";
 	console.log("loginUserId: "+loginUser);
 	
+		
 	$.ajax({
 		type:"GET",
 		url:"/performance/detail.do",
@@ -984,9 +1020,22 @@ function showDetail(performanceId) {
 			var hallInfo = data.hallInfo;
 			var performance = data.performance;
 			var userLiked = data.userLiked;
+			
+			var manReserveCount = data.manReserveCount;
+			var womanReserveCount = data.womanReserveCount;
+			
+			console.log("manReserveCount: "+ manReserveCount);
+			console.log("womanReserveCount: "+ womanReserveCount);
+			
 			console.log("디테일을 눌렀다.");
 			
-			$("#modalImg").attr("src", "/resources/sample-images/${performance.imagePath }"+performance.imagePath);			
+			var modalImagePath = performance.imagePath;
+			console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
+			if (modalImagePath.substring(0,4) != 'http') {
+				modalImagePath="/resources/sample-images/"+performance.imagePath;
+			}
+			
+			$("#modalImg").attr("src", modalImagePath);			
 			var rating = performance.rating;
 			if (performance.rating == "0") {
 				rating = "전체";
@@ -1055,6 +1104,8 @@ function showDetail(performanceId) {
 			$("#clickLike").data("no", performance.id);
 			$("#clickLike").data("liked", userLiked);	// 이전에 좋아요를 눌렀는지 여부 
 			
+			
+			
 			// 이전에 좋아요 했으면 빨간 하트
 			if (userLiked == "Y") {
 				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red");
@@ -1067,45 +1118,68 @@ function showDetail(performanceId) {
 			
 			var id = document.getElementById('map');
 			kakaoMap(id, hallInfo);
-		}
+			
+			
+			// 통계 그래프 그리기
+			
+			// 성별 그래프
+			var genderColors=['skyblue', '#e23b3b'];
+			
+			var donutOptions= {
+				cutoutPercentage: 30, //도넛두께 : 값이 클수록 얇아짐 
+				legend: {
+							position:'bottom', 
+							padding:5, 
+							labels: {
+								pointStyle:'circle', 
+								usePointStyle:true
+							}
+						}
+			};
+			
+						
+			var chDonutData = {
+				labels: ['남자', '여자'], 
+				datasets: [ { 
+					backgroundColor: genderColors.slice(0,2), 
+					borderWidth: 0, 
+					data: [manReserveCount,womanReserveCount] // 데이터
+				} ]
+			};
+			
+			var $chDonut = $("#chartGender"); 
+			var $defaultChart = $("#defaultChart");
+			
+			if ((manReserveCount == 0) && (womanReserveCount == 0)) {
+				console.log("아직 아무도 구매를 하지 않음");
+				
+				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
+				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 성별 예매정보가 없습니다.</p>";
+				
+				$defaultChart.html(defaultImage);
+				$defaultChart.show();
+				$chDonut.hide();
+			} else {
+				$defaultChart.hide();
+				$chDonut.show();
+				if ($chDonut) { 
+					new Chart($chDonut, { 
+						type: 'pie', 
+						data: chDonutData, 
+						options: donutOptions 
+						}
+					); 
+				}
+			
+			} // 데이터 값이 있을 때 그래프 그리기 
+			
+			
+		} // success 끝
 	})
 	
 	
 	
-	// 성별 그래프
-	var genderColors=['skyblue', '#e23b3b'];
 	
-	var donutOptions= {
-		cutoutPercentage: 30, //도넛두께 : 값이 클수록 얇아짐 
-		legend: {
-					position:'bottom', 
-					padding:5, 
-					labels: {
-						pointStyle:'circle', 
-						usePointStyle:true
-					}
-				}
-	};
-	
-	var chDonutData = {
-		labels: ['남자', '여자'], 
-		datasets: [ { 
-			backgroundColor: genderColors.slice(0,2), 
-			borderWidth: 0, 
-			data: [74, 40] // 데이터
-		} ]
-	};
-	
-	var $chDonut = $("#chartGender"); 
-	
-	if ($chDonut) { 
-		new Chart($chDonut, { 
-			type: 'pie', 
-			data: chDonutData, 
-			options: donutOptions 
-			}
-		); 
-	}
 	
 	// 나이대별 관람추이
 	var $chBar = $("#chartAge");

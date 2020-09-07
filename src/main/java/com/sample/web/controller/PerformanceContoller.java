@@ -30,7 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.dao.PerformanceDao;
 import com.sample.dto.PerformanceDetailDto;
+import com.sample.dto.PerformanceGenderReserveStats;
 import com.sample.service.HallService;
+import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.web.form.PerformanceForm;
 import com.sample.web.form.PerformanceUpdateForm;
@@ -54,6 +56,9 @@ public class PerformanceContoller {
 	
 	@Autowired
 	private HallService hallService;
+	
+	@Autowired
+	private MateService mateService;
 	
 //  해당 프로젝트 폴더위치	
 //	private String saveDirectory="C:/APP/eGovFrameDev-3.9.0-64bit/workspace/final-project/src/main/webapp/resources/sample-images";
@@ -768,6 +773,19 @@ public class PerformanceContoller {
 		
 		String[] genres = performanceService.getGenreByCategory(genreCat);	
 		
+		// 슬라이드로 보여줄 공연들				
+//		List<PerformanceDetailDto> slidePerformances =  performanceService.getPerformanceByCategoryLimit(category);
+//		
+//		List<Object> slideSeatList = new ArrayList<>();
+//		
+//		for(PerformanceDetailDto dto : slidePerformances) {
+//			int slidePerformanceId = dto.getPerformanceMainId();
+//			slideSeatList.add(mateService.getMateSeatsAllCnt(slidePerformanceId));
+//		}
+//		
+//		model.addAttribute("slideSeatList", slideSeatList);		
+//		model.addAttribute("slidePerformances", slidePerformances);
+				
 		model.addAttribute("category", category);
 		model.addAttribute("genres", genres );
 		// 페이징 처리가 안된 것
@@ -892,6 +910,10 @@ public class PerformanceContoller {
 		
 		String[] genres = performanceService.getGenreByCategory(genreCat);	
 		
+		//슬라이드용 performanceList 가져오기
+		List<PerformanceDetailDto> slidePerformances = performanceService.getPerformancesByCategory(category);
+		
+		model.addAttribute("slidePerformances", slidePerformances);
 		model.addAttribute("category", category);
 		model.addAttribute("genres", genres );
 		// 페이징 처리가 안된 것
@@ -915,12 +937,26 @@ public class PerformanceContoller {
 	@GetMapping("/detail.do")
 	public @ResponseBody Map<String, Object> getProduct(@RequestParam("id") int performanceId,
 			@RequestParam("userId") String userId) {
+		
+		System.out.println("여긴 performance/detail.do 입니다.");
+		
 		PerformanceDetailDto performance = performanceService.getPerformanceDetailById(performanceId);
 		HallInfo hallInfo = hallService.getHallInfoByPerformanceId(performanceId);
 		UserLikes userLikes = new UserLikes();
 		String userLiked = ""; // 좋아요를 이미 눌렀는지 여부
+		PerformanceGenderReserveStats manReserveStats = new PerformanceGenderReserveStats();
+		PerformanceGenderReserveStats womanReserveStats = new PerformanceGenderReserveStats();
 		
-		System.out.println("여긴 performance/detail.do 입니다.");
+		manReserveStats.setPerformanceInfoId(performanceId);
+		manReserveStats.setGender("M");
+		manReserveStats.setReserveCount(performanceService.getGenderReserveCountByPerformanceInfoIdAndGender(manReserveStats));
+		
+		womanReserveStats.setPerformanceInfoId(performanceId);
+		womanReserveStats.setGender("W");
+		womanReserveStats.setReserveCount(performanceService.getGenderReserveCountByPerformanceInfoIdAndGender(womanReserveStats));
+			
+		System.out.println("남자 공연예매수: "+manReserveStats.getReserveCount());
+		System.out.println("여자 공연예매수: "+womanReserveStats.getReserveCount());
 		
 		if ("".equals(userId)) {
 			System.out.println("로그인되지 않았습니다.");
@@ -942,7 +978,9 @@ public class PerformanceContoller {
 		map.put("performance", performance);
 		map.put("hallInfo", hallInfo);
 		map.put("userLiked", userLiked);
-		System.out.println("detail옴");
+		map.put("manReserveCount", manReserveStats.getReserveCount());
+		map.put("womanReserveCount", womanReserveStats.getReserveCount());
+		
 		
 		return map;
 	}

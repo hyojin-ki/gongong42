@@ -113,8 +113,8 @@
 			</div> <!-- 좌석정보 입력 영역 끝 -->
 			
 			<div class="row mt-4 justify-content-center">				
-				<div>
-					<button type="button" id="cancel" class="btn btn-danger mr-3">취소</button>									
+				<div>						
+					<button type="button" id="cancel" class="btn btn-danger mr-3" data-category="${param.category }">취소</button>									
 					<button type="button" id="goPrevStep" class="btn btn-secondary mr-3">이전</button>									
 					<button type="button" id="goNextStep" class="btn btn-primary ">수정</button>			
 				</div>
@@ -186,12 +186,16 @@ $("#goNextStep").click(function() {
 
 $("#cancel").click(function(){
 	//history.go(-1);
-	location.href="cancel.do";
+	//location.href="cancel.do";
+	var cat = $(this).data("category");
+	console.log(cat);
+	location.href="/performance/adminList.do?category="+cat;
 })
 		
 $("#goPrevStep").click(function(){
 	history.go(-1);
 	//location.href="cancel.do";
+	
 })
 
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.sample.dto.PerformanceDto;
+import com.sample.dto.PerformanceGenderReserveStats;
 import com.sample.web.view.HallInfo;
 import com.sample.web.view.Performance;
 import com.sample.web.view.PerformanceGenre;
@@ -39,12 +40,25 @@ public interface PerformanceDao {
 	String[] getGenreByCategory(String category);
 	
 	/**
-	 * 공연장 정보아이디에 해당하는 좋아요수를 반환한다.
+	 * 공연 정보아이디에 해당하는 좋아요수를 반환한다.
 	 * @param performanceId
 	 * @return
 	 */
 	int getLikesByPerformanceInfoId(int performanceId);
 	
+	/**
+	 * 공연 정보아이디에 해당하는 예매수를 반환한다.
+	 * @param performanceId
+	 * @return
+	 */
+	int getReserveCountByPerformanceInfoId(int performanceId);
+	
+	/**
+	 * 공연 정보아이디와  성별을 입력으로 받아 해당 공연의 해당성별의 공연 구매수를 반환한다.
+	 * @param performanceGenderReserveStats
+	 * @return
+	 */
+	int getGenderReserveCountByPerformanceInfoIdAndGender(PerformanceGenderReserveStats performanceGenderReserveStats);	
 	
 	/**
 	 * 사용자아이디와 공연정보아이디를 통해 특정공연에대한 사용자의 좋아요 정보를 반환한다.

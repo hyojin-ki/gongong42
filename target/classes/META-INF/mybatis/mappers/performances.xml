@@ -17,10 +17,11 @@
 		<result column="explain" property="explain"/>
 		<result column="hallName" property="hallName"/>
 		<result column="hallAddress" property="hallAddress"/>	
-		<result column="reserveCount" property="reserveCount" />
+		
 		<collection property="genres" select="getGenreById" column="id" ofType="string"/>
 		<collection property="seatPrices" select="getPerformanceSeatPrice" column="id" ofType="PerformanceSeatPrice"/>
 		<collection property="likes" select="getLikesByPerformanceInfoId" column="id" ofType="int" />
+		<collection property="reserveCount" select="getReserveCountByPerformanceInfoId" column="id" ofType="int" />
 	</resultMap>
 
 	<select id="searchPerformance" parameterType="map" resultMap="PerformanceDetailDtoResultMap">
@@ -320,12 +321,27 @@
 	</select>
 	
 	<select id="getLikesByPerformanceInfoId" parameterType="int" resultType="int">
-		SELECT COUNT(*) AS likes
+		SELECT 
+			COUNT(*) AS likes
 		FROM 
 			user_likes
 		WHERE 
 			infoid=#{value}
 	</select>
+	
+	<select id="getReserveCountByPerformanceInfoId" parameterType="int" resultType="int">
+		SELECT 
+			COUNT(*) AS reserveCount
+		FROM 
+			reserve_main A
+		JOIN 
+			performance_main B ON A.performanceId = B.id 
+		WHERE 
+			B.infoId = #{value}
+		GROUP BY 
+			B.infoId
+	</select>
+	
 	
 	<select id="getAllHallInfos" resultType="HallInfo">
 		SELECT 
@@ -452,6 +468,25 @@
 		AND 
 			infoId = #{performanceInfoId}
 		
+	</select>
+	
+	<select id="getGenderReserveCountByPerformanceInfoIdAndGender" parameterType="PerformanceGenderReserveStats"
+		resultType="int">
+		SELECT COUNT(*) AS reserveCount
+		FROM (
+			SELECT 
+				DISTINCT  A.reserveUser, B.infoId, C.gender
+			FROM 
+				reserve_main A
+			JOIN 
+				performance_main B ON A.performanceId = B.id 
+			JOIN
+				user_main C ON A.reserveUser = C.id
+			WHERE 
+				B.infoId = #{performanceInfoId}
+			AND 
+				C.gender LIKE #{gender}
+		) D
 	</select>
 	
 	

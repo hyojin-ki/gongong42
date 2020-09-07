@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.dto.PerformanceDto;
+import com.sample.dto.PerformanceGenderReserveStats;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.web.view.HallInfo;
 import com.sample.web.view.Performance;
@@ -110,6 +111,14 @@ public interface PerformanceService {
 	 */
 	UserLikes getUserLikesByUserIdAndPerformanceInfoId(UserLikes userLikes);
     
+	/**
+	 * 공연 정보아이디와  성별을 입력으로 받아 해당 공연의 해당성별의 공연 구매수를 반환한다.
+	 * @param performanceGenderReserveStats
+	 * @return
+	 */
+	int getGenderReserveCountByPerformanceInfoIdAndGender(PerformanceGenderReserveStats performanceGenderReserveStats);	
+	
+	
 	/**
      * 공연정보를 데이터베이스에 저장한다.
      * 공연정보, 공연장소, 좌석정보에 해당하는 정보들이 저장된다.

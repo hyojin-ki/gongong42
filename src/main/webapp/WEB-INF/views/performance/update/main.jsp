@@ -169,7 +169,8 @@ function goList(category) {
 	//var category = '${category}';	
 			
 	console.log(category);
-	location.href="/performance/list.do?category="+category;
+	location.href="/performance/adminList.do?category="+category;
+	//http://localhost/performance/adminList.do?category=%EB%AE%A4%EC%A7%80%EC%BB%AC
 
 }		
 

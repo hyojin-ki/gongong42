@@ -38,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sample.dao.PerformanceDao;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
+import com.sample.dto.PerformanceGenderReserveStats;
 import com.sample.utils.StringUtil;
 import com.sample.web.view.HallInfo;
 import com.sample.web.view.Pagination;
@@ -483,6 +484,13 @@ public class PerformanceServiceImpl implements PerformanceService {
 	public void deletePerformanceLikes(UserLikes userLikes) {
 		// TODO Auto-generated method stub
 		performanceDao.deletePerformanceLikes(userLikes);
+	}
+
+	@Override
+	public int getGenderReserveCountByPerformanceInfoIdAndGender(
+			PerformanceGenderReserveStats performanceGenderReserveStats) {
+		// TODO Auto-generated method stub
+		return performanceDao.getGenderReserveCountByPerformanceInfoIdAndGender(performanceGenderReserveStats);
 	}
  
 }

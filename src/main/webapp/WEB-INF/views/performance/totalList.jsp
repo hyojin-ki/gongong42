@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,7 +88,15 @@
 								<div class="card-body">
 									<div class="row">
 										<div class="col-3">
-											<img src="/resources/sample-images/${performance.imagePath }" 
+										 <c:choose>
+											 <c:when test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
+											 	<c:set var="path" value="${performance.imagePath }"/>
+											 </c:when>
+											 <c:otherwise>
+											 	<c:set var="path" value="/resources/sample-images/${performance.imagePath }"/>
+											 </c:otherwise>
+										 </c:choose>
+											<img src="${path }" 
 												class="img-thumbnail">
 										</div>
 										<div class="col-9">
@@ -167,11 +176,12 @@
 													</table>
 												</div>
 												<!-- 공연 간단 정보창 끝 -->
+												<!-- 메이트 정보(보여주지 않음) -->
 												<div class="col-5">
 													<div class="row justify-content-center">
 														<div class="col-12">
-															<div class="card">
-																<div class="card-body">
+															<div class="card" style="display:none;">
+																<div class="card-body" >
 																	<div class="mb-4">
 																		<i class='fas fa-bullhorn mr-2'
 																			style='font-size: 24px'></i>
@@ -207,12 +217,14 @@
 												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
 												<div class="d-inline mr-2">
 													<i class='fas fa-heart mr-2'
-														style='font-size: 24px; color: red;'></i><label>${performance.likes }</label>
+														style='font-size: 24px; color: red;'></i><label id="${performance.id }likes">${performance.likes }</label>
 												</div>
-												<!-- 뒷풀이 게시판 -->
+												<!-- 뒷풀이게시판 -->
+												<!--  
 												<div class="d-inline" style="display:none;">
 													<i class='far fa-comment-alt mr-2' style='font-size: 24px'></i><label></label>
 												</div>
+												-->
 											</div>
 											<div>
 												<button type="button" class="btn btn-outline-danger mr-2"
@@ -222,6 +234,8 @@
 											</div>
 										</div>
 									</div>	<!-- 예매하기 상세보기 버튼그룹 끝 -->
+									<!-- 사용자가 보는 창에선 수정하기와 삭제하기가 보이지 않도록 한다 -->
+									<!--  
 									<div class="row mt-2 p-2">
 										<div class="col-12 d-flex justify-content-end">
 											<button type="button" class="btn btn btn-info mr-2"
@@ -230,7 +244,7 @@
 													onclick="deletePerformance(${performance.id})">삭제하기</button>
 										</div>
 									</div>
-									
+									-->
 									<!--  
 									<div class="row">
 										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
@@ -253,6 +267,7 @@
 				</div>
 			</div>
 			<!-- 공연목록 끝 -->
+			
 
 			<!-- 공연 상세정보 모달창 -->
 			<div class="modal" id="myModal">
@@ -326,7 +341,8 @@
 													<div class="row justify-content-center">
 														<div class="col-12">
 															<div class="card">
-																<div class="card-body">
+																<!-- 뒷풀이게시판 -->
+																<div class="card-body" style="display:none;">
 																	<div class="mb-4">
 																		<i class='fas fa-bullhorn mr-2'
 																			style='font-size: 24px'></i>
@@ -365,18 +381,21 @@
 											<div>
 												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
 												<div class="d-inline mr-2">
-													<button type="button" class="btn btn-sm" id="clickLike">
+													<button type="button" class="btn btn-sm" id="clickLike"
+													data-no="" data-liked="">
 														<i class='far fa-heart mr-2'
 														style='font-size: 24px;'></i>
 													</button>
 													<label id="modalLikes"></label>
 												</div>
-												<div class="d-inline">
+												<!--  
+												<div class="d-inline" style="display:none;">
 													<button type="button" class="btn btn-sm" id="goBoard">													
 														<i class='far fa-comment-alt mr-2' style='font-size: 24px'></i>
 													</button>
 													<label id="modalAfterParty"></label>
 												</div>
+												-->
 											</div>
 											
 										</div>
@@ -394,17 +413,18 @@
 									
 										<button type="button" class="btn btn-outline-danger mr-4 btn-lg"
 											id="modalBuyBtn" data-no="">예매하기</button>
-										<button type="button" class="btn btn-outline-dark btn-lg"
+										<button type="button" class="btn btn-outline-dark btn-lg" style="display:none;"
 											id="modalMateGroupBtn" data-no="">메이트 그룹</button>
 									</div>
 									
+									<!--  
 									<div class="row justify-content-end mt-3">
 										<button type="button" class="btn btn btn-info mr-4 btn-lg"
 												id="modalUpdateBtn" data-no="" >수정하기</button>
 										<button type="button" class="btn btn btn-danger mr-2 btn-lg"
 												id="modalDeleteBtn" data-no="">삭제하기</button>	
 									</div>
-									
+									-->
 									
 									<!-- 태그 창 끝 -->
 								</div>
@@ -476,11 +496,14 @@
 												<div class="card-body"> 
 													<canvas id="chartGender">
 													</canvas>
+													<div id="defaultChart" class="text-center" style="display:none;" >
+													
+													</div>
 												</div> 
 											</div>
 										</div>
 										<div class="col-5">
-											<div class="card"> 
+											<div class="card" style="display:none;"> 
 												<div class="card-body"> 
 													<canvas id="chartAge">
 													</canvas>
@@ -561,22 +584,7 @@ $(function(){
 	
 });
 
-function updatePerformance(no) {
-	console.log("updatePerformance(no="+no+")");
-	
-	var category = '${category}';
-	location.href='/performance/update/main.do?category='+category+'&performanceId='+no;
-	//location.href='/payment/step1.do?no='+no;
-}
 
-function deletePerformance(no) {
-	console.log("deletePerformance(no="+no+")");
-	
-	var category = '${category}';
-	
-	location.href='/performance/delete.do?category='+category+'&performanceId='+no;
-	
-}
 
 
 
@@ -698,19 +706,36 @@ function numberWithComma(num)
 }
 
 function showDetail(performanceId) {	
-	console.log("showDetail(performanceId="+performanceId+")");	
+	console.log("showDetail(performanceId="+performanceId+")");
+	var loginUser="${ LOGIN_USER.id}";
+	console.log("loginUserId: "+loginUser);
 	
+		
 	$.ajax({
 		type:"GET",
 		url:"/performance/detail.do",
-		data: {id:performanceId},
+		data: {id:performanceId, userId:loginUser},
 		dataType: 'json',
 		success: function(data) {
 			var hallInfo = data.hallInfo;
 			var performance = data.performance;
+			var userLiked = data.userLiked;
+			
+			var manReserveCount = data.manReserveCount;
+			var womanReserveCount = data.womanReserveCount;
+			
+			console.log("manReserveCount: "+ manReserveCount);
+			console.log("womanReserveCount: "+ womanReserveCount);
+			
 			console.log("디테일을 눌렀다.");
 			
-			$("#modalImg").attr("src", "/resources/sample-images/${performance.imagePath }"+performance.imagePath);			
+			var modalImagePath = performance.imagePath;
+			console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
+			if (modalImagePath.substring(0,4) != 'http') {
+				modalImagePath="/resources/sample-images/"+performance.imagePath;
+			}
+			
+			$("#modalImg").attr("src", modalImagePath);			
 			var rating = performance.rating;
 			if (performance.rating == "0") {
 				rating = "전체";
@@ -776,51 +801,85 @@ function showDetail(performanceId) {
 			$("#showMateGroupBtn").data("no", performance.id);
 			$("#modalDeleteBtn").data("no", performance.id);
 			$("#modalUpdateBtn").data("no", performance.id);
+			$("#clickLike").data("no", performance.id);
+			$("#clickLike").data("liked", userLiked);	// 이전에 좋아요를 눌렀는지 여부 
+			
+			
+			
+			// 이전에 좋아요 했으면 빨간 하트
+			if (userLiked == "Y") {
+				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red");
+			} else {
+				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");
+			}
 			
 			console.log("성공함");
 			console.log(performance);
 			
 			var id = document.getElementById('map');
 			kakaoMap(id, hallInfo);
-		}
+			
+			
+			// 통계 그래프 그리기
+			
+			// 성별 그래프
+			var genderColors=['skyblue', '#e23b3b'];
+			
+			var donutOptions= {
+				cutoutPercentage: 30, //도넛두께 : 값이 클수록 얇아짐 
+				legend: {
+							position:'bottom', 
+							padding:5, 
+							labels: {
+								pointStyle:'circle', 
+								usePointStyle:true
+							}
+						}
+			};
+			
+						
+			var chDonutData = {
+				labels: ['남자', '여자'], 
+				datasets: [ { 
+					backgroundColor: genderColors.slice(0,2), 
+					borderWidth: 0, 
+					data: [manReserveCount,womanReserveCount] // 데이터
+				} ]
+			};
+			
+			var $chDonut = $("#chartGender"); 
+			var $defaultChart = $("#defaultChart");
+			
+			if ((manReserveCount == 0) && (womanReserveCount == 0)) {
+				console.log("아직 아무도 구매를 하지 않음");
+				
+				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
+				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 성별 예매정보가 없습니다.</p>";
+				
+				$defaultChart.html(defaultImage);
+				$defaultChart.show();
+				$chDonut.hide();
+			} else {
+				$defaultChart.hide();
+				$chDonut.show();
+				if ($chDonut) { 
+					new Chart($chDonut, { 
+						type: 'pie', 
+						data: chDonutData, 
+						options: donutOptions 
+						}
+					); 
+				}
+			
+			} // 데이터 값이 있을 때 그래프 그리기 
+			
+			
+		} // success 끝
 	})
 	
 	
 	
-	// 성별 그래프
-	var genderColors=['skyblue', '#e23b3b'];
 	
-	var donutOptions= {
-		cutoutPercentage: 30, //도넛두께 : 값이 클수록 얇아짐 
-		legend: {
-					position:'bottom', 
-					padding:5, 
-					labels: {
-						pointStyle:'circle', 
-						usePointStyle:true
-					}
-				}
-	};
-	
-	var chDonutData = {
-		labels: ['남자', '여자'], 
-		datasets: [ { 
-			backgroundColor: genderColors.slice(0,2), 
-			borderWidth: 0, 
-			data: [74, 40] // 데이터
-		} ]
-	};
-	
-	var $chDonut = $("#chartGender"); 
-	
-	if ($chDonut) { 
-		new Chart($chDonut, { 
-			type: 'pie', 
-			data: chDonutData, 
-			options: donutOptions 
-			}
-		); 
-	}
 	
 	// 나이대별 관람추이
 	var $chBar = $("#chartAge");
@@ -883,21 +942,75 @@ $("#clickLike").click(function(){
 	//console.log($(this).find("i"));
 	
 	// 로그인 여부 확인하고 로그인 상태이면, 좋아요 표시
-	var loginUser="${ LOGIN_USER}";
+	var loginUser="${ LOGIN_USER.id}";
 	console.log(loginUser);
 	
 	if (loginUser == "") {
 		console.log("로그인필요");
+		location.href="/signin.do";
+		return;
 	} else {
 		console.log("로그인됨");
 		// 아래의 작업을 수행한다.
 	}
 	
-	$("#clickLike").find("i").hasClass("far")
-	if ($(this).find("i").hasClass("far")){	// 빈 하트라면, 좋아요를 하지 않았다면,
-		$(this).find("i").removeClass("far").addClass("fas").css("color", "red");
-	} else {	// 좋아요 취소
-		$(this).find("i").removeClass("fas").addClass("far").css("color", "black");
+	var performanceId = $("#clickLike").data("no");
+	var liked = $("#clickLike").data("liked")
+	var modalLike = parseInt($("#modalLikes").text());
+	var listModalLike = parseInt($("#"+performanceId+"likes").text());
+	
+	console.log("clickLike-info-no:"+performanceId);
+	console.log("clickLike-info-liked:"+liked);	// 이미 좋아요를 했으면 Y, 아니면 N
+	console.log("modalLike:"+modalLike);
+	console.log("listModalLike:"+listModalLike);
+	
+	//$('#myModal').modal('hide');
+	// $(this).find("i").hasClass("far") 빈하트 표시	
+	if (liked == "N"){	// 빈 하트라면, 좋아요를 하지 않았다면,
+			
+		$.ajax({
+			type:"GET",
+			url:"/performance/insertLikes.do",
+			data: {id:performanceId, userId:loginUser},
+			dataType: 'json',
+			success: function(data) {
+				var successYn = data.successYn;
+				console.log("successYn: "+ successYn);
+				
+				$("#clickLike").data("liked","Y");	// 좋아요를 눌렀다고 정보변경
+				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red"); // 하트 색깔 변경
+				
+				var updateLikes = modalLike+1;
+				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
+				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
+				
+				console.log("liked: "+$("#clickLike").data("liked"));
+			}
+		})
+		
+	} else if (liked == "Y"){	// 좋아요 취소
+			
+		$.ajax({
+			type:"GET",
+			url:"/performance/deleteLikes.do",
+			data: {id:performanceId, userId:loginUser},
+			dataType: 'json',
+			success: function(data) {
+				var successYn = data.successYn;
+				console.log("successYn: "+ successYn);
+				
+				$("#clickLike").data("liked", "N");	// 좋아요를 취소햇다고 정보변경
+				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");	// 하트 색깔 변경
+				
+				var updateLikes = modalLike-1;
+				
+				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
+				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
+				
+				console.log("liked: "+$("#clickLike").data("liked"));
+			}
+		})
+		
 	}
 	
 	
