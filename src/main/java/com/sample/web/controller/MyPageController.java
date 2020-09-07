@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
 import com.sample.service.*;
 import com.sample.utils.NumberUtil;
-import com.sample.web.view.Mate;
-import com.sample.web.view.Payment;
-import com.sample.web.view.Performance;
+import com.sample.web.view.*;
 
 import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.sample.web.security.Auth;
-import com.sample.web.view.Qna;
-import com.sample.web.view.Reserve;
-import com.sample.web.view.User;
 
 @Controller
 @RequestMapping("/mypage")
@@ -137,7 +133,42 @@ public class MyPageController {
         return map;
     }
 
-    
+    @PostMapping("/myProfileUpdate.do")
+    @ResponseBody
+    public Map<String, Object> myProfile(HttpSession session, @RequestBody Map<String, Object> param){
+        Map<String, Object> map = new HashMap<>();
+        if("intro".equals(param.get("req"))){
+
+        }else if("interest".equals(param.get("req"))){
+            UserIntrest interest = new UserIntrest();
+            String genreStr =  param.get("genre").toString();
+            String artistStr = param.get("artist").toString();
+            String performanceStr = param.get("performance").toString();
+
+            if(!"".equals(genreStr)) {
+                String[] genres = genreStr.substring(1).split("#");
+                for (String str : genres) {
+                    System.out.print(str);
+                }
+            }
+            System.out.println();
+            if(!"".equals(artistStr)) {
+                String[] artists = artistStr.substring(1).split("#");
+                for (String str : artists) {
+                    System.out.print(str);
+                }
+            }
+            System.out.println();
+            if(!"".equals(performanceStr)) {
+                String[] performances = performanceStr.substring(1).split("#");
+                for (String str : performances) {
+                    System.out.print(str);
+                }
+            }
+        }
+
+        return map;
+    }
 
 
     @Auth

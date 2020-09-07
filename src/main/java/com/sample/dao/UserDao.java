@@ -19,7 +19,9 @@ public interface UserDao {
     // 포인트 정보만 업데이트
     void updateUser(User user);
     void insertUserPoint(UserPoint userPoint);
-    
+
+    void updateUserInterest(User user);
+    void updateUserIntro(User user);
     // 회원정보 수정
     void fixUserMain(User user);
     void fixUserAddr(User user);

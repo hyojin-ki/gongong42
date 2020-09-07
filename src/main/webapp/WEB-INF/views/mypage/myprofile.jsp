@@ -90,7 +90,8 @@
 
                                             <div class="row">
                                                 <div class="col-2 offset-10">
-                                                    <button class="btn btn-outline-secondary" data-intro-update="">
+                                                    <!-- Button trigger modal -->
+                                                    <button class="btn btn-outline-secondary"  data-toggle="modal" data-target="#intro-tag-update-modal" data-whatever="124125">
                                                         추가/삭제
                                                     </button>
                                                 </div>
@@ -116,23 +117,79 @@
                                             </div>
                                             <hr>
                                             <div class="row">
-                                                <div class="col-2">공연분류</div>
-                                                <div class="col-10" id="interest-category"></div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-2">공연이름</div>
+                                                <div class="col-2">공연명</div>
                                                 <div class="col-10" id="interest-performance"></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-2 offset-10">
-                                                    <button class="btn btn-outline-secondary" data-interest-upate="">
+                                                    <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#interest-modal" data-interest-upate="">
                                                         추가/삭제
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- intro form Modal -->
+                    <div class="modal fade" id="intro-tag-update-modal" tabindex="-1" role="dialog" aria-labelledby="intro-modal-label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="intro-modal-label">자기소개를 해쉬태그로 등록해보세요!</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="introduce-tag" class="col-form-label">자기소개</label>
+                                            <input type="text" class="form-control" id="introduce-tag" placeholder="자기소개를 태그로 입력해보세요"/>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                    <button type="button" class="btn btn-primary" id="update-intro">저장하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="interest-modal" tabindex="-1" role="dialog" aria-labelledby="interest-modal-label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="interest-modal-label">내가 좋아하는 것들을 해쉬태그로 입력해주세요</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="introduce-tag" class="col-form-label">공연 장르</label>
+                                            <input type="text" class="form-control" id="genre-tag" placeholder="좋아하는 장르를 입력해주세요"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="introduce-tag" class="col-form-label">아티스트</label>
+                                            <input type="text" class="form-control" id="artist-tag" placeholder="좋아하는 아티스트를 입력해주세요"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="introduce-tag" class="col-form-label">공연명</label>
+                                            <input type="text" class="form-control" id="performance-tag" placeholder="좋아하는 공연을 입력해주세요"/>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                    <button type="button" class="btn btn-primary" id="update-interest">저장하기</button>
                                 </div>
                             </div>
                         </div>
@@ -145,6 +202,66 @@
     <div class="footer">
         <%@ include file="../common/footer.jsp" %>
     </div>
+    <script type="text/javascript">
+        $('#interest-modal').on('show.bs.modal', function (event) {
+
+            const genreText = $('#interest-genre').children().text()
+            const artistText = $('#interest-artist').children().text()
+            const performanceText = $('#interest-performance').children().text()
+
+            const modal = $(this)
+
+            modal.find('#genre-tag').val(genreText)
+            modal.find('#artist-tag').val(artistText)
+            modal.find('#performance-tag').val(performanceText)
+        })
+        $('#intro-tag-update-modal').on('show.bs.modal', function (event) {
+
+            const tagText = $('#intro-tags').children().text()
+
+            const modal = $(this)
+
+            modal.find('.modal-body input').val(tagText)
+        })
+        $('#update-interest').on('click',function(){
+            let genreText =$('#genre-tag').val()
+            let artistText =$('#artist-tag').val()
+            let performanceText =$('#performance-tag').val()
+
+            let updateMap = {'req':'interest','genre':genreText,'artist':artistText,'performance':performanceText}
+            console.log(updateMap)
+
+            $.ajax({
+                url: '/mypage/myProfileUpdate.do',
+                contentType: 'application/json; charset=utf-8',
+                data:JSON.stringify(updateMap),
+                type:'POST',
+                dataType:'JSON'
+            }).done(
+                console.log('done')
+            ).fail().always()
+
+        })
+        $('#update-intro').on('click', function(){
+            let text = $('#introduce-tag').val()
+            let updateMap = {'req':'intro','tags': text}
+            console.log(updateMap)
+            $.ajax(
+                {
+                    url: '/mypage/myProfileUpdate.do',
+                    contentType: 'application/json; charset=utf-8',
+                    data:JSON.stringify(updateMap),
+                    type:'POST',
+                    dataType:'JSON'
+                }
+
+            ).done(
+                console.log('done')
+            ).fail().always()
+
+
+        })
+    </script>
 </div>
 </body>
 </html>

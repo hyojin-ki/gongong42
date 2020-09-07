@@ -128,4 +128,14 @@ public class UserServiceImpl implements UserService{
 	public void deleteUser(String userId) {
 		userDao.deleteUser(userId);
 	}
+
+	@Override
+	public void updateUserInterest(User user) {
+		userDao.updateUserInterest(user);
+	}
+
+	@Override
+	public void updateUserIntro(User user) {
+		userDao.updateUserIntro(user);
+	}
 }
