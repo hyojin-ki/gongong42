@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,53 +25,11 @@
 <script type="text/javascript" src="/resources/js/jquery.color.js"></script>
 </head>
 <style>
-.card-bg {
-  display: block; 
-    margin-bottom: 20px;
-    line-height: 1.42857143;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12); 
-    transition: box-shadow .25s; 
-}
-.card-bg:hover {
-  box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-}
-.img-card {
-  width: 100%;
-  height:100%;
-  border-top-left-radius:2px;
-  border-top-right-radius:2px;
-  display:block;
-    overflow: hidden;
-}
-.img-card img{
-  width: 100%;
-  height: 100%;
-  object-fit:cover; 
-  transition: all .25s ease;
-} 
-.card-bg-content {
-  padding:15px;
-  text-align:left;
-}
-.card-bg-title {
-  margin-top:0px;
-  font-weight: 700;
-  font-size: 1.65em;
-}
-.card-bg-title a {
-  color: #000;
-  text-decoration: none !important;
-}
-.card-bg-read-more {
-  border-top: 1px solid #D4D4D4;
-}
-.card-bg-read-more a {
-  text-decoration: none !important;
-  padding:10px;
-  font-weight:600;
-  text-transform: uppercase
+.card-img-top:hover{
+	 cursor:pointer;
+	 transform: scale(1.1);
+	 -webkit-transition: transform 0.7s ease-in-out;
+	 background-color: rgba(1,1,1,0.7);
 }
 </style>
 <body>
@@ -83,73 +42,307 @@
 	<div class="body">
 		<div id="fullpage">
 			<div class="section" id="section1">
-				<c:forEach var="consert" items="${concerts }">
-					<div class="slide slide-background-img"
-					 style="background-color:rgba(1,1,1,0.9); background-size:40% 100%; background-position:right;
-					 		background-image: url('/resources/sample-images/${consert.imagePath}'); cursor:pointer;" onclick="location.href='/performance/list.do?order=dateOrder&category=콘서트&pageNo=&changed=Y&title=${concert.title}&genre=전체&startDay=&endDay=&age=0'">
-					<div class="container-fluid">
+				<c:if test="${not empty conserts }">
+				<c:forEach var="consert" items="${conserts }">
+					<div class="slide">
 						<div class="row">
-								<div class="col-8 ele-opacity">
-									<div class="text-white font-weight-bold" style="font-size: 8rem;" >${consert.title }</div>
-										<div class="text-white" style="font-size: 4rem;">
-											<span><fmt:formatDate value="${consert.startDate }"
-													pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
-													value="${consert.endDate }" pattern="yyyy.MM.dd" /></span>
-											<div>${consert.hallinfo.name }</div>
+							<div class="col-4 text-center ele-opacity" style="margin: auto 0;">
+								<div class="text-white font-weight-bolder" style="font-size: 2rem;">${consert.category }</div>
+								<hr style="background-color: #fff;"/>
+								<div class="text-white font-weight-bold" style="font-size: 4rem;" >${consert.title }</div>
+								<div class="text-white" style="font-size: 2rem;">
+									<span><fmt:formatDate value="${consert.startDate }"
+											pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
+										value="${consert.endDate }" pattern="yyyy.MM.dd" /></span>
+									<div>${consert.hallName }</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="d-flex justify-content-center">
+								<!-- card -->
+									<div class="card shadow transfrom-card" style="width: 30rem;">
+										<div class="card-body">
+										<c:choose>
+											 <c:when test="${fn:substring(consert.imagePath, 0,4) eq 'http' }">
+											 	<c:set var="path" value="${consert.imagePath }"/>
+											 </c:when>
+											 <c:otherwise>
+											 	<c:set var="path" value="/resources/sample-images/${consert.imagePath }"/>
+											 </c:otherwise>
+										 </c:choose>
+										 	<a href="/performance/totalList.do?title=${consert.title }">
+												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
+										 	</a>
+										</div>
+										<div class="card-footer">
+											<div class="row">
+												<div class="col-9 text-center">
+												 <c:forEach var="genre" items="${consert.genres }"> 
+												 <a	class="btn btn-link" href="/performance/list.do?category=${consert.category }&genre=${genre }">
+												 	#${genre }
+												 </a>
+												</c:forEach>
+												</div>
+												<div class="col-3 text-right">
+													<a href="/performance/totalList.do?title=${consert.title }" class="btn">
+														<i class="fas fa-chevron-circle-right fa-2x text-danger"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								<!-- card -->
+								</div>
+							</div>
+							<div class="col-4 text-center" style="margin: auto 0; padding: 100px;">
+								<div class="row">
+									<div class="col-12 card bg-dark shadow">
+									
+										<div class="row mt-3 mb-2">
+											<div class="col-12 bg-white rounded-top shadow" style="padding: 30px;">
+												<div class="text-secondary h3 font-weight-bold">메이트 모집중
+												</div>
+											</div>
+											<div class="col-12 text-white">
+											<c:forEach items="${consertSeatList }" var="seat">
+												<c:if test="${seat.title eq consert.title }">
+												
+												<div class="row">
+													<div class="col-4 bg-primary p-3">
+														<span class="h3">R석</span>
+														<div class="h5 mt-2">${seat.R } <span>석</span></div>
+													</div>
+													<div class="col-4 bg-warning p-3">
+														<span class="h3">S석</span>
+														 <div class="h5 mt-2">${seat.S } <span>석</span></div>
+													</div>
+													<div class="col-4 bg-danger p-3">
+														<span class="h3">A석</span>
+														<div class="h5 mt-2">${seat.A } <span>석</span></div>
+													</div>
+												</div>
+												</c:if>
+											</c:forEach>
+											</div>
+											<div class="col-12 bg-white rounded-bottom shadow">
+												<div class="mt-4 mb-4">
+													<div class="d-flex justify-content-center">
+														<a class="btn btn-outline-primary btn-lg" href="/payment/step1.do?no=${consert.id }">
+															예매하기
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
-							<div class="col-4">
 							</div>
 						</div>
 					</div>
-				</div>
 				</c:forEach>
+				</c:if>
 			</div>
-			<div class="section" id="section1">
+			<div class="section" id="section2">
+			<c:if test="${not empty musicals }">
 				<c:forEach var="musical" items="${musicals }">
-				<div class="slide slide-background-img"
-					 style="background-color:rgba(1,1,1,0.9); background-size:40% 100%; background-position:right;
-					 		background-image: url('/resources/sample-images/${musical.imagePath}'); cursor:pointer;" onclick="location.href='/performance/list.do?order=dateOrder&category=콘서트&pageNo=&changed=Y&title=${musical.title}&genre=전체&startDay=&endDay=&age=0'">
-					<div class="container-fluid">
+					<div class="slide">
 						<div class="row">
-							<div class="col-8 ele-opacity">
-									<div class="text-white font-weight-bold" style="font-size: 8rem;" >${musical.title }</div>
-										<div class="text-white" style="font-size: 4rem;">
-											<span><fmt:formatDate value="${musical.startDate }"
-													pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
-													value="${musical.endDate }" pattern="yyyy.MM.dd" /></span>
-											<div>${musical.hallinfo.name }</div>
-										</div>
+							<div class="col-4 text-center ele-opacity" style="margin: auto 0;">
+								<div class="text-white font-weight-bolder" style="font-size: 2rem;">${musical.category }</div>
+								<hr style="background-color: #fff;"/>
+								<div class="text-white font-weight-bold" style="font-size: 4rem;" >${musical.title }</div>
+								<div class="text-white" style="font-size: 2rem;">
+									<span><fmt:formatDate value="${musical.startDate }"
+											pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
+										value="${musical.endDate }" pattern="yyyy.MM.dd" /></span>
+									<div>${musical.hallName }</div>
 								</div>
+							</div>
 							<div class="col-4">
+								<div class="d-flex justify-content-center">
+								<!-- card -->
+									<div class="card shadow transfrom-card" style="width: 30rem;">
+										<div class="card-body">
+										<c:choose>
+											 <c:when test="${fn:substring(musical.imagePath, 0,4) eq 'http' }">
+											 	<c:set var="path" value="${musical.imagePath }"/>
+											 </c:when>
+											 <c:otherwise>
+											 	<c:set var="path" value="/resources/sample-images/${musical.imagePath }"/>
+											 </c:otherwise>
+										 </c:choose>
+										 	<a href="/performance/totalList.do?title=${musical.title }">
+												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
+										 	</a>
+										</div>
+										<div class="card-footer">
+											<div class="row">
+												<div class="col-9 text-center">
+												 <c:forEach var="genre" items="${musical.genres }"> 
+												 <a	class="btn btn-link" href="/performance/list.do?category=${musical.category }&genre=${genre }">
+												 	#${genre }
+												 </a>
+												</c:forEach>
+												</div>
+												<div class="col-3 text-right">
+													<a href="/performance/totalList.do?title=${musical.title }" class="btn">
+														<i class="fas fa-chevron-circle-right fa-2x text-danger"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								<!-- card -->
+								</div>
+							</div>
+							<div class="col-4 text-center" style="margin: auto 0; padding: 100px;">
+								<div class="row">
+									<div class="col-12 card bg-dark shadow">
+									
+										<div class="row mt-3 mb-2">
+											<div class="col-12 bg-white rounded-top shadow" style="padding: 30px;">
+												<div class="text-secondary h3 font-weight-bold">메이트 모집중
+												</div>
+											</div>
+											<div class="col-12 text-white">
+											<c:forEach items="${musicalsSeatList }" var="seat">
+												<c:if test="${seat.title eq musical.title }">
+												
+												<div class="row">
+													<div class="col-4 bg-primary p-3">
+														<span class="h3">R석</span>
+														<div class="h5 mt-2">${seat.R } <span>석</span></div>
+													</div>
+													<div class="col-4 bg-warning p-3">
+														<span class="h3">S석</span>
+														 <div class="h5 mt-2">${seat.S } <span>석</span></div>
+													</div>
+													<div class="col-4 bg-danger p-3">
+														<span class="h3">A석</span>
+														<div class="h5 mt-2">${seat.A } <span>석</span></div>
+													</div>
+												</div>
+												</c:if>
+											</c:forEach>
+											</div>
+											<div class="col-12 bg-white rounded-bottom shadow">
+												<div class="mt-4 mb-4">
+													<div class="d-flex justify-content-center">
+														<a class="btn btn-outline-primary btn-lg" href="/payment/step1.do?no=${musical.id }">
+															예매하기
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 				</c:forEach>
+			</c:if>	
 			</div>
-			<div class="section" id="section1">
-			<c:forEach var="theater" items="${theaters }">
-				<div class="slide slide-background-img"
-					 style="background-color:rgba(1,1,1,0.9); background-size:40% 100%; background-position:right;
-					 		background-image: url('/resources/sample-images/${theater.imagePath}'); cursor:pointer;" onclick="location.href='/performance/list.do?order=dateOrder&category=콘서트&pageNo=&changed=Y&title=${theater.title}&genre=전체&startDay=&endDay=&age=0'">
-					<div class="container-fluid">
+			<div class="section" id="section3">
+			<c:if test="${not empty theaters }">
+				<c:forEach var="theater" items="${theaters }">
+					<div class="slide">
 						<div class="row">
-							<div class="col-8 ele-opacity">
-									<div class="text-white font-weight-bold" style="font-size: 8rem; opacity: 0" >${theater.title }</div>
-										<div class="text-white" style="font-size: 4rem; opacity: 0;">
-											<span><fmt:formatDate value="${theater.startDate }"
-													pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
-													value="${theater.endDate }" pattern="yyyy.MM.dd" /></span>
-											<div>${theater.hallinfo.name }</div>
-										</div>
+							<div class="col-4 text-center ele-opacity" style="margin: auto 0;">
+								<div class="text-white font-weight-bolder" style="font-size: 2rem;">${theater.category }</div>
+								<hr style="background-color: #fff;"/>
+								<div class="text-white font-weight-bold" style="font-size: 4rem;" >${theater.title }</div>
+								<div class="text-white" style="font-size: 2rem;">
+									<span><fmt:formatDate value="${theater.startDate }"
+											pattern="yyyy.MM.dd" /></span> <span>~</span> <span><fmt:formatDate
+										value="${theater.endDate }" pattern="yyyy.MM.dd" /></span>
+									<div>${theater.hallName }</div>
 								</div>
+							</div>
 							<div class="col-4">
+								<div class="d-flex justify-content-center">
+								<!-- card -->
+									<div class="card shadow transfrom-card" style="width: 30rem;">
+										<div class="card-body">
+										<c:choose>
+											 <c:when test="${fn:substring(theater.imagePath, 0,4) eq 'http' }">
+											 	<c:set var="path" value="${theater.imagePath }"/>
+											 </c:when>
+											 <c:otherwise>
+											 	<c:set var="path" value="/resources/sample-images/${theater.imagePath }"/>
+											 </c:otherwise>
+										 </c:choose>
+										 	<a href="/performance/totalList.do?title=${theater.title }">
+												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
+										 	</a>
+										</div>
+										<div class="card-footer">
+											<div class="row">
+												<div class="col-9 text-center">
+												 <c:forEach var="genre" items="${theater.genres }"> 
+												 <a	class="btn btn-link" href="/performance/list.do?category=${theater.category }&genre=${genre }">
+												 	#${genre }
+												 </a>
+												</c:forEach>
+												</div>
+												<div class="col-3 text-right">
+													<a href="/performance/totalList.do?title=${theater.title }" class="btn">
+														<i class="fas fa-chevron-circle-right fa-2x text-danger"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								<!-- card -->
+								</div>
+							</div>
+							<div class="col-4 text-center" style="margin: auto 0; padding: 100px;">
+								<div class="row">
+									<div class="col-12 card bg-dark shadow">
+									
+										<div class="row mt-3 mb-2">
+											<div class="col-12 bg-white rounded-top shadow" style="padding: 30px;">
+												<div class="text-secondary h3 font-weight-bold">메이트 모집중
+												</div>
+											</div>
+											<div class="col-12 text-white">
+											<c:forEach items="${theatersSeatList }" var="seat">
+												<c:if test="${seat.title eq theater.title }">
+												
+												<div class="row">
+													<div class="col-4 bg-primary p-3">
+														<span class="h3">R석</span>
+														<div class="h5 mt-2">${seat.R } <span>석</span></div>
+													</div>
+													<div class="col-4 bg-warning p-3">
+														<span class="h3">S석</span>
+														 <div class="h5 mt-2">${seat.S } <span>석</span></div>
+													</div>
+													<div class="col-4 bg-danger p-3">
+														<span class="h3">A석</span>
+														<div class="h5 mt-2">${seat.A } <span>석</span></div>
+													</div>
+												</div>
+												</c:if>
+											</c:forEach>
+											</div>
+											<div class="col-12 bg-white rounded-bottom shadow">
+												<div class="mt-4 mb-4">
+													<div class="d-flex justify-content-center">
+														<a class="btn btn-outline-primary btn-lg" href="/payment/step1.do?no=${theater.id }">
+															예매하기
+														</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</c:forEach>
+				</c:forEach>
+			</c:if>	
 			</div>
 			<!-- home footer -->
 			<div class="fp-auto-height section" id="section4">
@@ -178,7 +371,7 @@
 				navigation : true,
 				controlArrows : false,
 				navigationPosition : 'right',
-				sectionsColor : [ '#fff', '#fff', '#fff', '#000000' ],
+				sectionsColor : [ '#4F5051', '#C87D26', '#740039', '#000000' ],
 				keyboardScrolling : true,
 				afterRender: function () {
 					setInterval(function () {

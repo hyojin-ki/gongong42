@@ -719,15 +719,38 @@
 	</select>
 
 
-	<select id="getPerformanceByCategoryLimit" parameterType="string" resultType="PerformanceDto">
-		SELECT A.title, A.startDate, A.endDate, A.imagePath, C.name as "hallInfo.name"
-		FROM performance_info A
-		JOIN performance_main B ON A.id = B.infoId
-		JOIN hall_info_main C ON A.hallInfoId = C.id
+	<select id="getPerformanceByCategoryLimit" parameterType="string" resultMap="PerformanceDetailDtoResultMap">
+		select		A.id 		as id,
+					B.id		AS performanceMainId, 
+					A.title		as title, 
+					A.category	as category, 
+					A.provider	as provider,  
+					A.rating	as rating, 
+					A.runningTime	as runningTime, 
+					A.startDate		as startDate, 
+					A.endDate		as endDate, 
+					A.point			as point, 
+					A.likes			as likes, 
+					A.imagePath		as imagePath, 
+					A.`explain`		as `explain`, 
+					C.name			as hallName, 
+					C.address		as hallAddress,
+					A.reserveCount  as reserveCount,
+					A.hallInfoId						
+		FROM 
+			performance_info A		
+		JOIN
+			performance_main B ON B.infoId = A.id
+		JOIN 
+			hall_info_main C ON C.id = A.hallInfoId
+		JOIN 
+			performance_genre D ON A.id = D.id	
+		JOIN 
+			mate_main E ON E.performanceId = B.id
 		WHERE A.category = #{value}
 		AND A.endDate >= NOW()
 		GROUP BY B.infoId
-		ORDER BY B.registeredDate
+		ORDER BY B.registeredDate DESC 
 		LIMIT 3
 	</select>
 

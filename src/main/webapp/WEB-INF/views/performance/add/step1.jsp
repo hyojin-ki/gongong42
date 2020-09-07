@@ -83,7 +83,7 @@
 								data-target="#performance-list-modal" id="apimodal">API 공연 찾기</button>
 						</div>
 					</div>
-					<form method="post" id="addForm" action="step1.do" enctype="multipart/form-data">		
+					<form:form method="post" id="addForm" action="step1.do" enctype="multipart/form-data" modelAttribute="performanceForm">		
 						<div class="form-group">
 							<label class="mr-3">공연분류</label> 		
 							<div>
@@ -182,10 +182,14 @@
 							 -->
 							<input type="file" id="upfile" class="form-control mb-1" name="upfile">
 						</div>
+						<div >
+							<img class="img-thumbnail" id="image-preview" src="/resources/sample-images/noimage.png" alt="" />
+						</div>
+						
 						<input type="hidden" id="performance-place-address" name="hallAddress" />
 						<input type="hidden" id="performance-place" name="hallName" />
 						<input type="hidden" id="performance-imgurl" name="imagePath"/>						
-					</form>
+					</form:form>
 				</div>				
 			</div> <!-- 기본정보 입력 끝 -->
 

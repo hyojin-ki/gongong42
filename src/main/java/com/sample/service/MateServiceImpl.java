@@ -163,6 +163,7 @@ public class MateServiceImpl implements MateService {
 		mateDao.insertMateMember(newMember.getId(), mateId, performanceId);
 		// 메이트 타임 라인 자동으로 남기기
 		MateTimeLine mateTimeLine = new MateTimeLine();
+		mateTimeLine.setPerformanceId(performanceId);
 		mateTimeLine.setId(mateId);
 		mateTimeLine.setUser(newMember);
 		mateTimeLine.setContent(newMember.getId()+" 님이 입장하셨습니다. 환영해주세요!");
@@ -495,5 +496,17 @@ public class MateServiceImpl implements MateService {
 	 */
 	public Performance getMatePerformanceByPerformanceId(int performanceId) {
 		return mateDao.getMatePerformanceByPerformanceId(performanceId);
+	}
+	public Map<String, Object> getMateSeatsAllCnt(int performanceId) {
+		
+		PerformanceDetailDto dto = performanceDao.getPerformanceByPerformanceMainId(performanceId);
+		String title = dto.getTitle();
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("A", mateDao.getAllMateSeatCnt_A(performanceId));
+		map.put("S", mateDao.getAllMateSeatCnt_S(performanceId));
+		map.put("R", mateDao.getAllMateSeatCnt_R(performanceId));
+		
+		return map;
 	}
 }

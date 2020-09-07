@@ -117,4 +117,6 @@ public interface MateService {
     List<MateList> getAllMateDetailForManagement(Map<String, Object> map);
     
 	Performance getMatePerformanceByPerformanceId(int performanceId);
+	
+	Map<String, Object> getMateSeatsAllCnt(int performanceId);
 }

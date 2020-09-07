@@ -302,10 +302,19 @@
 			<div id="card-x-btn" class="text-right m-2 text-white" style="position: absolute; z-index: 20; cursor: pointer;">
 				<i class="far fa-times-circle fa-2x"></i>	
 			</div>
-		<div class='image'
-			style='background-image: url("/resources/sample-images/${mate.performance.imagePath }")'>
-		</div>
-
+	<c:choose>
+		<c:when
+			test="${fn:substring(mate.performance.imagePath, 0,4) eq 'http' }">
+			<c:set var="path" value="${mate.performance.imagePath }" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="path"
+					value="/resources/sample-images/${mate.performance.imagePath }" />
+		</c:otherwise>
+	</c:choose>		
+			<div class='image'
+						style='background-image: url("${path }")'>
+			</div>
 		<div class='wave'></div>
 		<div class='wave'></div>
 		<div class='wave'></div>

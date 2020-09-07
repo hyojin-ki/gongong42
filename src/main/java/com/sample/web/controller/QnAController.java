@@ -47,9 +47,10 @@ public class QnAController {
 	
 	@Autowired
 	QnaService qnaService;
-	
+	/*
 	@Value("${directory.save.qnaImg}")
 	private String saveDirectory;
+	*/
 	
 	@Autowired
 	UserService userService;
@@ -111,10 +112,11 @@ public class QnAController {
 	public String addQna(QnaForm qnaForm
 			, HttpSession session
 			, @RequestParam("uploadFiles") List<MultipartFile> uploadFiles
-			, @RequestParam("imgCategory") String imgCate) throws Exception {
+			, @RequestParam("imgCategory") String imgCate
+			, HttpServletRequest req) throws Exception {
 		
 		List<String> Images = new ArrayList<>();
-		
+		String savedDirectory = session.getServletContext().getRealPath("/") + "resources/sample-images/";
 		for (MultipartFile multipartFile : uploadFiles) {
 			
 			if (!multipartFile.isEmpty()) {
@@ -122,7 +124,7 @@ public class QnAController {
 				
 				Images.add(filename);
 				
-				File file = new File(saveDirectory, filename);
+				File file = new File(savedDirectory, filename);
 				
 				FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(file));
 				
@@ -155,9 +157,13 @@ public class QnAController {
 	@PostMapping("/modifyquestion.do")
 	public String modifyQna(QnaForm qnaForm
 			, @RequestParam("uploadFiles") List<MultipartFile> uploadFiles
-			, @RequestParam("imgCategory") String imgCate) throws Exception {
+			, @RequestParam("imgCategory") String imgCate
+			, HttpServletRequest req) throws Exception {
 		
 		List<String> images = new ArrayList<>();
+		HttpSession session = req.getSession();
+		
+		String savedDirectory = session.getServletContext().getRealPath("/") + "resources/sample-images/";
 		
 		for (MultipartFile multipartFile : uploadFiles) {
 			
@@ -166,7 +172,7 @@ public class QnAController {
 				
 				images.add(filename);
 				
-				File file = new File(saveDirectory, filename);
+				File file = new File(savedDirectory, filename);
 				
 				FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(file));
 				

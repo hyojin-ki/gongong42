@@ -465,9 +465,10 @@ public class PerformanceContoller {
 			FileCopyUtils.copy(upFile.getInputStream(), new FileOutputStream(file));	
 			performanceForm.setImagePath(filename);
 		} else {
-			String downloadFile = performanceService.saveImage(performanceForm.getImagePath(), performanceForm.getTitle(), imageSaveDirectory);
-			System.out.println(imageSaveDirectory);
-			performanceForm.setImagePath(downloadFile);
+			//String downloadFile = performanceService.saveImage(performanceForm.getImagePath(), performanceForm.getTitle(), imageSaveDirectory);
+			//System.out.println("downloadFile name : " + downloadFile);
+			//System.out.println("imageSaveDriectory : "+imageSaveDirectory);
+			//System.out.println("api 파일전송  : " + performanceForm.getImagePath());
 		}
 		
 		
