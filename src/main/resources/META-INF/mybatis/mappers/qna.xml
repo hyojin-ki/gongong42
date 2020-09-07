@@ -65,6 +65,12 @@
 		limit #{beginIndex}, #{endIndex}
 	</select>
 	
+	<select id="getQnaImagesById" parameterType="int" resultType="QnaImage">
+		select id, imagePath
+		from qna_image_path
+		where id = #{value}
+	</select>
+	
 	<select id="getQnaDetail" parameterType="int" resultType="Qna">
 		select id			as id
 		, userid			as "questionUser.id"
@@ -85,6 +91,19 @@
 		(questionTitle, userId, questionContent, regDate, category, opened)
 		values
 		(#{questionTitle}, #{questionUser.id}, #{questionContent}, now(), #{category}, #{opened})
+	</insert>
+	
+	<insert id="insertNewQnaImages" parameterType="list">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT A.id
+			FROM (SELECT id FROM qna_main ORDER BY id DESC LIMIT 1) A
+		</selectKey>
+		insert into qna_image_path
+		(id, imagePath)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		(#{no}, #{item})
+		</foreach>
 	</insert>
 	
 	<insert id="insertAnswer" parameterType="map">
@@ -113,7 +132,7 @@
 		update qna_main
 		set
 			deleted = 'Y'
-		where id = ${value}
+		where id = #{value}
 	</update>
 	
 	<select id="getNoAnswerQnaCnt" resultType="int">
@@ -121,6 +140,27 @@
 		FROM qna_main
 		WHERE answerContent IS null
 	</select>
+	
+	<insert id="insertQnaImages" parameterType="map">
+		insert into images
+		(category, imagePath)
+		values
+		(#{category}, #{filename})
+	</insert>
+	
+	<delete id="deleteQnaImages" parameterType="int">
+		delete from qna_image_path
+		where id = #{value}
+	</delete>
+	
+	<insert id="insertModifyQnaImages" parameterType="map">
+		insert into qna_image_path
+		(id, imagePath)
+		values
+		<foreach collection="images" item="item" index="index" separator=",">
+		(#{qnaId}, #{item})
+		</foreach>
+	</insert>
 	
 </mapper>
 

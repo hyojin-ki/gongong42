@@ -1,9 +1,11 @@
 package com.sample.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mariadb.jdbc.internal.io.socket.SocketUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.sample.web.form.AnswerForm;
 import com.sample.web.form.QnaForm;
 import com.sample.web.view.Pagination;
 import com.sample.web.view.Qna;
+import com.sample.web.view.QnaImage;
 
 @Service
 public class QnaServiceImpl implements QnaService{
@@ -45,7 +48,6 @@ public class QnaServiceImpl implements QnaService{
 		
 	}
 	
-	
 	@Override
 	public void updateQna(QnaForm qnaForm) {
 
@@ -54,6 +56,20 @@ public class QnaServiceImpl implements QnaService{
 		map.put("qnaForm", qnaForm);
 		
 		qnaDao.updateQna(map);
+	}
+	
+	@Override
+	public void updateQnaImages(Map<String, Object> map) {
+		
+		int qnaId = (Integer)map.get("qnaId");
+		
+		qnaDao.deleteQnaImages(qnaId);
+		
+		List<String> images = (List<String>)map.get("images");
+
+		if (images.size() != 0) {
+			qnaDao.insertModifyQnaImages(map);
+		}
 	}
 	
 	@Override
@@ -108,8 +124,15 @@ public class QnaServiceImpl implements QnaService{
 	
 	@Override
 	public void addNewQna(Qna qna) {
-		
 		qnaDao.insertQna(qna);
+	}
+	
+	@Override
+	public void addQnaImages(List<String> images) {
+		
+		if (images.size() != 0) {
+			qnaDao.insertNewQnaImages(images);
+		}
 		
 	}
 	
@@ -135,8 +158,21 @@ public class QnaServiceImpl implements QnaService{
 		
 	}
 	
+	@Override
+	public void addNewImage(Map<String, String> map) {
+		
+		qnaDao.insertQnaImages(map);
+		
+	}
+	
 	public int getNoAnswerQnaCnt() {
 		return qnaDao.getNoAnswerQnaCnt();
 	}
+	
+	@Override
+	public List<QnaImage> getIamgesById(int qnaId) {
+		return qnaDao.getQnaImagesById(qnaId);
+	}
+	
 
 }

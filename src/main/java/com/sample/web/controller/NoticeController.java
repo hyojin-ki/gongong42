@@ -259,7 +259,6 @@ public class NoticeController {
 		return "redirect:/admin/notice/list.do";
 	}
 	
-	
 	@PostMapping("/addImage.do")
 	@ResponseBody
 	public List<Image> addNoticeImage(@RequestParam("cate") String cate, @RequestParam("myFile") List<MultipartFile> myFile) throws Exception {
@@ -271,12 +270,11 @@ public class NoticeController {
 			if (!multipartFile.isEmpty()) {
 				String filename = multipartFile.getOriginalFilename();
 				
-				filename = System.currentTimeMillis() + filename;
-				
 				File file = new File(saveDirectory, filename);
 				
 				FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(file));
 				
+				filename = System.currentTimeMillis() + filename;
 				Map<String, String> containsFileNameAndCategoryName = new HashMap<String, String>();
 				
 				containsFileNameAndCategoryName.put("filename", filename);
@@ -351,6 +349,13 @@ public class NoticeController {
 	@GetMapping("/getImages.do")
 	@ResponseBody
 	public List<Image> getImages() {
+		
+		List<Image> images = noticeService.getAllImages();
+		
+		for (Image image : images) {
+			System.out.println(image.getImagePath());
+		}
+		
 		return noticeService.getAllImages();
 	}
 }
