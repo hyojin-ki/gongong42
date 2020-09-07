@@ -246,7 +246,7 @@ public interface PerformanceDao {
    PerformanceMain getPerformanceMainByPerformanceId(int performanceId);
    
 
-   List<PerformanceDto> getPerformanceByCategoryLimit(String category);
+   List<PerformanceDetailDto> getPerformanceByCategoryLimit(String category);
    
 
    /**

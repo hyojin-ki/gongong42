@@ -28,6 +28,7 @@ public class PerformanceDetailDto {
     private int hallInfoId;
     // 예매횟수 추가해야함 
     private int reserveCount;
+    private int performanceMainId;
     
     //private List<PerformanceSchedule> schedule;
     // 지도 gpsX, gpsy 추가
@@ -190,5 +191,14 @@ public class PerformanceDetailDto {
 	public void setHallInfoId(int hallInfoId) {
 		this.hallInfoId = hallInfoId;
 	}
+
+	public int getPerformanceMainId() {
+		return performanceMainId;
+	}
+
+	public void setPerformanceMainId(int performanceMainId) {
+		this.performanceMainId = performanceMainId;
+	}
+	
 	
 }

@@ -462,7 +462,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 	}
 
 	@Override
-	public List<PerformanceDto> getPerformanceByCategoryLimit(String category) {
+	public List<PerformanceDetailDto> getPerformanceByCategoryLimit(String category) {
 		return performanceDao.getPerformanceByCategoryLimit(category);
 	}
  

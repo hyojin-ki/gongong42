@@ -497,4 +497,16 @@ public class MateServiceImpl implements MateService {
 	public Performance getMatePerformanceByPerformanceId(int performanceId) {
 		return mateDao.getMatePerformanceByPerformanceId(performanceId);
 	}
+	public Map<String, Object> getMateSeatsAllCnt(int performanceId) {
+		
+		PerformanceDetailDto dto = performanceDao.getPerformanceByPerformanceMainId(performanceId);
+		String title = dto.getTitle();
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", title);
+		map.put("A", mateDao.getAllMateSeatCnt_A(performanceId));
+		map.put("S", mateDao.getAllMateSeatCnt_S(performanceId));
+		map.put("R", mateDao.getAllMateSeatCnt_R(performanceId));
+		
+		return map;
+	}
 }
