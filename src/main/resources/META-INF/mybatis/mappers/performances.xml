@@ -602,6 +602,23 @@
 	
 	</update>
 	
+	<update id="updatePerformanceLikes" parameterType="Performance">
+		UPDATE performance_info
+		SET
+			likes = #{likes}
+		WHERE
+			id = #{id}	
+	</update>
+	
+	<update id="updatePerformanceReserveCount" parameterType="Performance">
+		UPDATE performance_info
+		SET
+			reserveCount = #{reserveCount}
+		WHERE
+			id = #{id}
+	
+	</update>
+	
 	<select id="getHallInfoByPerformanceInfoId" parameterType="int" resultType="HallInfo">
 		SELECT 
 			A.id , A.`name`, A.address, A.gpsX, A.gpsY
@@ -612,7 +629,6 @@
 		WHERE 
 			B.id=#{value}	
 	</select>
-	
 	
 	
 	

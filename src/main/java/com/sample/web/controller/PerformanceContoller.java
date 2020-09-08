@@ -1020,7 +1020,13 @@ public class PerformanceContoller {
 		userLikes.setId(userId);
 		userLikes.setPerformanceInfoId(performanceId);
 		
+		PerformanceDetailDto performanceOrigin = performanceService.getPerformanceDetailById(performanceId);
+		Performance newPerformance = new Performance();
+		newPerformance.setId(performanceOrigin.getId());
+		newPerformance.setLikes(performanceOrigin.getLikes()+1);
+		
 		performanceService.insertPerformanceLikes(userLikes);
+		performanceService.updatePerformanceLikes(newPerformance);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("successYn", "Y");
@@ -1035,7 +1041,13 @@ public class PerformanceContoller {
 		userLikes.setId(userId);
 		userLikes.setPerformanceInfoId(performanceId);
 		
+		PerformanceDetailDto performanceOrigin = performanceService.getPerformanceDetailById(performanceId);
+		Performance newPerformance = new Performance();
+		newPerformance.setId(performanceOrigin.getId());
+		newPerformance.setLikes(performanceOrigin.getLikes()-1);
+		
 		performanceService.deletePerformanceLikes(userLikes);
+		performanceService.updatePerformanceLikes(newPerformance);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("successYn", "Y");

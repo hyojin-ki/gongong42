@@ -152,8 +152,18 @@ public interface PerformanceService {
 	 */
 	void deletePerformanceLikes(UserLikes userLikes);
     
-    		
+	/**
+	 * 공연정보의 공연정보아이디에 해당하는 좋아요수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceLikes(Performance performance);		
     
+	/**
+	 * 공연정보의 공연정보아이디에 해당하는 예매수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceReserveCount(Performance performance);
+	
     /**
      * 공연정보를 업데이트한다.
      * 공연정보, 공연장르 테이블이 업데이트 된다.

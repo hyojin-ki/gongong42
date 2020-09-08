@@ -213,6 +213,18 @@ public interface PerformanceDao {
 	void updatePerformanceHallInfoId(Performance performance);
 	
 	/**
+	 * 공연정보의 공연정보아이디에 해당하는 좋아요수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceLikes(Performance performance);
+	
+	/**
+	 * 공연정보의 공연정보아이디에 해당하는 예매수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceReserveCount(Performance performance);
+	
+	/**
 	 * 공연정보아이디와 사용자아이디가 담긴 UserLikes 객체를 입력으로 받아 사용자가 해당공연에 대한 좋아요를 추가한다.
 	 * @param userLikes
 	 */

@@ -492,5 +492,17 @@ public class PerformanceServiceImpl implements PerformanceService {
 		// TODO Auto-generated method stub
 		return performanceDao.getGenderReserveCountByPerformanceInfoIdAndGender(performanceGenderReserveStats);
 	}
+
+	@Override
+	public void updatePerformanceLikes(Performance performance) {
+		// TODO Auto-generated method stub
+		performanceDao.updatePerformanceLikes(performance);
+	}
+
+	@Override
+	public void updatePerformanceReserveCount(Performance performance) {
+		// TODO Auto-generated method stub
+		performanceDao.updatePerformanceReserveCount(performance);
+	}
  
 }
