@@ -534,6 +534,42 @@
 		) D
 	</select>
 	
+	<select id="getAgeGroupReserveCountByPerformanceInfoIdAndAge" parameterType="PerformanceAgeReserveStats"
+	resultType="int">
+		
+		SELECT COUNT(*) 
+		FROM (
+			SELECT DISTINCT  A.reserveUser, B.infoId, C.gender, C.birthday, CURDATE(),
+				<![CDATA[(YEAR(CURDATE())-YEAR(C.birthday))-(RIGHT(CURDATE(),5) < RIGHT(C.birthday,5))]]> AS age
+			FROM 
+				reserve_main A
+			JOIN 
+				performance_main B ON A.performanceId = B.id 
+			JOIN
+				user_main C ON A.reserveUser = C.id
+			WHERE 
+				B.infoId = #{performanceInfoId}
+		)D
+		WHERE 
+			<choose>
+				<when test="ageGroup == 10">
+					<![CDATA[D.age < 20]]>
+				</when>
+				<when test="ageGroup == 20">
+					D.age between 20 and 29
+				</when>
+				<when test="ageGroup == 30">
+					D.age between 30 and 39
+				</when>
+				<when test="ageGroup == 40">
+					D.age between 40 and 49
+				</when>
+				<when test="ageGroup == 50">
+					<![CDATA[D.age >= 50]]>
+				</when>
+			</choose>
+	</select>
+	
 	
 	<insert id="insertHallInfo" parameterType="HallInfo"
 		useGeneratedKeys="true" keyProperty="id">

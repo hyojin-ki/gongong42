@@ -29,6 +29,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.dao.PerformanceDao;
+import com.sample.dto.PerformanceAgeReserveStats;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceGenderReserveStats;
 import com.sample.service.HallService;
@@ -975,16 +976,54 @@ public class PerformanceContoller {
 		PerformanceGenderReserveStats manReserveStats = new PerformanceGenderReserveStats();
 		PerformanceGenderReserveStats womanReserveStats = new PerformanceGenderReserveStats();
 		
+		PerformanceAgeReserveStats age10ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age20ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age30ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age40ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age50ReserveStats = new PerformanceAgeReserveStats();
+		
+		// 남자 공연예매수
 		manReserveStats.setPerformanceInfoId(performanceId);
 		manReserveStats.setGender("M");
 		manReserveStats.setReserveCount(performanceService.getGenderReserveCountByPerformanceInfoIdAndGender(manReserveStats));
 		
+		// 여자 공연예매수
 		womanReserveStats.setPerformanceInfoId(performanceId);
 		womanReserveStats.setGender("W");
 		womanReserveStats.setReserveCount(performanceService.getGenderReserveCountByPerformanceInfoIdAndGender(womanReserveStats));
-			
+		
+		// 10대이하 공연예매수
+		age10ReserveStats.setPerformanceInfoId(performanceId);
+		age10ReserveStats.setAgeGroup(10);
+		age10ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age10ReserveStats));
+		
+		// 20대 공연예매수
+		age20ReserveStats.setPerformanceInfoId(performanceId);
+		age20ReserveStats.setAgeGroup(20);
+		age20ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age20ReserveStats));
+		
+		// 30대 공연예매수
+		age30ReserveStats.setPerformanceInfoId(performanceId);
+		age30ReserveStats.setAgeGroup(30);
+		age30ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age30ReserveStats));
+		
+		// 40대 공연예매수
+		age40ReserveStats.setPerformanceInfoId(performanceId);
+		age40ReserveStats.setAgeGroup(40);
+		age40ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age40ReserveStats));
+		
+		// 50대 이상 공연예매수
+		age50ReserveStats.setPerformanceInfoId(performanceId);
+		age50ReserveStats.setAgeGroup(50);
+		age50ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age50ReserveStats));
+		
 		System.out.println("남자 공연예매수: "+manReserveStats.getReserveCount());
 		System.out.println("여자 공연예매수: "+womanReserveStats.getReserveCount());
+		System.out.println("10대 공연예매수: "+age10ReserveStats.getReserveCount());
+		System.out.println("20대 공연예매수: "+age20ReserveStats.getReserveCount());
+		System.out.println("30대 공연예매수: "+age30ReserveStats.getReserveCount());
+		System.out.println("40대 공연예매수: "+age40ReserveStats.getReserveCount());
+		System.out.println("50대 공연예매수: "+age50ReserveStats.getReserveCount());
 		
 		if ("".equals(userId)) {
 			System.out.println("로그인되지 않았습니다.");
@@ -1008,7 +1047,11 @@ public class PerformanceContoller {
 		map.put("userLiked", userLiked);
 		map.put("manReserveCount", manReserveStats.getReserveCount());
 		map.put("womanReserveCount", womanReserveStats.getReserveCount());
-		
+		map.put("age10ReserveStats", age10ReserveStats.getReserveCount());
+		map.put("age20ReserveStats", age20ReserveStats.getReserveCount());
+		map.put("age30ReserveStats", age30ReserveStats.getReserveCount());
+		map.put("age40ReserveStats", age40ReserveStats.getReserveCount());
+		map.put("age50ReserveStats", age50ReserveStats.getReserveCount());
 		
 		return map;
 	}
