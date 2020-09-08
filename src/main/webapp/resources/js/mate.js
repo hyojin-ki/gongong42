@@ -56,7 +56,15 @@ $(function(){
 			$('#pStartDate').text($.datepicker.formatDate('yy-mm-dd',new Date(pStartDate)));
 			$('#pEndDate').text($.datepicker.formatDate('yy-mm-dd',new Date(pEndDate)));
 			$('#pTitle').text(pTitle);
-			$('#pImage').css({"background-image":"url(/resources/sample-images/"+pImage+")"});
+			var pImagePath = '';
+			console.log(pImage.substring(0,4))
+			if(pImage.substring(0,4) != 'http'){
+				pImagePath = '/resources/sample-images/'+pImage;
+			} else {
+				pImagePath = pImage;
+			}
+			$('#pImage').css({"background-image":"url("+pImagePath+")"});
+			
 			$('#pRating').text(pRating);
 			$('#pCat').text(pCat);
 			$('#pShowDate').text($.datepicker.formatDate('mm월dd일',new Date(pShowDate)));
@@ -207,10 +215,7 @@ $(function(){
 			$('#mate-plus-hastag-box').toggle();
 		});
 		
-		//mateRoomOutFunction
-		$('#mate-out-btn').click(function(){
-			confirm('정말로 해당 방에서 나가겠습니까?')
-		})
+		
 	
 		
 		

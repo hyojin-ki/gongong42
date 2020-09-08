@@ -69,7 +69,12 @@ let generateList = function () {
                 template.attr("data-reserve-id", reserve.id)
                 template.addClass('reserve-list')
                 $(".container").append($(template).clone())
-                $(`#${newId} .performance-image`).attr("src", `/resources/sample-images/${performance.imagePath}`)
+                var imagePath = `${performance.imagePath}`;
+                if(imagePath.substring(0,4) != 'http'){
+                	imagePath = `/resources/sample-images/${performance.imagePath}`;
+                }
+                $(`#${newId} .performance-image`).attr("src", imagePath);
+               
                 console.log(`#${newId} .performance-image` + ' src : ' + `/resources/sample-images/${performance.imagePath}`)
                 $(`#${newId} .performance-title`).text(performance.title)
                 $(`#${newId} .performance-reg-date`).text(dateToYMD(regDate))

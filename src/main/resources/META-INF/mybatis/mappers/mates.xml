@@ -630,5 +630,9 @@
 	<delete id="deleteMateMainByPerformanceId" parameterType="int">
 		delete from mate_main where performanceId = #{value}
 	</delete>
+	<delete id="deleteMateMemeberByMateIdAndUserIdAndPerformanceId">
+		delete from mate_members where performanceId = #{performanceId} 
+		and id = #{mateId} and userId = #{userId}
+	</delete>
 
 </mapper>

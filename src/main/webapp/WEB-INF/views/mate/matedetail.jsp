@@ -210,6 +210,34 @@
 		<input type="hidden" value="${pid }" id="pid"/>
 		<input type="hidden" value="${mnum }" id="mnum" />
 	</div>
+<script>
+$(function(){
 	
+	//mateRoomOutFunction
+	$('#mate-out-btn').click(function(){
+		var confirmedOut = confirm('정말로 해당 방에서 나가겠습니까?')
+		if(!confirmedOut){
+			return;
+		}
+		
+		var performanceId = $('#pid').val();
+		var mateId = $('#mnum').val();
+		var userId = '<c:out value="${LOGIN_USER.id }" />'
+		console.log(performanceId, mateId, userId);
+		$.ajax({
+			type:"POST",
+			url:"/mate/mateOut.do",
+			data:{
+				"performanceMainId":performanceId,
+				"mateId":mateId,
+				"userId":userId
+			},
+			success:function(){
+				location.href = '/mate/mate.do?pid='+performanceId;
+			}
+		})
+	})
+})
+</script>
 </body>
 </html>

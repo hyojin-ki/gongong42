@@ -119,4 +119,8 @@ public interface MateService {
 	Performance getMatePerformanceByPerformanceId(int performanceId);
 	
 	Map<String, Object> getMateSeatsAllCnt(int performanceId);
+	
+	void deleteMateMemeberByMateIdAndUserIdAndPerformanceId(int mateId, int performanceId, String userId);
+	
+	void deleteMate(int performanceMainId, int mateId, String userId);
 }

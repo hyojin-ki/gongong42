@@ -66,47 +66,5 @@ public class HomeController {
 		
 		return "home";
 	}
-	@RequestMapping("/Jsonhome.do")
-	@ResponseBody
-	public Map<String, Object> Jsonhome(Model model) {
-		
-		Map<String, Object> maps = new HashMap<String, Object>();
-		String concert = "콘서트";
-		String musical = "뮤지컬";
-		String theater = "연극";
-		
-		List<PerformanceDetailDto> concerts =  performanceService.getPerformanceByCategoryLimit(concert);
-		List<PerformanceDetailDto> musicals =  performanceService.getPerformanceByCategoryLimit(musical);
-		List<PerformanceDetailDto> theaters =  performanceService.getPerformanceByCategoryLimit(theater);		
-	
-		List<Object> consertSeatList = new ArrayList<>();
-		List<Object> musicalsSeatList = new ArrayList<>();
-		List<Object> theatersSeatList = new ArrayList<>();
-		for(PerformanceDetailDto dto : concerts) {
-			int performanceId = dto.getPerformanceMainId();
-			consertSeatList.add(mateService.getMateSeatsAllCnt(performanceId));
-		}
-		for(PerformanceDetailDto dto : musicals) {
-			int performanceId = dto.getPerformanceMainId();
-			musicalsSeatList.add(mateService.getMateSeatsAllCnt(performanceId));
-		}
-		for(PerformanceDetailDto dto : theaters) {
-			int performanceId = dto.getPerformanceMainId();
-			theatersSeatList.add(mateService.getMateSeatsAllCnt(performanceId));
-		}
-
-		
-		
-		maps.put("consertSeatList", consertSeatList);
-		maps.put("musicalsSeatList", musicalsSeatList);
-		maps.put("theatersSeatList", theatersSeatList);
-		
-		maps.put("consert", concerts);
-		maps.put("musicals", musicals);
-		maps.put("theaters", theaters);
-
-		return maps;
-	}
-	
 	
 }

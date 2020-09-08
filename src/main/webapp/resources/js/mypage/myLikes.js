@@ -27,9 +27,12 @@ $(function(){
             data: {id:performanceId},
             dataType: 'json',
             success: function(performance) {
+            	 var imagePath = `${performance.imagePath}`;
+                 if(imagePath.substring(0,4) != 'http'){
+                 	imagePath = `/resources/sample-images/${performance.imagePath}`;
+                 }
 
-
-                $("#modalImg").attr("src", `/resources/sample-images/${performance.imagePath}`);
+                $("#modalImg").attr("src", imagePath);
                 var rating = performance.rating;
                 if (performance.rating == "0") {
                     rating = "전체";
@@ -222,6 +225,11 @@ let generateList = function(){
                 template.attr('data-performance-id',like.id)
                 newId = '#'+newId
                 $(".container").append(template.clone())
+                var imagePath = `${like.imagePath}`;
+                if(imagePath.substring(0,4) != 'http'){
+                	imagePath = `/resources/sample-images/${like.imagePath}`;
+                }
+                
                 $(`${newId} .like-img`).attr('src',`/resources/sample-images/${like.imagePath}`)
                 $(`${newId} .like-title`).text(like.title)
                 $(`${newId} .like-category`).text(like.category)

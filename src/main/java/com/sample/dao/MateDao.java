@@ -303,4 +303,8 @@ public interface MateDao {
      * @param performanceId
      */
     void deleteMateTimeLineByPerformanceId(int performanceId);
+
+    void deleteMateMemeberByMateIdAndUserIdAndPerformanceId(@Param("mateId") int mateId,
+    												@Param("performanceId") int performanceId,
+    												@Param("userId") String userId);
 }

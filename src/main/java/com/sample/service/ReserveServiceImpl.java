@@ -16,6 +16,7 @@ import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
 import com.sample.utils.NumberUtil;
 import com.sample.web.view.Performance;
+import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.Reserve;
 import com.sample.web.view.User;
 
@@ -118,5 +119,7 @@ public class ReserveServiceImpl implements ReserveService{
 		return reserveDao.getReserveByPerformanceId(performanceId);
 	}
 
-	
+	public PerformanceMain getPerformanceMainByReserveId(int reserveId) {
+		return reserveDao.getPerformanceMainByReserveId(reserveId);
+	}
 }

@@ -79,7 +79,13 @@
 				WHERE rmain.id = #{id}
 				AND rmain.reserveUser = #{reserveUser.id}
 	</update>
-	
+	<update id="updateReserveToMateNull" parameterType="Reserve">
+				UPDATE reserve_main rmain
+				SET 
+					 rmain.mateId = null
+				WHERE rmain.id = #{id}
+				AND rmain.reserveUser = #{reserveUser.id}
+	</update>
 	<insert id="insertReserve" parameterType="Reserve" useGeneratedKeys="true" keyProperty="id" >
 		INSERT INTO
 			reserve_main
@@ -214,5 +220,18 @@
 		set mateId = null
 		where performanceId = #{value}
 	</update>
+	<select id="getPerformanceMainByReserveId" parameterType="int" resultType="PerformanceMain">
+		SELECT 
+			b.id, 
+			b.infoId, 
+			b.hallId, 
+			b.showDate, 
+			b.showTime, 
+			b.showNumber, 
+			b.registeredDate
+		FROM reserve_main a
+		JOIN performance_main b ON a.performanceId = b.id
+		WHERE a.id = #{value}
+	</select>
 	
 </mapper>

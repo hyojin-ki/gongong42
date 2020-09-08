@@ -166,7 +166,7 @@ public class MateServiceImpl implements MateService {
 		mateTimeLine.setPerformanceId(performanceId);
 		mateTimeLine.setId(mateId);
 		mateTimeLine.setUser(newMember);
-		mateTimeLine.setContent(newMember.getId()+" 님이 입장하셨습니다. 환영해주세요!");
+		mateTimeLine.setContent(newMember.getNickname()+" 님이 입장하셨습니다. 환영해주세요!");
 		mateDao.addTimeLine(mateTimeLine);
 		
 	}
@@ -508,5 +508,39 @@ public class MateServiceImpl implements MateService {
 		map.put("R", mateDao.getAllMateSeatCnt_R(performanceId));
 		
 		return map;
+	}
+	public void deleteMateMemeberByMateIdAndUserIdAndPerformanceId(int mateId, int performanceId, String userId) {
+		mateDao.deleteMateMemeberByMateIdAndUserIdAndPerformanceId(mateId, performanceId, userId);
+	}
+	@Transactional
+	public void deleteMate(int performanceMainId, int mateId, String userId) {
+		User savedUser = userDao.getUserById(userId);
+		//mate_timeline에서 해당 유저가 퇴장했다는 알림을 말한다.
+		MateTimeLine mateTimeLine = new MateTimeLine();
+		mateTimeLine.setId(mateId);
+		mateTimeLine.setPerformanceId(performanceMainId);
+		mateTimeLine.setUser(savedUser);
+		mateTimeLine.setContent(savedUser.getNickname()+"님이 퇴장하셨습니다.");
+		mateDao.addTimeLine(mateTimeLine);
+		//reserve_main 테이블에서 userId에 해당하는 유저의 mateId를 null로 만든다.
+		Reserve savedReserve = reserveDao.getReservedMateByPerformanceIdAndUserId(performanceMainId, userId);
+		reserveDao.updateReserveToMateNull(savedReserve);
+		
+		//mate_main 테이블에서 mateId에 해당하는 mate_main의 groupCount를 하나 줄인다.
+		Mate savedMate = mateDao.getMateByMateId(mateId);
+		savedMate.setGroupCnt(savedMate.getGroupCnt() - 1);
+		mateDao.updateMateByMateId(savedMate);
+		
+		//mate_members에서 userId와 mateId가 같은 유저를 삭제한다.
+		mateDao.deleteMateMemeberByMateIdAndUserIdAndPerformanceId(mateId, performanceMainId, userId);
+		
+		//hallSeat에서 mateGroup과 mateId가 일치하는 해당 좌석을 Y로 만든다.
+		List<HallSeatDto> hallSeats = hallDao.getSeatsByMateId(mateId);
+		for(HallSeatDto hallSeat : hallSeats) {
+			hallSeat.setSeatStatus("Y");
+			hallDao.updateHallSeatOne(hallSeat);
+		}
+		
+		
 	}
 }
