@@ -912,8 +912,17 @@ public class PerformanceContoller {
 		
 		//슬라이드용 performanceList 가져오기
 		List<PerformanceDetailDto> slidePerformances = performanceService.getPerformancesByCategory(category);
+		List<PerformanceDetailDto> sliedPerformanceTop3 = new ArrayList<>();
+		if(slidePerformances.size() > 2) {
+			for(int i = 0; i < 3; i++) {
+				sliedPerformanceTop3.add(slidePerformances.get(i));
+			}
+		} else {
+			sliedPerformanceTop3.addAll(slidePerformances);
+		}
 		
-		model.addAttribute("slidePerformances", slidePerformances);
+		
+		model.addAttribute("slidePerformances", sliedPerformanceTop3);
 		model.addAttribute("category", category);
 		model.addAttribute("genres", genres );
 		// 페이징 처리가 안된 것
