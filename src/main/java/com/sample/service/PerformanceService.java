@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.dto.PerformanceDto;
 import com.sample.dto.PerformanceGenderReserveStats;
+import com.sample.dto.PerformanceAgeReserveStats;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.web.view.HallInfo;
 import com.sample.web.view.Performance;
@@ -117,6 +118,13 @@ public interface PerformanceService {
 	 * @return
 	 */
 	int getGenderReserveCountByPerformanceInfoIdAndGender(PerformanceGenderReserveStats performanceGenderReserveStats);	
+	
+	/**
+	 * 공연 정보아이디와 연령대를 입력으로 받아 해당공연의 해당연령대의 공연 구매수를 반환한다.
+	 * @param performanceAgeReserveStats
+	 * @return
+	 */
+	int getAgeGroupReserveCountByPerformanceInfoIdAndAge(PerformanceAgeReserveStats performanceAgeReserveStats);
 	
 	
 	/**
