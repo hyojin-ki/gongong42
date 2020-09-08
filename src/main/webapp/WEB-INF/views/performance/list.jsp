@@ -1208,7 +1208,11 @@ function showDetail(performanceId) {
 			
 			// 나이대별 관람추이
 			var $chBar = $("#chartAge");
+			//var ageCanvas=  document.getElementById('chartAge');
+			//var context = ageCanvas.getContext('2d');			
 			var $defaultAgeChart = $("#defaultAgeChart");
+			//context.clearRect(0, 0, ageCanvas.width, ageCanvas.height);
+			$("#chartAge").empty();
 			
 			if ((age10ReserveStats == 0) && (age20ReserveStats == 0) && 
 					(age30ReserveStats == 0) && (age40ReserveStats == 0) &&
