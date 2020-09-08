@@ -645,6 +645,13 @@ public class PerformanceContoller {
 			pagingmap.put("pageNo", pageNo);
 			pagingmap.put("rows", rows);	
 			
+			// 정렬 정리 
+			if (!listOrder.isEmpty()) {
+				pagingmap.put("listOrder", listOrder);
+			} else {
+				pagingmap.put("listOrder", "dateOrder");
+			}
+			
 			System.out.println("pagingmap: "+pagingmap);
 			
 			// 페이징 처리된 map을 조회한다.(검색조건에 해당하고, 특정 페이지 범위내의 자료를 가져온다.
@@ -740,6 +747,13 @@ public class PerformanceContoller {
 			pagingmap.put("age", age);
 			//performanceForm.setAge(age);
 		}
+		// 정렬 정리 
+		if (!listOrder.isEmpty()) {
+			pagingmap.put("listOrder", listOrder);
+		} else {
+			pagingmap.put("listOrder", "dateOrder");
+		}
+		
 		
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
@@ -877,6 +891,11 @@ public class PerformanceContoller {
 		}
 		
 		// 정렬 정리 
+		if (!listOrder.isEmpty()) {
+			pagingmap.put("listOrder", listOrder);
+		} else {
+			pagingmap.put("listOrder", "dateOrder");
+		}
 		
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		

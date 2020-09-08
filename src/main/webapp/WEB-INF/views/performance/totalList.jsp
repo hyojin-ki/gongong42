@@ -53,23 +53,21 @@
 						<div class="p-2">							
 							<span>검색결과</span>
 						</div>
-						<div class="p-2">							
-							<button type="button" class="btn btn-link text-danger"
-								onclick="selectOrder('dateOrder')"  id="dateOrder">개봉일순</button>
-							<button type="button" class="btn btn-link text-dark"
-								onclick="selectOrder('likeOrder')" id="likeOrder">좋아요순</button>
-							<button type="button" class="btn btn-link text-dark"
-								onclick="selectOrder('salesOrder')" id="salesOrder">예매순</button>
-						</div>
 						<div>
 							<form action="/performance/totalList.do" method="get"
 							id="totalListForm">
-								<input type="hidden" class="form-control" id="searchTitle"
-								name="title" value="${title }"/>
-								<input type="hidden" class="form-control" id="listOrder"
-								name="order" value="dateOrder"/>
+								<input type="hidden" name="title" id="searchTitle" value="${title }"/>								
+								<input type="hidden" name="order" id="listOrder" value="${param.order }" />
 								<input type="hidden" name="pageNo" id="pageNo" />								
 							</form>
+						</div>
+						<div class="p-2 text-right">							
+							<button type="button" class="btn btn-link ${param.order eq 'dateOrder' || empty param.order? 'text-danger' : 'text-dark' }"
+								onclick="selectOrder('dateOrder')" id="dateOrder">개봉일순</button>
+							<button type="button" class="btn btn-link ${param.order eq 'likeOrder'? 'text-danger' : 'text-dark' }"
+								onclick="selectOrder('likeOrder')" id="likeOrder">좋아요순</button>
+							<button type="button" class="btn btn-link ${param.order eq 'salesOrder'? 'text-danger' : 'text-dark' }"
+								onclick="selectOrder('salesOrder')" id="salesOrder">예매순</button>
 						</div>
 					</div>
 					<hr />
@@ -77,7 +75,7 @@
 			</div>		
 			
 			<!-- 공연 목록 row시작 -->
-			<div class="row mt-5 justify-content-center">
+			<div class="row mt-3 justify-content-center">
 				<!-- 공연 목록 시작 -->
 				<div class="col-8 mt-3">
 
@@ -604,33 +602,7 @@ function goPage(no) {
 	$("#totalListForm").submit();
 }
 
-function searchGenre(genre) {
-	console.log("clickTag: "+genre);
-	
-	var checked = $("#search-form input[name=genre]:checked");
-	
-	console.log(checked);
-	
-	var genreVals = $("#search-form input[name=genre]");
-	console.log(genreVals);
-	
-	for (var idx = 0; idx < genreVals.length; idx++ ) {
-		
-		var genreBtn = genreVals[idx];
-		console.log($(genreBtn).val());
-		
-		if ($(genreBtn).val() == genre) {
-			console.log($(genreBtn).val()+"가 누른 태그임");
-			$(genreBtn).prop("checked", true);			
-		}else {
-			$(genreBtn).prop("checked", false);	
-		}		
-	}
-	
-	$("#search-form").submit();
-	
-	
-}
+
 
 
 function selectOrder(option) {
@@ -642,8 +614,19 @@ function selectOrder(option) {
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
+	console.log("input필드값이 바뀌었습니다.");
+	var $changed = $("#search-form input[name=changed]");
+	console.log($changed);
+	console.log("변경전"+$changed.val());
+	$changed.val("Y");
+	console.log("변경후"+$changed.val());
+	
+	console.log($("#listOrder").val());
+	
 	// 이후 form submit 출력
+	$("#totalListForm").submit();
 }
+
 
 $("#performanceStartDay").change(function() {
 	//console.log(this);

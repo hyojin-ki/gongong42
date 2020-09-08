@@ -71,7 +71,22 @@
 			and A.rating = #{age}
 		</if>
 		ORDER BY 
-			A.startDate		
+			<choose>
+				<when test="listOrder == 'dateOrder'">
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'likeOrder'">
+					A.likes desc, 
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'salesOrder'">
+					A.reserveCount desc,
+					A.startDate	asc	
+				</when>
+				<otherwise>
+					A.startDate	asc	
+				</otherwise>
+			</choose>			
 	</select>
 		
 	<select id="searchPerformanceByPage" parameterType="map" resultMap="PerformanceDetailDtoResultMap">
@@ -121,7 +136,22 @@
 			and A.rating = #{age}
 		</if>
 		ORDER BY 
-			A.startDate		
+			<choose>
+				<when test="listOrder == 'dateOrder'">
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'likeOrder'">
+					A.likes desc, 
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'salesOrder'">
+					A.reserveCount desc,
+					A.startDate	asc	
+				</when>
+				<otherwise>
+					A.startDate	asc	
+				</otherwise>
+			</choose>			
 		LIMIT 
 			#{endIndex} OFFSET #{beginIndex}	
 		
@@ -211,7 +241,22 @@
 		AND
 			endDate >= NOW()
 		ORDER BY 
-			A.startDate		
+			<choose>
+				<when test="listOrder == 'dateOrder'">
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'likeOrder'">
+					A.likes desc, 
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'salesOrder'">
+					A.reserveCount desc,
+					A.startDate	asc	
+				</when>
+				<otherwise>
+					A.startDate	asc	
+				</otherwise>
+			</choose>		
 		LIMIT 
 			#{endIndex} OFFSET #{beginIndex}	
 	</select>

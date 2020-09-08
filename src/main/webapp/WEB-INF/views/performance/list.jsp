@@ -228,11 +228,11 @@
 							<span>검색결과</span>
 						</div>
 						<div class="p-2">
-							<button type="button" class="btn btn-link text-danger"
+							<button type="button" class="btn btn-link ${param.order eq 'dateOrder' || empty param.order? 'text-danger' : 'text-dark' }"
 								onclick="selectOrder('dateOrder')" id="dateOrder">개봉일순</button>
-							<button type="button" class="btn btn-link text-dark"
+							<button type="button" class="btn btn-link ${param.order eq 'likeOrder'? 'text-danger' : 'text-dark' }"
 								onclick="selectOrder('likeOrder')" id="likeOrder">좋아요순</button>
-							<button type="button" class="btn btn-link text-dark"
+							<button type="button" class="btn btn-link ${param.order eq 'salesOrder'? 'text-danger' : 'text-dark' }"
 								onclick="selectOrder('salesOrder')" id="salesOrder">예매순</button>
 						</div>
 					</div>
@@ -244,7 +244,7 @@
 			<div class="row mt-2 justify-content-center">
 				<div class="col-8 border p-3">
 					<form method="get" id="search-form">
-						<input type="hidden" name="order" id="listOrder" value="dateOrder" />
+						<input type="hidden" name="order" id="listOrder" value="${param.order }" />
 						<input type="hidden" name="category" value="${category }" /> <input
 							type="hidden" name="pageNo" id="pageNo" /> <input type="hidden"
 							name="changed" id="formChanged" value="N" />
@@ -329,7 +329,7 @@
 			</div>
 
 			<!-- 공연 목록 row시작 -->
-			<div class="row mt-5 justify-content-center">
+			<div class="row mt-4 justify-content-center">
 				<!-- 공연 목록 시작 -->
 				<div class="col-8 mt-3">
 
@@ -869,7 +869,13 @@ $("#search-form").find("input").change(function() {
 	console.log("변경후"+$changed.val());
 	//$($changed).val("Y");
 	//console.log("변경후 formChanged값: "+$($changed).val());
+	
+	
 });
+
+
+
+
 
 $(":input[name=genre]").closest('label').click(function(event) {
 	console.log("input필드 중 체크박스값이 바뀌었습니다.");
@@ -953,7 +959,17 @@ function selectOrder(option) {
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
+	console.log("input필드값이 바뀌었습니다.");
+	var $changed = $("#search-form input[name=changed]");
+	console.log($changed);
+	console.log("변경전"+$changed.val());
+	$changed.val("Y");
+	console.log("변경후"+$changed.val());
+	
+	console.log($("#listOrder").val());
+	
 	// 이후 form submit 출력
+	$("#search-form").submit();
 }
 
 $("#performanceStartDay").change(function() {
