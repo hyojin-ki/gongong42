@@ -247,10 +247,10 @@ public class MateController {
 		MateDetailDto detail = mateService.getMateRoomDetail(mateId, performanceId);
 		//로그인한 유저정보를 가져온다.
 		User user = (User) session.getAttribute("LOGIN_USER");
-		String userId = null;
+		String userNickName = null;
 		if(user != null) {
-			userId = user.getId();
-			detail.setSessionUserId(userId);
+			userNickName = user.getNickname();
+			detail.setSessionUserId(userNickName);
 		}
 		
 		return detail;

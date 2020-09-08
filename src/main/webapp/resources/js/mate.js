@@ -13,7 +13,6 @@ $(function(){
 		},
 		success:function(data){
 			var sessionId = data.sessionUserId;
-			
 			//공연정보
 			var mate = data.mate;
 			var performance = data.mate.performance;
@@ -23,7 +22,8 @@ $(function(){
 			
 			//mateTag정보
 			var mateTags = data.mate.mateTags;
-			if(!mateTags){
+			
+			if(mateTags != null){
 				
 				var mateTagName = '';
 				for(var i in mateTags){
@@ -32,8 +32,8 @@ $(function(){
 						mateTagName += ', ';
 					}
 				}
+				$('#mTag').text(mateTagName);
 			}
-			console.log(mateTagName);
 			
 			
 			var mateCatId = mateCat.id;
@@ -45,7 +45,6 @@ $(function(){
 			var pRating = performance.rating;
 			var pCat = performance.category;
 			var pPlace = hallInfo.name;
-			console.log(pPlace)
 			var pShowDate = schedule[0].showDate;
 			var pShowTime = schedule[0].showTime;
 			var pShowNumber = schedule[0].showNumber;
@@ -57,7 +56,6 @@ $(function(){
 			$('#pEndDate').text($.datepicker.formatDate('yy-mm-dd',new Date(pEndDate)));
 			$('#pTitle').text(pTitle);
 			var pImagePath = '';
-			console.log(pImage.substring(0,4))
 			if(pImage.substring(0,4) != 'http'){
 				pImagePath = '/resources/sample-images/'+pImage;
 			} else {
@@ -266,7 +264,7 @@ $(function(){
 			var regDate = timeline[i].regDate;
 			var nickname = timeline[i].user.nickname;
 				
-			addChat(userId, content, regDate, sessionId);
+			addChat(nickname, content, regDate, sessionId);
 				
 		}
 		
