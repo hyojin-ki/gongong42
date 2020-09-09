@@ -43,8 +43,10 @@
 					A.reserveCount  as reserveCount	
 		FROM 
 			performance_info A		
+		<if test="admin == null">
 		JOIN
-			performance_main B ON B.infoId = A.id
+			performance_main B ON B.infoId = A.id		
+		</if>
 		JOIN 
 			hall_info_main C ON C.id =A.hallInfoId
 		JOIN 
@@ -108,8 +110,10 @@
 					A.reserveCount  as reserveCount						
 		FROM 
 			performance_info A		
+		<if test="admin == null">
 		JOIN
-			performance_main B ON B.infoId = A.id	
+			performance_main B ON B.infoId = A.id		
+		</if>
 		JOIN 
 			hall_info_main C ON C.id = A.hallInfoId
 		JOIN 
@@ -179,8 +183,10 @@
 						A.reserveCount  as reserveCount						
 			FROM 
 				performance_info A		
+			<if test="admin == null">
 			JOIN
-				performance_main B ON B.infoId = A.id
+				performance_main B ON B.infoId = A.id		
+			</if>
 			JOIN 
 				hall_info_main C ON C.id =A.hallInfoId
 			JOIN 

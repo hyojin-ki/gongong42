@@ -58,7 +58,7 @@
 				<div class="col-10 mt-5 justify-content-center">
 					<div class="row mt-3">
 						<div class="col-12 border bg-danger step-active text-center p-3" >							
-							<h3>좌석정보 수정(공연장소)</h3>
+							<h3>공연정보 수정(좌석정보)</h3>
 							
 						</div>
 					</div>				
@@ -185,11 +185,9 @@ $("#goNextStep").click(function() {
 })
 
 $("#cancel").click(function(){
-	//history.go(-1);
-	//location.href="cancel.do";
-	var cat = $(this).data("category");
-	console.log(cat);
-	location.href="/performance/adminList.do?category="+cat;
+	var cat = '${param.category}';
+	//console.log(cat);
+	location.href="cancel.do?category="+cat;
 })
 		
 $("#goPrevStep").click(function(){

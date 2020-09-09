@@ -593,12 +593,7 @@
 										 <p id="modalDetailExplain"></p>
 									</div>									
 								</div>
-								<div class="mt-3 p-2">
-									<h5 class="font-weight-bold">이벤트 정보</h5>				
-									<div class="mt-3" style="width:85%">
-										<p>이벤트가 없습니다.</p>											
-									</div>	
-								</div>	
+									
 								<div class="mt-3 p-2">
 									<h5 class="font-weight-bold">성별 나이별 관람추이</h5>				
 									<div class="row mt-3 p-2 justify-content-start">

@@ -74,9 +74,14 @@ public class PerformanceContoller {
 	}
 	
 	@GetMapping("/update/cancel.do")
-	public String cancelUpdate(SessionStatus sessionStatus) {
+	public String cancelUpdate(SessionStatus sessionStatus, @RequestParam("category") String category,
+			Model model) {
 		sessionStatus.setComplete();
-		return "redirect:/home.do";	// 나중엔 performance/list.do?category='category'로 변경
+		System.out.println("update의 cancel category "+ category);
+		
+		model.addAttribute("category", category);		
+		return "redirect:/performance/adminList.do";	// 나중엔 performance/list.do?category='category'로 변경
+		
 	}
 	
 	
@@ -624,8 +629,9 @@ public class PerformanceContoller {
 	@GetMapping("/add/cancel.do")
 	public String cancel(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
-		return "redirect:/home.do";	// 나중엔 performance/list.do?category='category'로 변경
+		return "redirect:/admin/home.do";	// 나중엔 performance/list.do?category='category'로 변경
 	}
+
 	
 	@GetMapping("/totalList.do")
 	public String totalList(Model model
@@ -754,7 +760,10 @@ public class PerformanceContoller {
 		} else {
 			pagingmap.put("listOrder", "dateOrder");
 		}
-		
+				
+		// 관리자용		
+		String admin = "admin";
+		pagingmap.put("admin", admin);
 		
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
@@ -897,7 +906,7 @@ public class PerformanceContoller {
 		} else {
 			pagingmap.put("listOrder", "dateOrder");
 		}
-		
+						
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
 		

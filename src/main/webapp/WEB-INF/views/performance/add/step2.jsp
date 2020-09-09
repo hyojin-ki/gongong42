@@ -4,25 +4,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>같이 보자! 공공연한사이</title>
-<link rel="stylesheet" href="/resources/css/jquery.fullPage.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 <link rel="stylesheet" href="/resources/css/style.css" />
+<link rel="stylesheet" href="/resources/css/manager.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.js"></script>
-<script type="text/javascript" src="/resources/js/jquery.color.js"></script>
-<script type="text/javascript" src="/resources/js/custom.js"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script type="text/javascript" src="/resources/js/jquery.color.js"></script>
+<script type="text/javascript" src="/resources/js/custom.js"></script>
 <style type="text/css">
 
 	.step-active {
@@ -41,11 +40,12 @@
 </style>
 </head>
 <body>
-	<div class="header">
-		<%@ include file="../../common/navi.jsp"%>
-	</div>	
-	
-	<div class="body" style="margin-top: 50px;">
+	<c:set var="topName" value="performance"/>
+	<%@ include file="../../manager/common/managerTop.jsp" %>	
+	<div class="page-wrapper chiller-theme toggled">
+  <%@ include file="../../manager/common/managernavi.jsp" %>
+   <div class="page-content">
+   	<div class="container">
 		<div class="container-fluid">		
 			<div class="row">
 				<div class="col-12 mt-5 p-3 text-center">					
@@ -142,10 +142,10 @@
 				</div>
 			</div>
 			
-		</div> <!-- container 끝 -->
+		</div> <!-- container-fluid 끝 -->
+	</div>
 	</div><!-- body 끝 -->
-	
-	<div class="footer" style="height: 200px;"></div>
+	</div>
 	
 <script type="text/javascript" src="/resources/jquery/jquery.min.js"></script>
 <script type="text/javascript"
