@@ -185,11 +185,9 @@ $("#goNextStep").click(function() {
 })
 
 $("#cancel").click(function(){
-	//history.go(-1);
-	//location.href="cancel.do";
-	var cat = $(this).data("category");
-	console.log(cat);
-	location.href="/performance/adminList.do?category="+cat;
+	var cat = '${param.category}';
+	//console.log(cat);
+	location.href="cancel.do?category="+cat;
 })
 		
 $("#goPrevStep").click(function(){

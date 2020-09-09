@@ -200,7 +200,7 @@
 				</div>
 			</div>
 			
-		</div> <!-- container 끝 -->
+		</div> <!-- container-fluid 끝 -->
 	</div>
 	</div><!-- body 끝 -->
 	</div>
@@ -317,6 +317,7 @@ $("#goNextStep").click(function() {
 
 $("#cancel").click(function(){
 	//history.go(-1);
+	
 	location.href="cancel.do";
 })
 		

@@ -30,52 +30,53 @@
 </style>
 </head>
 <body>
-<c:set var="topName" value="performance"/>
-	<%@ include file="../../manager/common/managerTop.jsp" %>
- <div class="page-wrapper chiller-theme toggled">
+	<c:set var="topName" value="performance"/>
+	<%@ include file="../../manager/common/managerTop.jsp" %>	
+	<div class="page-wrapper chiller-theme toggled">
   <%@ include file="../../manager/common/managernavi.jsp" %>
-  <!-- sidebar-wrapper  -->
- <div class="page-content">
- <div class="container">
-		<div class="container-fluid">		
-			<div class="row">
-				<div class="col-12 mt-5 p-3 text-center">					
-					<h1>공연등록</h1>				
-				</div>
-			</div>
-			
-			<!-- 입력 step 순서 설명 -->
-			<div class="row mt-4 justify-content-center">
-				<div class="col-10 justify-content-center">
-					<div class="row mt-4 justify-content-center">
-						<div class="col-8">
-							<div class="card">
-								<div class="card-body">
-									<div class="text-center mt-4">
-										<i class='far fa-check-circle' style='font-size:100px; color:orange;'></i>
-									</div>
-									<div class="mt-5">
-										<h6 class="text-center font-weight-bold">공연 등록이 완료되었습니다.</h6>															
-									</div>
-									<div class="row mt-4 justify-content-center">				
-										<div>
-											<button type="button" id="goHome" class="btn btn-danger mr-3">홈</button>									
-											<button type="button" onclick="goList(category='${param.category }')" class="btn btn-primary ">공연목록</button>			
-										</div>
-									</div>
-								</div>
-							</div>							
-						</div>					
+	   	<div class="page-content">
+			<div class="container-fluid">		
+				<div class="row">
+					<div class="col-12 mt-5 p-3 text-center">					
+						<h1>공연등록</h1>				
 					</div>
-					
 				</div>
-			</div>			
-			
-			
-		</div> <!-- container 끝 -->
+				
+				
+				<div class="row mt-4 justify-content-center">
+					<div class="col-10 justify-content-center">
+						<div class="row mt-4 justify-content-center">
+							<div class="col-8">
+								<div class="card">
+									<div class="card-body">
+										<div class="text-center mt-5">
+											<i class='far fa-check-circle' style='font-size:100px; color:orange;'></i>
+										</div>
+										<div class="mt-5">
+											<h5 class="text-center font-weight-bold">공연 등록이 완료되었습니다.</h5>															
+										</div>
+										
+										<div class="row mt-5 mb-5 justify-content-center">				
+											<div class="mt-4">
+												<button type="button" id="goHome" class="btn btn-danger mr-3">홈</button>	
+												<button type="button" id="goAdminHome" class="btn btn-dark mr-3">관리자홈</button>										
+												<button type="button" onclick="goList(category='${param.category }')" class="btn btn-info ">공연목록</button>											
+											</div>
+										</div>
+										
+										
+									</div>
+								</div>							
+							</div>					
+						</div>
+						
+					</div>
+				</div>			
+				
+				
+			</div> <!-- container-fluid 끝 -->
+		</div> <!-- pageWrapper 끝 -->
 	</div><!-- body 끝 -->
-</div>
-</div>	
 
 <script type="text/javascript" src="/resources/jquery/jquery.min.js"></script>
 <script type="text/javascript"
@@ -90,14 +91,21 @@ $("#goHome").click(function() {
 	
 })
 
+$("#goAdminHome").click(function() {
+	location.href="/admin/home.do";
+})
+
+
 function goList(category) {
 	//history.go(-1);
 	//var category = '${category}';	
 			
 	console.log(category);
-	location.href="/performance/list.do?category="+category;
+	location.href="/performance/adminList.do?category="+category;
+	
 
 }		
+	
 
 
 	
