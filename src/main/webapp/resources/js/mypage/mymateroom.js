@@ -13,7 +13,6 @@ $(function(){
 const activateMenu = ()=>{
     $("#mypagemenu li").click(function(){
         const req = $(this).data('href')
-        console.log('/mypage/'+req)
         $(location).attr('href', req)
     })
 }
@@ -77,8 +76,8 @@ const getWeekday = date => {
     return weekdays[date.getDay()]
 }
 const dateToYMD = function (date) {
-    return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
+    return `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`;
 }
 const dateToMD = function (date, sep) {
-    return `${date.getMonth()}${sep}${date.getDate()}`;
+    return `${date.getMonth()+1}${sep}${date.getDate()}`;
 }

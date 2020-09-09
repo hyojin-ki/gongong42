@@ -7,7 +7,6 @@ $(function(){
     $(document).on('click', '#myPointListPaginate', function(event){
         event.preventDefault()
         let page = $(event.target).data('page')
-        console.log(page)
         if(page ==='stop'){
             return
         }else{
@@ -25,7 +24,7 @@ const activateMenu = ()=>{
     })
 }
 const dateToYMD = function (date) {
-    return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
+    return `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`;
 }
 const generatePagination= function(){
     const template = `<nav aria-label="Page navigation example" id="myPointList"><ul class="pagination justify-content-center" id="myPointListPaginate"></ul></nav>`
@@ -73,7 +72,6 @@ const generatePagination= function(){
     }
 }
 const generatePointHistory = (movePage)=>{
-    console.log(movePage)
     const startRow = (movePage-1) * rowPerPage
     const url = '/mypage/myPoint.do'
     const pageData={
@@ -93,7 +91,6 @@ const generatePointHistory = (movePage)=>{
         $("#current-point").text(result.currPoint)
         totalRow = result.totalRows
 
-        console.log(totalRow,', ' ,startRow)
 
         history.forEach(row=>{
             const item = `<tr id="point-history-list-${row.id}">

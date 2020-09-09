@@ -54,13 +54,10 @@ public class MyPageController {
 
         model.addAttribute("user", user);
 
-        System.out.println(user.getLikes().size());
-
         model.addAttribute("lastReserve", reserve);
-        System.out.println(reserve.getId());
+        
         model.addAttribute("qnaList", qnaList);
-
-        System.out.println(qnaList.size());
+        
         return "mypage/mypagemain";
     }
 
