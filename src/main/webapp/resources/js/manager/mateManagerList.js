@@ -96,8 +96,13 @@ $(function(){
 				var rSeats = detail.rseats;
 				var sSeats = detail.sseats;
 				var aSeats = detail.aSetas;
-				
-				$('#pImg').attr('src','/resources/sample-images/' + pImg);
+				var pImagePath = '';
+				if(pImg.substring(0,4) != 'http'){
+					pImagePath = '/resources/sample-images/'+pImg;
+				} else {
+					pImagePath = pImg;
+				}
+				$('#pImg').attr('src', pImagePath);
 				$('#pName').text(pTitle);
 				$('#pCat').text(pCat);
 				$('#pDate').text(pShowDate);
@@ -248,10 +253,15 @@ function printPage(result){
 		var aSeat = list[i].aseats;
 		var sSeat = list[i].sseats;
 		var rSeat = list[i].rseats;
-			
+		var pImagePath = '';
+		if(pImg.substring(0,4) != 'http'){
+			pImagePath = '/resources/sample-images/'+pImg;
+		} else {
+			pImagePath = pImg;
+		}	
 		rows += '<tr>';
 		rows += '<td>'+pId+'</td>';
-		rows += '<td><img class="img-thumbnail" style="width:100px;" src="/resources/sample-images/'+pImg+'" alt="" /><div>'+pTitle+'</div></td>'
+		rows += '<td><img class="img-thumbnail" style="width:100px;" src="'+pImagePath+'" alt="" /><div>'+pTitle+'</div></td>'
 		rows += '<td>'+pCat+'</td>'
 		rows += '<td>'+showDate+'</td>'	;
 		rows += '<td>'+showTime+'</td>' ;

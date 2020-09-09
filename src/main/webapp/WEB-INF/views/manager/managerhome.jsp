@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -163,7 +164,16 @@
                 		<c:forEach items="${topReserves }" var="reserve" varStatus="status">
                 			<c:set var="index" value="0" />
                 			<div class="carousel-item ${status.index == index ? 'active' : '' }">
-                				<img class="img-thumbnail" src="/resources/sample-images/${reserve.performance.imagePath }">
+                			<c:choose>
+                				<c:when test="${fn:substring(reserve.performance.imagePath, 0, 4) eq 'http' }">
+                					<c:set var="path" value="${reserve.performance.imagePath }"/>
+                				</c:when>
+                				<c:otherwise>
+                					<c:set var="path" value="/resources/sample-images/${reserve.performance.imagePath }"/>
+                				</c:otherwise>
+                			</c:choose>
+                				<img class="img-thumbnail" src="${path }">
+
                 			</div>
                 			<c:set var="index" value="${index + 1 }"/>
                 		</c:forEach>
@@ -208,19 +218,7 @@
             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
           </div>
           <!-- Card Columns Example Social Feed-->
-          <div class="mb-0 mt-4">
-            <i class="fa fa-newspaper-o"></i> News Feed</div>
-          <hr class="mt-2">
-          <div class="card-columns">
-            <!-- Example Social Card-->
-            
-            <!-- Example Social Card-->
-            
-            <!-- Example Social Card-->
-            
-            <!-- Example Social Card-->
-            
-          </div>
+         
           <!-- /Card Columns-->
         </div>
         <div class="col-lg-4">
@@ -250,17 +248,7 @@
           </div>
         </div>
       </div>
-      <!-- Example DataTables Card-->
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Data Table Example</div>
-        <div class="card-body">
-          <!-- QNA -->
-          <!-- QNA -->
-        </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-      </div>
- 
+    
  </div>
  </div>
   <!-- page-content" -->

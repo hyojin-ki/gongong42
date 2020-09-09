@@ -261,8 +261,13 @@ $(function(){
 						//hall_info_id
 						var hallId = list.hallInfoId;
 						$('#hidden-hall-id').val(hallId);
-						
-						$pImg.attr('src','/resources/sample-images/'+imagePath);
+						var pImagePath = '';
+						if(imagePath.substring(0,4) != 'http'){
+							pImagePath = '/resources/sample-images/'+imagePath;
+						} else {
+							pImagePath = imagePath;
+						}
+						$pImg.attr('src',pImagePath);
 						$pName.text(title);
 						$pCat.text(cat);
 						$pAthu.text(rating);
@@ -315,6 +320,7 @@ $(function(){
 	var $tbody = $('#performance-list-content tbody');
 	var $tr = $('#performance-list-content tbody tr');
 	$('#performance-list-modal-btn').click(function(){
+		$tbody.empty();
 		$.ajax({
 			url:'/manager/mateManagerJson.do',
 			Type:'POST',
