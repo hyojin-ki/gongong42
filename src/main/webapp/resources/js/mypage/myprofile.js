@@ -61,10 +61,10 @@ $(document).on('click','#update-intro', function () {
 
 
 })
-const activateMenu = () => {
-    $(`#mypagemenu li`).click((event) => {
-        const url = $(event.target).data('href')
-        $(location).attr('href', url)
+const activateMenu = ()=>{
+    $("#mypagemenu li").click(function(){
+        const req = $(this).data('href')
+        $(location).attr('href', req)
     })
 }
 const dateToYMD = function (date) {
@@ -91,26 +91,28 @@ const openProfile = () => {
                 $('#intro-tags').append(span)
             })
         }
-        const interestNullSpan = `<span>아직 관심분야를 등록하지 않으셨어요! 추가해보세요!</span>`
-        	 if (interest == null || interest.length === 0) {
-                 $('#interest-artist').append(interestNullSpan)
-                 $('#interest-genre').append(interestNullSpan)
-                 $('#interest-performance').append(interestNullSpan)
-        	 } else {
-                 interest.forEach(tag => {
-                const span = `<span>${tag.interestTag}</span> `
-                $(`#interest-${tag.interestCategory}`).append(span)
-            })
-            if($(`#interest-artist`).children.length === 0){
-                $('#interest-artist'     ).append(interestNullSpan)
-            }
-            if($(`#interest-genre`).children.length === 0){
-                $('#interest-genre').append(interestNullSpan)
-            }
-            if($(`#interest-performance`).children.length === 0){
-                $('#interest-performance').append(interestNullSpan)
-            }
+    	 if (interest == null || interest.length === 0) {
+             $('#interest-artist').append(interestNullSpan)
+             $('#interest-genre').append(interestNullSpan)
+             $('#interest-performance').append(interestNullSpan)
+    	 } else {
+             interest.forEach(tag => {
+            const span = `<span>${tag.interestTag}</span> `
+            $(`#interest-${tag.interestCategory}`).append(span)
+        })
+            
         }
 
-    }).fail({}).always({})
+    }).fail({}).always(function(){
+    	const interestNullSpan = `<span>아직 관심분야를 등록하지 않으셨어요! 추가해보세요!</span>`
+        if($(`#interest-artist`).children().length === 0){
+            $('#interest-artist'     ).append(interestNullSpan)
+        }
+        if($(`#interest-genre`).children().length === 0){
+            $('#interest-genre').append(interestNullSpan)
+        }
+        if($(`#interest-performance`).children().length === 0){
+            $('#interest-performance').append(interestNullSpan)
+        }
+    })
 }

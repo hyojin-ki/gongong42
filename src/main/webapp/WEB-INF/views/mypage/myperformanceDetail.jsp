@@ -54,10 +54,10 @@
                                 		<c:set var="path" value="/resources/sample-images/${performance.imagePath}" />
                                 	</c:otherwise>
                                 </c:choose>
-                                    <img style="width: 200px; height: 200px;"
-                                         src="${path }"
+                                    <img style="width: 200px; height: 200px;" 
+                                         src="${performance.imagePath}"
                                          class="rounded float-left" alt="...">
-                                
+
                                 </div>
                                 <div class="col-9">
                                     <div class="row">
@@ -85,8 +85,7 @@
                                                             <i class="far fa-calendar-alt"></i> <span>관람일</span>
                                                             <div>
                                                                 <span><fmt:formatDate value="${performance.startDate}"
-                                                                                      pattern="yyyy.MM.dd"/></span>
-                                                                <span>~</span>
+                                                                                      pattern="yyyy.MM.dd"/> </span>
                                                                 <span><fmt:formatDate value="${performance.endDate}"
                                                                                       pattern="yyyy.MM.dd"/></span>
                                                             </div>
@@ -139,7 +138,7 @@
                                 	<c:if test="${empty mate }">
                                 		<a class="btn btn-outline-danger" href="/mate/mate.do?pid=${PerformanceMain.id }">메이트 찾기</a>
                                 	</c:if>
-                                
+
                                 </h2>
                             </div>
                         </div>
@@ -195,10 +194,7 @@
                                                     <c:forEach
                                                             items="${fn:split(mate.seatGroup, fn:substring(mate.seatGroup,0 ,1 ))}"
                                                             varStatus="now" var="seatno">
-                                                        <span>${fn:substring(mate.seatGroup,0 ,1 )}${seatno}</span>
-                                                        <c:if test="${now.count eq 1}">
-                                                            <span> ~ </span>
-                                                        </c:if>
+                                                        <span>${fn:substring(mate.seatGroup,0 ,1 )}${seatno} </span>
                                                     </c:forEach>
                                                 </div>
                                             </div>

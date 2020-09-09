@@ -1,6 +1,6 @@
 let isLast = false
 $(function () {
-
+	activateMenu()
     $(window).scroll(() => {
         const scrollTop = $(window).scrollTop()
         const windowHeight = $(window).height()
@@ -11,12 +11,6 @@ $(function () {
         }
     })
     generateList()
-    
-
-    $("#mypagemenu li").click((event) => {
-        const url = $(event.target).data('href')
-        $(location).attr('href', url)
-    })
 
     $(document).on('click', '.reserve-list', function (event) {
         const reserveId = $(this).data('reserveId')
@@ -30,9 +24,16 @@ $(function () {
 }).ajaxStop(() => {
 })
 
+const activateMenu = ()=>{
+    $("#mypagemenu li").click(function(){
+        const req = $(this).data('href')
+        $(location).attr('href', req)
+    })
+}
+
 let currNo = 0
 let dateToYMD = function (date) {
-    return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
+    return `${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}`;
 }
 let generateList = function () {
     if (isLast) {
@@ -74,7 +75,7 @@ let generateList = function () {
                 	imagePath = `/resources/sample-images/${performance.imagePath}`;
                 }
                 $(`#${newId} .performance-image`).attr("src", imagePath);
-               
+
                 console.log(`#${newId} .performance-image` + ' src : ' + `/resources/sample-images/${performance.imagePath}`)
                 $(`#${newId} .performance-title`).text(performance.title)
                 $(`#${newId} .performance-reg-date`).text(dateToYMD(regDate))

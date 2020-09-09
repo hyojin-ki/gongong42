@@ -75,7 +75,7 @@
 										<div class="row">
 											<div class="col-3">
 												<img style="width: 200px; height: 200px;"
-													src="/resources/sample-images/${lastReserve.performance.imagePath }"
+													src="${lastReserve.performance.imagePath }"
 													class="rounded float-left" alt="...">
 											</div>
 											<div class="col-9">
@@ -198,7 +198,7 @@
 													<div class="row">
 														<div class="col-12">
 															<img style="width: 200px; height: 200px;"
-																src="/resources/sample-images/${performance.imagePath }"
+																src="${performance.imagePath }"
 																class="rounded float-left" alt="...">
 														</div>
 														<div class="col-12 text-center mt-1">
