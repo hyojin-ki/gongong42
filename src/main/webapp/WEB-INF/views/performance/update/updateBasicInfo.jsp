@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,7 +55,7 @@
 				<div class="col-10 mt-5 justify-content-center">
 					<div class="row mt-3">
 						<div class="col-12 border bg-danger step-active text-center p-3" >							
-							<h3>공연정보수정(기본정보)</h3>
+							<h3>공연정보 수정(기본정보)</h3>
 							
 						</div>
 					</div>				
@@ -188,8 +189,21 @@
 								<div class="col-6">
 									<div class="card">
 										<div class="card-body">
+										<c:choose>
+											 <c:when test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
+											 	<c:set var="path" value="${performance.imagePath }"/>
+											 </c:when>
+											 <c:otherwise>
+											 	<c:set var="path" value="/resources/sample-images/${performance.imagePath }"/>
+											 </c:otherwise>
+										 </c:choose>
+										
+											<img src="${path }" 
+												class="img-thumbnail">
+											<!--  
 											<img src="/resources/sample-images/${performance.imagePath }" 
 												class="img-thumbnail">
+											-->
 										</div>
 										<div class="card-footer">
 											${performance.imagePath }
@@ -353,8 +367,9 @@ $("#goNextStep").click(function() {
 })
 
 $("#cancel").click(function(){
-	//history.go(-1);
-	location.href="cancel.do";
+	var cat = '${param.category}';
+	//console.log(cat);
+	location.href="cancel.do?category="+cat;
 })
 		
 $("#performanceStartDay").change(function() {		

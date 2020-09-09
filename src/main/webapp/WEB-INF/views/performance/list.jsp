@@ -1,9 +1,9 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,45 +32,47 @@
 	<div class="header">
 		<%@ include file="../common/navi.jsp"%>
 	</div>
-	
+
 	<!-- 테스트용 db -->
-	
-	<div style="display:none;">
-	<c:set var="loop" value="false" />
-	 <c:forEach var="performance" items="${performances }" varStatus="status">
-	 	<c:if test="${not loop }">
-	 		<c:choose>
-	 			<c:when test="${status.count eq 4}">
-	 				<c:set var="loop" value="true" />
-	 			</c:when>
-	 			<c:otherwise>
-	 				<p>	${status.count} ${performance.title }, 예매수: ${performance.reserveCount } </p>
-	 			</c:otherwise>
-	 		</c:choose>	 	
-	 	</c:if>
-	 	
-	 	
-	 </c:forEach>
-	 </div>
+
+	<div style="display: none;">
+		<c:set var="loop" value="false" />
+		<c:forEach var="performance" items="${performances }"
+			varStatus="status">
+			<c:if test="${not loop }">
+				<c:choose>
+					<c:when test="${status.count eq 4}">
+						<c:set var="loop" value="true" />
+					</c:when>
+					<c:otherwise>
+						<p>${status.count} ${performance.title }, 예매수:
+							${performance.reserveCount }</p>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+
+
+		</c:forEach>
+	</div>
 	<!-- 테스트용 db끝 -->
-	
-	
+
+
 	<div class="body" style="margin-top: 50px;">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-12 mt-5 p-3 text-center">						
-					<div class="pl-3 font-weight-bold" style="font-size: 4rem;" >
-					<c:choose>
-						<c:when test="${category eq '콘서트' }">
-							Consert
+				<div class="col-12 mt-5 p-3 text-center">
+					<div class="pl-3 font-weight-bold" style="font-size: 4rem;">
+						<c:choose>
+							<c:when test="${category eq '콘서트' }">
+							CONSERT
 						</c:when>
-						<c:when test="${category eq '뮤지컬' }">
-							Musical
+							<c:when test="${category eq '뮤지컬' }">
+							MUSICAL
 						</c:when>
-						<c:when test="${category eq '연극' }">
-							Play
-						</c:when>						
-					</c:choose>						
+							<c:when test="${category eq '연극' }">
+							PLAY
+						</c:when>
+						</c:choose>
 					</div>
 				</div>
 			</div>
@@ -79,129 +81,132 @@
 					<!-- 배너광고 슬라이드 시작  -->
 					<div id="demo" class="carousel slide " data-ride="carousel">
 						<ol class="carousel-indicators">
-							<li data-target="#demo" data-slide-to="0" class="active"></li>
-							<li data-target="#demo" data-slide-to="1"></li>
-							<li data-target="#demo" data-slide-to="2"></li>
+							<c:if test="${not empty slidePerformances }">
+								<c:forEach var="performance" items="${slidePerformances }"
+									varStatus="status">
+									<li data-target="#demo" data-slide-to="${status.index }"
+										class="${status.index == 0 ? 'active' : '' }"></li>
+								</c:forEach>
+							</c:if>
 						</ol>
 						<div class="carousel-inner ">
 							<!--  한 슬라이드당 이미지 3개 -->
-							<c:set var="doneLoop" value="false" />
-							<c:forEach var="performance" items="${slidePerformances }" varStatus="status">
-								<c:if test="${not doneLoop }">	
-														
-									<c:choose>
-										<c:when test="${status.count eq 4}">
-											<c:set var="doneLoop" value="true" />
-										</c:when>
-										<c:otherwise>
-											<div class="carousel-item active bg-dark mb-5 pb-4 pt-4"> 
-												<div class="row"
-													style="width: 70%; float: none; margin: 0 auto;">
-													<div class="col-12">
-														<div class="row d-flex justify-content-center">
-															<div class="col-4 text-center ele-opacity" style="margin: auto 0;">
-																<div class="text-white font-weight-bolder" style="font-size: 2rem;">${performance.category }</div>
-																<hr style="background-color: #fff;"/>
-																<div class="text-white font-weight-bold" style="font-size: 4rem;" >${performance.title }</div>
-																<div class="text-white" style="font-size: 2rem;">
-																	<span>
-																		<fmt:formatDate value="${performance.startDate }" pattern="yyyy년 M월 d일" />
-																			~
-																		<fmt:formatDate value="${performance.endDate }" pattern="yyyy년 M월 d일" />
-																	</span>
-																	<div>${performance.hallName }</div>
-																</div>
-															</div>
-															<div class="col-4">
-																<div class="d-flex justify-content-center">
-																<!-- card -->
-																	<div class="card shadow transfrom-card" style="width: 30rem;">
-																		<div class="card-body">
-																		  
-																		<c:choose>
-																			 <c:when test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
-																			 	<c:set var="path" value="${performance.imagePath }"/>
-																			 </c:when>
-																			 <c:otherwise>
-																			 	<c:set var="path" value="/resources/sample-images/${performance.imagePath }"/>
-																			 </c:otherwise>
-																		</c:choose>
-																		 
-																		 	<button type="button" onclick="showDetail(${performance.id})">
-																				<img class="card-img-top img-thumbnail" src="${path }" alt="" />
-																		 	</button>
-																		 	<div class="row">
-																				<div class="col-9  mt-2">
-																				 <c:forEach var="genre" items="${performance.genres }"> 
-																				 <a	class="btn btn-link" href="/performance/list.do?category=${performance.category }&genre=${genre }">
-																				 	#${genre }
-																				 </a>
-																				</c:forEach>											
-																					
-																				</div>
-																				
-																			</div>
-																		</div>
-																		
-																	</div>
-																<!-- card -->
-																</div>
-															</div>
-															<div class="col-4 text-center ele-opacity" style="margin: auto 0;">
-																
-																<div class="text-white font-weight-bold" style="font-size: 3rem;" >개봉임박!</div>
-																<hr style="background-color: #fff;"/>
-																<div class="text-white font-weight-bolder" style="font-size: 2rem;">
-																	<c:choose>
-																		<c:when test="${performance.rating eq 0 }">
-																			전체관람가
-																		</c:when>
-																		<c:when test="${performance.rating eq 12 }">
-																			만 12세이상 관람
-																		</c:when>
-																		<c:when test="${performance.rating eq 15 }">
-																			만 15세이상 관람
-																		</c:when>
-																		<c:when test="${performance.rating eq 19 }">
-																			청소년관람불가
-																		</c:when>
-																	</c:choose>
-																
-																</div>
-																<div class="text-white" style="font-size: 2rem;">
-																	<div>좋아요수: ${performance.likes }</div>
-																	<div>예매횟수: ${performance.reserveCount }</div>													
-																</div>
-																<div class="text-white mt-3" style="font-size: 1.5rem;">
-																	<c:forEach var="seat" items="${performance.seatPrices }">
-																		<div>
-																			${seat.seatRate }석 
-																			<fmt:formatNumber value="${seat.price }" />원	
-																		</div>															
-																	</c:forEach>
-																</div>
-																<div class="mt-5">
-																	
-																	<button type="button" class="btn btn-info btn-lg mr-3"
-																		onclick="showDetail(${performance.id})">상세보기</button>
-																	<button type="button" class="btn btn-danger btn-lg"
-																		onclick="buyTicket(${performance.id})">예매하기</button>
-																</div>
-															</div>
-															
+							<c:if test="${not empty slidePerformances }">
+								<c:forEach var="performance" items="${slidePerformances }"
+									varStatus="status">
+									<c:set var="index" value="0" />
+									<div
+										class="carousel-item ${status.index == index ? 'active' : '' } bg-dark mb-5 pb-4 pt-4">
+										<div class="row"
+											style="width: 70%; height: 530px; float: none; margin: 0 auto;">
+											<div class="col-12">
+												<div class="row d-flex justify-content-center">
+													<div class="col-4 text-center ele-opacity"
+														style="margin: auto 0;">
+														<div class="text-white font-weight-bolder"
+															style="font-size: 2rem;">${performance.category }<c:out
+																value="${status.end }"></c:out>
+														</div>
+														<hr style="background-color: #fff;" />
+														<div class="text-white font-weight-bold"
+															style="font-size: 4rem;">${performance.title }</div>
+														<div class="text-white" style="font-size: 2rem;">
+															<span> <fmt:formatDate
+																	value="${performance.startDate }" pattern="yyyy년 M월 d일" />
+																~ <fmt:formatDate value="${performance.endDate }"
+																	pattern="yyyy년 M월 d일" />
+															</span>
+															<div>${performance.hallName }</div>
 														</div>
 													</div>
+													<div class="col-4">
+														<div class="d-flex justify-content-center">
+															<!-- card -->
+															<div class="card shadow transfrom-card"
+																style="width: 30rem;">
+																<div class="card-body">
+																	<c:choose>
+																		<c:when
+																			test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
+																			<c:set var="path" value="${performance.imagePath }" />
+																		</c:when>
+																		<c:otherwise>
+																			<c:set var="path"
+																				value="/resources/sample-images/${performance.imagePath }" />
+																		</c:otherwise>
+																	</c:choose>
+																	<img class="card-img-top img-thumbnail" src="${path }"
+																		alt="" onclick="showDetail(${performance.id})"
+																		style="cursor: pointer; width: 438px; height: 463px;" />
+																	<div class="row">
+																		<div class="col-9  mt-2">
+																			<c:forEach var="genre" items="${performance.genres }">
+																				<a class="btn btn-link"
+																					href="/performance/list.do?category=${performance.category }&genre=${genre }">
+																					#${genre } </a>
+																			</c:forEach>
+																		</div>
+																	</div>
+																</div>
+
+															</div>
+															<!-- card -->
+														</div>
+													</div>
+													<div class="col-4 text-center ele-opacity"
+														style="margin: auto 0;">
+
+														<div class="text-white font-weight-bold"
+															style="font-size: 3rem;">개봉임박!</div>
+														<hr style="background-color: #fff;" />
+														<div class="text-white font-weight-bolder"
+															style="font-size: 2rem;">
+															<c:choose>
+																<c:when test="${performance.rating eq 0 }">
+																			전체관람가
+																		</c:when>
+																<c:when test="${performance.rating eq 12 }">
+																			만 12세이상 관람
+																		</c:when>
+																<c:when test="${performance.rating eq 15 }">
+																			만 15세이상 관람
+																		</c:when>
+																<c:when test="${performance.rating eq 19 }">
+																			청소년관람불가
+																		</c:when>
+															</c:choose>
+
+														</div>
+														<div class="text-white" style="font-size: 2rem;">
+															<div>좋아요수: ${performance.likes }</div>
+															<div>예매횟수: ${performance.reserveCount }</div>
+														</div>
+														<div class="text-white mt-3" style="font-size: 1.5rem;">
+															<c:forEach var="seat" items="${performance.seatPrices }">
+																<div>
+																	${seat.seatRate }석
+																	<fmt:formatNumber value="${seat.price }" />
+																	원
+																</div>
+															</c:forEach>
+														</div>
+														<div class="mt-5">
+
+															<button type="button" class="btn btn-info btn-lg mr-3"
+																onclick="showDetail(${performance.id})">상세보기</button>
+															<button type="button" class="btn btn-danger btn-lg"
+																onclick="buyTicket(${performance.id})">예매하기</button>
+														</div>
+													</div>
+
 												</div>
-											</div> <!-- 한 슬라이드 끝 -->
-										
-										</c:otherwise>
-									</c:choose>
-								
-								</c:if>
-							
-							
-							</c:forEach>
-							
+											</div>
+										</div>
+									</div>
+									<!-- 한 슬라이드 끝 -->
+									<c:set var="index" value="${index + 1 }" />
+								</c:forEach>
+							</c:if>
 						</div>
 						<a class="carousel-control-prev" href="#demo" role="button"
 							data-slide="prev"> <span class="carousel-control-prev-icon"
@@ -223,11 +228,11 @@
 							<span>검색결과</span>
 						</div>
 						<div class="p-2">
-							<button type="button" class="btn btn-link text-danger"
-								onclick="selectOrder('dateOrder')"  id="dateOrder">개봉일순</button>
-							<button type="button" class="btn btn-link text-dark"
+							<button type="button" class="btn btn-link ${param.order eq 'dateOrder' || empty param.order? 'text-danger' : 'text-dark' }"
+								onclick="selectOrder('dateOrder')" id="dateOrder">개봉일순</button>
+							<button type="button" class="btn btn-link ${param.order eq 'likeOrder'? 'text-danger' : 'text-dark' }"
 								onclick="selectOrder('likeOrder')" id="likeOrder">좋아요순</button>
-							<button type="button" class="btn btn-link text-dark"
+							<button type="button" class="btn btn-link ${param.order eq 'salesOrder'? 'text-danger' : 'text-dark' }"
 								onclick="selectOrder('salesOrder')" id="salesOrder">예매순</button>
 						</div>
 					</div>
@@ -239,47 +244,49 @@
 			<div class="row mt-2 justify-content-center">
 				<div class="col-8 border p-3">
 					<form method="get" id="search-form">
-						<input type="hidden" name="order" id="listOrder" value="dateOrder" />
-						<input type="hidden" name="category" value="${category }" />
-						<input type="hidden" name="pageNo" id="pageNo" />
-						<input type="hidden" name="changed" id="formChanged" value="N" />
+						<input type="hidden" name="order" id="listOrder" value="${param.order }" />
+						<input type="hidden" name="category" value="${category }" /> <input
+							type="hidden" name="pageNo" id="pageNo" /> <input type="hidden"
+							name="changed" id="formChanged" value="N" />
 						<div class="form-group">
 							<label>공연명</label> <input type="text" class="form-control"
-								name="title" id="performanceName" 
-								value="${param.title }" />
+								name="title" id="performanceName" value="${param.title }" />
 						</div>
 						<div class="form-group">
 							<label class="">공연장르</label>
-							<div class="btn-group-toggle  " >
-								<label class="btn ${(empty param.genre || param.genre eq '전체'  ) ? 'btn-danger' : 'btn-outline-danger'} mb-2"> 
-									<input type="checkbox" name="genre" value="전체" ${(empty param.genre || param.genre eq '전체'  ) ? "checked" : ""} id="genreAll">전체
+							<div class="btn-group-toggle  ">
+								<label
+									class="btn ${(empty param.genre || param.genre eq '전체'  ) ? 'btn-danger' : 'btn-outline-danger'} mb-2">
+									<input type="checkbox" name="genre" value="전체"
+									${(empty param.genre || param.genre eq '전체'  ) ? "checked" : ""}
+									id="genreAll">전체
 								</label>
-							<c:set var="searchGenres" value="${paramValues.genre }" />	 								
-							<c:forEach var="genre" items="${genres }">
-								<c:set var="searched" value="N"/>	
-								<c:forEach var="paramGenre" items="${searchGenres }">
+								<c:set var="searchGenres" value="${paramValues.genre }" />
+								<c:forEach var="genre" items="${genres }">
+									<c:set var="searched" value="N" />
+									<c:forEach var="paramGenre" items="${searchGenres }">
+										<c:choose>
+											<c:when test="${genre eq paramGenre }">
+												<c:set var="searched" value="Y" />
+											</c:when>
+										</c:choose>
+									</c:forEach>
 									<c:choose>
-										<c:when test="${genre eq paramGenre }">
-											<c:set var="searched" value="Y"/>	
+										<c:when test="${searched eq 'N' }">
+											<label class="btn btn-outline-danger mb-2"> <input
+												type="checkbox" name="genre" value="${genre }">${genre }
+											</label>
 										</c:when>
+										<c:otherwise>
+											<label class="btn btn-danger mb-2"> <input
+												type="checkbox" name="genre" checked value="${genre }">${genre }
+											</label>
+										</c:otherwise>
 									</c:choose>
 								</c:forEach>
-								<c:choose>
-									<c:when test="${searched eq 'N' }">
-										<label class="btn btn-outline-danger mb-2"> 
-											<input type="checkbox" name="genre" value="${genre }">${genre }
-										</label>
-									</c:when>
-									<c:otherwise>
-										<label class="btn btn-danger mb-2"> 
-											<input type="checkbox" name="genre" checked value="${genre }" >${genre }
-										</label>							
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>								
 							</div>
 						</div>
-						
+
 						<div class="form-group">
 							<div class="form-inline ">
 								<div>
@@ -288,31 +295,32 @@
 								<div class="ml-3">
 									<input type="date" class="form-control d-inline"
 										name="startDay" id="performanceStartDay"
-										value="${param.startDay }" /> ~ <input
-										type="date" class="form-control d-inline" name="endDay"
-										id="performanceEndDay"
-										value="${param.endDay }" />
+										value="${param.startDay }" /> ~ <input type="date"
+										class="form-control d-inline" name="endDay"
+										id="performanceEndDay" value="${param.endDay }" />
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label>관람연령</label>
 							<div class="btn-group-toggle  " data-toggle="buttons">
-							
-								<label class="btn btn-outline-danger mb-2"> 
-									<input type="radio" name="age" value="0" ${(empty param.age || param.age eq '0') ? "checked" : '' } id="ageAll">전체
-								</label> 
-								<label class="btn btn-outline-danger mb-2"> 
-									<input type="radio" name="age" value="12" ${param.age eq '12' ? "checked" : '' } >12세이상
-								</label> 
-								<label class="btn btn-outline-danger mb-2"> 
-									<input type="radio" name="age" value="15" ${param.age eq '15' ? "checked" : '' }>15세이상
-								</label> 
-								<label class="btn btn-outline-danger mb-2"> 
-									<input type="radio" name="age" value="19" ${param.age eq '19' ? "checked" : '' }>청소년관람불가
+
+								<label class="btn btn-outline-danger mb-2"> <input
+									type="radio" name="age" value="0"
+									${(empty param.age || param.age eq '0') ? "checked" : '' }
+									id="ageAll">전체
+								</label> <label class="btn btn-outline-danger mb-2"> <input
+									type="radio" name="age" value="12"
+									${param.age eq '12' ? "checked" : '' }>12세이상
+								</label> <label class="btn btn-outline-danger mb-2"> <input
+									type="radio" name="age" value="15"
+									${param.age eq '15' ? "checked" : '' }>15세이상
+								</label> <label class="btn btn-outline-danger mb-2"> <input
+									type="radio" name="age" value="19"
+									${param.age eq '19' ? "checked" : '' }>청소년관람불가
 								</label>
 							</div>
-						</div>					
+						</div>
 						<div class="d-flex justify-content-end">
 							<button type="submit" class="btn btn-danger mr-4">검색</button>
 						</div>
@@ -321,165 +329,166 @@
 			</div>
 
 			<!-- 공연 목록 row시작 -->
-			<div class="row mt-5 justify-content-center">
+			<div class="row mt-4 justify-content-center">
 				<!-- 공연 목록 시작 -->
 				<div class="col-8 mt-3">
 
-				<c:forEach var="performance" items="${performances }">
-					<div class="row mt-2 mb-3"> <!-- 공연정보 카드 1 시작 -->				
-						<div class="col-12">
-							<div class="card">								
-								<div class="card-body">
-									<div class="row">
-										<div class="col-3">
-										 <c:choose>
-											 <c:when test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
-											 	<c:set var="path" value="${performance.imagePath }"/>
-											 </c:when>
-											 <c:otherwise>
-											 	<c:set var="path" value="/resources/sample-images/${performance.imagePath }"/>
-											 </c:otherwise>
-										 </c:choose>
-											<img src="${path }" 
-												class="img-thumbnail">
-										</div>
-										<div class="col-9">
-											<div class="row mb-2">
-												<div class="col-12">
-													<span class="badge badge-pill badge-warning mr-2">														
-													<c:choose>
-														<c:when test="${performance.rating eq 0}">
+					<c:forEach var="performance" items="${performances }">
+						<div class="row mt-2 mb-3">
+							<!-- 공연정보 카드 1 시작 -->
+							<div class="col-12">
+								<div class="card">
+									<div class="card-body">
+										<div class="row">
+											<div class="col-3">
+												<c:choose>
+													<c:when
+														test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
+														<c:set var="path" value="${performance.imagePath }" />
+													</c:when>
+													<c:otherwise>
+														<c:set var="path"
+															value="/resources/sample-images/${performance.imagePath }" />
+													</c:otherwise>
+												</c:choose>
+												<img src="${path }" class="img-thumbnail">
+											</div>
+											<div class="col-9">
+												<div class="row mb-2">
+													<div class="col-12">
+														<span class="badge badge-pill badge-warning mr-2">
+															<c:choose>
+																<c:when test="${performance.rating eq 0}">
        														전체
     													</c:when>
-    													<c:otherwise>
+																<c:otherwise>
       														${performance.rating }
     													</c:otherwise>
-    												</c:choose>													
-													</span>
-													<h5 class="d-inline font-weight-bold">
-														<c:out value="${performance.title }" />
-													</h5>
+															</c:choose>
+														</span>
+														<h5 class="d-inline font-weight-bold">
+															<c:out value="${performance.title }" />
+														</h5>
+													</div>
 												</div>
-											</div>
-											<div class="row mb-2">
-												<div class="col-7 ">
-													<table class="table table-borderless">
-														<colgroup>
-															<col width="20%" />
-															<col width="80%" />
-														</colgroup>
-														<tr>
-															<th>장르</th>
-															<td>
-															<c:forEach var="genre" items="${performance.genres }"> 
+												<div class="row mb-2">
+													<div class="col-7 ">
+														<table class="table table-borderless">
+															<colgroup>
+																<col width="20%" />
+																<col width="80%" />
+															</colgroup>
+															<tr>
+																<th>장르</th>
+																<td><c:forEach var="genre"
+																		items="${performance.genres }"> 
 																${genre }&nbsp;
-															</c:forEach>															
-															</td>
-														</tr>
-														<tr>
-															<th>러닝타임</th>
-															<td>
-																${performance.runningTime }
-															</td>
-														</tr>
-														<tr>
-															<th>공연기간</th>
-															<td>
-																<fmt:formatDate value="${performance.startDate }" pattern="yyyy년 M월 d일" />
-																~
-																<fmt:formatDate value="${performance.endDate }" pattern="yyyy년 M월 d일" />
-																
-															</td>
-														</tr>
-														<tr>
-															<th>분류</th>
-															<td>${performance.category }</td>
-														</tr>
-														<tr>
-															<th>공연장소</th>
-															<td>${performance.hallName }</td>
-														</tr>
-														<tr>
-															<th>좌석정보</th>
-															<td>
-															<c:forEach var="seat" items="${performance.seatPrices }">
+															</c:forEach></td>
+															</tr>
+															<tr>
+																<th>러닝타임</th>
+																<td>${performance.runningTime }</td>
+															</tr>
+															<tr>
+																<th>공연기간</th>
+																<td><fmt:formatDate
+																		value="${performance.startDate }"
+																		pattern="yyyy년 M월 d일" /> ~ <fmt:formatDate
+																		value="${performance.endDate }" pattern="yyyy년 M월 d일" />
+
+																</td>
+															</tr>
+															<tr>
+																<th>분류</th>
+																<td>${performance.category }</td>
+															</tr>
+															<tr>
+																<th>공연장소</th>
+																<td>${performance.hallName }</td>
+															</tr>
+															<tr>
+																<th>좌석정보</th>
+																<td><c:forEach var="seat"
+																		items="${performance.seatPrices }">
 																${seat.seatRate }석 
 																<fmt:formatNumber value="${seat.price }" />원																
-															</c:forEach>															
-															</td>
-														</tr>
-														<tr>
-															<td colspan="2">
-																<label class="">
-																<c:forEach var="genre" items="${performance.genres }"> 
-																	<button class="btn btn-link" onclick="searchGenre('${genre}')">#${genre }</button>
-																</c:forEach>																	
-																</label>
-															</td>
-														</tr>
-													</table>
-												</div>
-												<!-- 공연 간단 정보창 끝 -->
-												<!-- 메이트 정보(보여주지 않음) -->
-												<div class="col-5">
-													<div class="row justify-content-center">
-														<div class="col-12">
-															<div class="card" style="display:none;">
-																<div class="card-body" >
-																	<div class="mb-4">
-																		<i class='fas fa-bullhorn mr-2'
-																			style='font-size: 24px'></i>
-																		<h6 class="d-inline font-weight-bold">메이트 모집중</h6>
-																	</div>
-																	<div>
-																		<h6>현재 00/000명이 해당 공연의 메이트가 되었습니다.</h6>
-																	</div>
-																	<div class="progress mt-3">
-																		<div
-																			class="progress-bar bg-danger progress-bar-striped"
-																			role="progressbar" style="width: 75%;"
-																			aria-valuenow="75" aria-valuemin="0"
-																			aria-valuemax="100">75%</div>
-																	</div>
-																	<div class="mt-3 ">
-																		<h6 class="d-inline">메이트 그룹 현황</h6>
-																		<span class="d-inline">00/00</span>
+															</c:forEach></td>
+															</tr>
+															<tr>
+																<td colspan="2"><label class=""> <c:forEach
+																			var="genre" items="${performance.genres }">
+																			<button class="btn btn-link"
+																				onclick="searchGenre('${genre}')">#${genre
+																				}</button>
+																		</c:forEach>
+																</label></td>
+															</tr>
+														</table>
+													</div>
+													<!-- 공연 간단 정보창 끝 -->
+													<!-- 메이트 정보(보여주지 않음) -->
+													<div class="col-5">
+														<div class="row justify-content-center">
+															<div class="col-12">
+																<div class="card" style="display: none;">
+																	<div class="card-body">
+																		<div class="mb-4">
+																			<i class='fas fa-bullhorn mr-2'
+																				style='font-size: 24px'></i>
+																			<h6 class="d-inline font-weight-bold">메이트 모집중</h6>
+																		</div>
+																		<div>
+																			<h6>현재 00/000명이 해당 공연의 메이트가 되었습니다.</h6>
+																		</div>
+																		<div class="progress mt-3">
+																			<div
+																				class="progress-bar bg-danger progress-bar-striped"
+																				role="progressbar" style="width: 75%;"
+																				aria-valuenow="75" aria-valuemin="0"
+																				aria-valuemax="100">75%</div>
+																		</div>
+																		<div class="mt-3 ">
+																			<h6 class="d-inline">메이트 그룹 현황</h6>
+																			<span class="d-inline">00/00</span>
+																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
+													<!-- 메이트 그룹 창 끝 -->
 												</div>
-												<!-- 메이트 그룹 창 끝 -->
+												<!-- 공연정보 표시끝 -->
 											</div>
-											<!-- 공연정보 표시끝 -->
 										</div>
-									</div>
-									<div class="row mt-2 p-2 "> <!-- 좋아요수, 뒷풀이 게시판수, 예매하기, 상세보기 버튼그룹 -->
-										<div class="col-12 d-flex justify-content-between">
-											<div>
-												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
-												<div class="d-inline mr-2">
-													<i class='fas fa-heart mr-2'
-														style='font-size: 24px; color: red;'></i><label id="${performance.id }likes">${performance.likes }</label>
-												</div>
-												<!-- 뒷풀이게시판 -->
-												<!--  
+										<div class="row mt-2 p-2 ">
+											<!-- 좋아요수, 뒷풀이 게시판수, 예매하기, 상세보기 버튼그룹 -->
+											<div class="col-12 d-flex justify-content-between">
+												<div>
+													<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
+													<div class="d-inline mr-2">
+														<i class='fas fa-heart mr-2'
+															style='font-size: 24px; color: red;'></i><label
+															id="${performance.id }likes">${performance.likes }</label>
+													</div>
+													<!-- 뒷풀이게시판 -->
+													<!--  
 												<div class="d-inline" style="display:none;">
 													<i class='far fa-comment-alt mr-2' style='font-size: 24px'></i><label></label>
 												</div>
 												-->
-											</div>
-											<div>
-												<button type="button" class="btn btn-outline-danger mr-2"
-													onclick="buyTicket(${performance.id})">예매하기</button>
-												<button type="button" class="btn btn-outline-dark"
-													onclick="showDetail(${performance.id})">상세보기</button>
+												</div>
+												<div>
+													<button type="button" class="btn btn-outline-danger mr-2"
+														onclick="buyTicket(${performance.id})">예매하기</button>
+													<button type="button" class="btn btn-outline-dark"
+														onclick="showDetail(${performance.id})">상세보기</button>
+												</div>
 											</div>
 										</div>
-									</div>	<!-- 예매하기 상세보기 버튼그룹 끝 -->
-									<!-- 사용자가 보는 창에선 수정하기와 삭제하기가 보이지 않도록 한다 -->
-									<!--  
+										<!-- 예매하기 상세보기 버튼그룹 끝 -->
+										<!-- 사용자가 보는 창에선 수정하기와 삭제하기가 보이지 않도록 한다 -->
+										<!--  
 									<div class="row mt-2 p-2">
 										<div class="col-12 d-flex justify-content-end">
 											<button type="button" class="btn btn btn-info mr-2"
@@ -489,24 +498,24 @@
 										</div>
 									</div>
 									-->
-									<!--  
+										<!--  
 									<div class="row">
 										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
 											href="#">#액션</a><a href="#">#스릴러</a></label>
 									</div>
 									-->
-									<!-- 태그 창 끝 -->
+										<!-- 태그 창 끝 -->
+									</div>
+									<!-- card body 끝 -->
 								</div>
-								<!-- card body 끝 -->
+								<!-- card 끝 -->
 							</div>
-							<!-- card 끝 -->
+							<!-- 카드 row col-12끝 -->
 						</div>
-						<!-- 카드 row col-12끝 -->
-					</div>
-					<!-- 카드 row끝 공연정보카드1 끝남-->
-				</c:forEach>
-				
-					
+						<!-- 카드 row끝 공연정보카드1 끝남-->
+					</c:forEach>
+
+
 					<!-- 카드 row끝 -->
 				</div>
 			</div>
@@ -536,7 +545,8 @@
 										<div class="col-9">
 											<div class="row mb-2">
 												<div class="col-12">
-													<span class="badge badge-pill badge-warning mr-2" id="modalAge"></span>
+													<span class="badge badge-pill badge-warning mr-2"
+														id="modalAge"></span>
 													<h5 class="d-inline font-weight-bold" id="modalTitle"></h5>
 												</div>
 											</div>
@@ -572,10 +582,8 @@
 															<td id="modalSeatInfo"></td>
 														</tr>
 														<tr>
-															<td colspan="2">
-																<label class="" id="modalTags">																	
-																</label>
-															</td>
+															<td colspan="2"><label class="" id="modalTags">
+															</label></td>
 														</tr>
 													</table>
 												</div>
@@ -585,7 +593,7 @@
 														<div class="col-12">
 															<div class="card">
 																<!-- 뒷풀이게시판 -->
-																<div class="card-body" style="display:none;">
+																<div class="card-body" style="display: none;">
 																	<div class="mb-4">
 																		<i class='fas fa-bullhorn mr-2'
 																			style='font-size: 24px'></i>
@@ -608,7 +616,7 @@
 																</div>
 																<!-- 카카오맵 api by LMS (start 2020.08.26) -->
 																<div class="card-body">
-																	<div id="map" style="width:380px; height:300px;"></div>
+																	<div id="map" style="width: 380px; height: 300px;"></div>
 																</div>
 															</div>
 														</div>
@@ -625,9 +633,8 @@
 												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
 												<div class="d-inline mr-2">
 													<button type="button" class="btn btn-sm" id="clickLike"
-													data-no="" data-liked="">
-														<i class='far fa-heart mr-2'
-														style='font-size: 24px;'></i>
+														data-no="" data-liked="">
+														<i class='far fa-heart mr-2' style='font-size: 24px;'></i>
 													</button>
 													<label id="modalLikes"></label>
 												</div>
@@ -640,26 +647,28 @@
 												</div>
 												-->
 											</div>
-											
+
 										</div>
 									</div>
 									<div class="row justify-content-center">
-									<!--  
+										<!--  
 										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
 											href="#">#액션</a><a href="#">#스릴러</a></label>
 									-->
-									<!--
+										<!--
 										여기서 버튼 onclick 정의하지 말고 아래에 클릭이벤트 정의
 										$("#bton").click(function(no){
 										})
 									-->
-									
-										<button type="button" class="btn btn-outline-danger mr-4 btn-lg"
-											id="modalBuyBtn" data-no="">예매하기</button>
-										<button type="button" class="btn btn-outline-dark btn-lg" style="display:none;"
-											id="modalMateGroupBtn" data-no="">메이트 그룹</button>
+
+										<button type="button"
+											class="btn btn-outline-danger mr-4 btn-lg" id="modalBuyBtn"
+											data-no="">예매하기</button>
+										<button type="button" class="btn btn-outline-dark btn-lg"
+											style="display: none;" id="modalMateGroupBtn" data-no="">메이트
+											그룹</button>
 									</div>
-									
+
 									<!--  
 									<div class="row justify-content-end mt-3">
 										<button type="button" class="btn btn btn-info mr-4 btn-lg"
@@ -668,13 +677,14 @@
 												id="modalDeleteBtn" data-no="">삭제하기</button>	
 									</div>
 									-->
-									
+
 									<!-- 태그 창 끝 -->
 								</div>
 								<!-- card body 끝 -->
 							</div>
 							<!-- card 끝 -->
-							<div> <!-- 공연상세 정보 -->
+							<div>
+								<!-- 공연상세 정보 -->
 								<div class="mt-3 p-2">
 									<h5 class="font-weight-bold">공연정보</h5>
 									<table class="table table-bordered mt-3">
@@ -716,81 +726,82 @@
 												<th>관람연령</th>
 												<td id="modalDetailAge"></td>
 											</tr>
-										</tbody>									
-									</table>							
-								</div>	<!-- 공연정보 테이블 끝 -->
-								<div class="mt-3 p-2"> <!-- 공연 -->
-									<h5 class="font-weight-bold">내용</h5>				
-									<div class="mt-3" style="width:85%">
-										 <p id="modalDetailExplain"></p>
-									</div>									
+										</tbody>
+									</table>
 								</div>
+								<!-- 공연정보 테이블 끝 -->
 								<div class="mt-3 p-2">
-									<h5 class="font-weight-bold">이벤트 정보</h5>				
-									<div class="mt-3" style="width:85%">
-										<p>이벤트가 없습니다.</p>											
-									</div>	
-								</div>	
+									<!-- 공연 -->
+									<h5 class="font-weight-bold">내용</h5>
+									<div class="mt-3" style="width: 85%">
+										<p id="modalDetailExplain"></p>
+									</div>
+								</div>
+								
 								<div class="mt-3 p-2">
-									<h5 class="font-weight-bold">성별 나이별 관람추이</h5>				
+									<h5 class="font-weight-bold">성별 나이별 관람추이</h5>
 									<div class="row mt-3 p-2 justify-content-start">
 										<div class="col-5">
-											<div class="card"> 
-												<div class="card-body"> 
+											<div class="card">
+												<div class="card-body">
 													<canvas id="chartGender">
 													</canvas>
-													<div id="defaultChart" class="text-center" style="display:none;" >
-													
-													</div>
-												</div> 
+													<div id="defaultChart" class="text-center"
+														style="display: none;"></div>
+												</div>
 											</div>
 										</div>
 										<div class="col-5">
-											<div class="card" style="display:none;"> 
-												<div class="card-body"> 
+											<div class="card" >
+												<div class="card-body">
 													<canvas id="chartAge">
 													</canvas>
-												</div> 
+													<div id="defaultAgeChart" class="text-center"
+														style="display: none;"></div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div> <!-- 공연 상세정보 -->	
-															
-							</div>	<!-- 공연상세정보 끝 -->						
-							
+								</div>
+								<!-- 공연 상세정보 -->
+
+							</div>
+							<!-- 공연상세정보 끝 -->
+
 						</div>
 						<!-- Modal footer -->
-						
-						<!--  -->						
-						
+
+						<!--  -->
+
 					</div>
 				</div>
-			</div> <!-- 공연 상세정보 모달창 끝 -->
-			
-			
-			
+			</div>
+			<!-- 공연 상세정보 모달창 끝 -->
+
+
+
 			<div class="row mt-5 justify-content-center">
 				<!-- 페이지네이션 -->
-				<nav aria-label="Page navigation example">			
-							
+				<nav aria-label="Page navigation example">
+
 					<c:if test="${pageNo > 1 }">
-						<button class="btn btn-light"
-						 onclick="goPage('${pageNo-1}')">이전</button>
+						<button class="btn btn-light" onclick="goPage('${pageNo-1}')">이전</button>
 					</c:if>
-						
-					<c:forEach var="idx" begin="${pagination.beginPage }" end="${pagination.endPage }" step="1">
-						
-						<button class="btn btn-light paging-num ${pageNo == idx? 'active': '' }"
-						onclick="goPage('${idx}')" >${idx }</button>
-						
-					</c:forEach>	
-						
+
+					<c:forEach var="idx" begin="${pagination.beginPage }"
+						end="${pagination.endPage }" step="1">
+
+						<button
+							class="btn btn-light paging-num ${pageNo == idx? 'active': '' }"
+							onclick="goPage('${idx}')">${idx }</button>
+
+					</c:forEach>
+
 					<c:if test="${pageNo < totalPageCount }">
-						<button class="btn btn-light"
-						 onclick="goPage('${pageNo+1}')">다음</button>
-					</c:if>	
-						
-					
+						<button class="btn btn-light" onclick="goPage('${pageNo+1}')">다음</button>
+					</c:if>
+
+
 				</nav>
 			</div>
 			<!-- 페이지네이션 끝 -->
@@ -800,14 +811,15 @@
 	</div>
 	<!-- body 끝 -->
 	<div class="footer" style="height: 200px;">
-		 <%@ include file="../common/footer.jsp" %>
+		<%@ include file="../common/footer.jsp"%>
 	</div>
 
-<script type="text/javascript" src="/resources/jquery/jquery.min.js"></script>
-<script type="text/javascript"
-	src="/resources/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=333f1bf83c9503d02a701757427f6892&libraries=services"></script>	
-<script type="text/javascript">
+	<script type="text/javascript" src="/resources/jquery/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=333f1bf83c9503d02a701757427f6892&libraries=services"></script>
+	<script type="text/javascript">
 $(function(){
 	
 	console.log("시작");
@@ -854,7 +866,13 @@ $("#search-form").find("input").change(function() {
 	console.log("변경후"+$changed.val());
 	//$($changed).val("Y");
 	//console.log("변경후 formChanged값: "+$($changed).val());
+	
+	
 });
+
+
+
+
 
 $(":input[name=genre]").closest('label').click(function(event) {
 	console.log("input필드 중 체크박스값이 바뀌었습니다.");
@@ -938,7 +956,17 @@ function selectOrder(option) {
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
+	console.log("input필드값이 바뀌었습니다.");
+	var $changed = $("#search-form input[name=changed]");
+	console.log($changed);
+	console.log("변경전"+$changed.val());
+	$changed.val("Y");
+	console.log("변경후"+$changed.val());
+	
+	console.log($("#listOrder").val());
+	
 	// 이후 form submit 출력
+	$("#search-form").submit();
 }
 
 $("#performanceStartDay").change(function() {
@@ -1023,6 +1051,11 @@ function showDetail(performanceId) {
 			
 			var manReserveCount = data.manReserveCount;
 			var womanReserveCount = data.womanReserveCount;
+			var age10ReserveStats = data.age10ReserveStats;
+			var age20ReserveStats = data.age20ReserveStats;
+			var age30ReserveStats = data.age30ReserveStats;
+			var age40ReserveStats = data.age40ReserveStats;
+			var age50ReserveStats = data.age50ReserveStats;
 			
 			console.log("manReserveCount: "+ manReserveCount);
 			console.log("womanReserveCount: "+ womanReserveCount);
@@ -1173,6 +1206,72 @@ function showDetail(performanceId) {
 			
 			} // 데이터 값이 있을 때 그래프 그리기 
 			
+			// 나이대별 관람추이
+			var $chBar = $("#chartAge");
+			//var ageCanvas=  document.getElementById('chartAge');
+			//var context = ageCanvas.getContext('2d');			
+			var $defaultAgeChart = $("#defaultAgeChart");
+			//context.clearRect(0, 0, ageCanvas.width, ageCanvas.height);
+			$("#chartAge").empty();
+			
+			if ((age10ReserveStats == 0) && (age20ReserveStats == 0) && 
+					(age30ReserveStats == 0) && (age40ReserveStats == 0) &&
+					(age50ReserveStats == 0)) {
+				console.log("아직 아무도 구매를 하지 않음");
+				
+				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
+				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 연령대별 예매정보가 없습니다.</p>";
+				
+				$defaultAgeChart.html(defaultImage);
+				$defaultAgeChart.show();
+				$chBar.hide();
+			} else {
+				$defaultAgeChart.hide();
+				$chBar.show();
+				
+				if ($chBar) {
+					new Chart($chBar, {
+						type: 'bar',
+						data: {
+							labels: ['10대↓', '20대', '30대', '40대', '50대↑'],
+							datasets: [{
+								label: '# of ReserveCount',
+								data: [age10ReserveStats, age20ReserveStats,
+									age30ReserveStats, age40ReserveStats, age50ReserveStats],	// 퍼센트 구해서 넣기
+								backgroundColor: [
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)'
+								],
+								borderColor: [
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)'
+								],
+								borderWidth: 1
+							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero: true
+									}
+								}]
+							}
+						}
+						
+					})		
+				}// bar 끝
+				
+				
+			} // 연령대별 예매정보가 있다면 끝
+			
+			
 			
 		} // success 끝
 	})
@@ -1181,46 +1280,7 @@ function showDetail(performanceId) {
 	
 	
 	
-	// 나이대별 관람추이
-	var $chBar = $("#chartAge");
 	
-	if ($chBar) {
-		new Chart($chBar, {
-			type: 'bar',
-			data: {
-				labels: ['10대', '20대', '30대', '40대', '50대↑'],
-				datasets: [{
-					label: '# of Numbers',
-					data: [12,34,47,16,12],	// 퍼센트 구해서 넣기
-					backgroundColor: [
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)'
-					],
-					borderColor: [
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)'
-					],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero: true
-						}
-					}]
-				}
-			}
-			
-		})		
-	}
 	
 	
 	

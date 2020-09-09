@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.Reserve;
 
 public interface ReserveDao {
@@ -54,4 +55,8 @@ public interface ReserveDao {
     List<Reserve> getReserveMyMateId(int mateId);
     
     List<Reserve> getReserveByPerformanceId(int performanceId);
+    
+    void updateReserveToMateNull(Reserve reserve);
+    
+    PerformanceMain getPerformanceMainByReserveId(int reserveId);
 }

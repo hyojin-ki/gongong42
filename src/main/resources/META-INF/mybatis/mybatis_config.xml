@@ -47,6 +47,7 @@
 		<typeAlias type="com.sample.web.view.QnaImage" alias="QnaImage"/>
 		<typeAlias type="com.sample.web.view.UserLikes" alias="UserLikes"/>
 		<typeAlias type="com.sample.dto.PerformanceGenderReserveStats" alias="PerformanceGenderReserveStats"/>
+		<typeAlias type="com.sample.dto.PerformanceAgeReserveStats" alias="PerformanceAgeReserveStats"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="META-INF/mybatis/mappers/users.xml"/>

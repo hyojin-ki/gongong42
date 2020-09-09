@@ -16,6 +16,7 @@ import com.sample.web.view.Performance;
 import com.sample.web.view.PerformanceSchedule;
 import com.sample.web.view.PerformanceSeatPrice;
 import com.sample.web.view.UserLikes;
+import com.sample.dto.PerformanceAgeReserveStats;
 import com.sample.dto.PerformanceDetailDto;
 
 public interface PerformanceDao {
@@ -59,6 +60,13 @@ public interface PerformanceDao {
 	 * @return
 	 */
 	int getGenderReserveCountByPerformanceInfoIdAndGender(PerformanceGenderReserveStats performanceGenderReserveStats);	
+	
+	/**
+	 * 공연 정보아이디와 연령대를 입력으로 받아 해당공연의 해당연령대의 공연 구매수를 반환한다.
+	 * @param performanceAgeReserveStats
+	 * @return
+	 */
+	int getAgeGroupReserveCountByPerformanceInfoIdAndAge(PerformanceAgeReserveStats performanceAgeReserveStats);
 	
 	/**
 	 * 사용자아이디와 공연정보아이디를 통해 특정공연에대한 사용자의 좋아요 정보를 반환한다.
@@ -211,6 +219,18 @@ public interface PerformanceDao {
 	 * @param performance
 	 */
 	void updatePerformanceHallInfoId(Performance performance);
+	
+	/**
+	 * 공연정보의 공연정보아이디에 해당하는 좋아요수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceLikes(Performance performance);
+	
+	/**
+	 * 공연정보의 공연정보아이디에 해당하는 예매수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceReserveCount(Performance performance);
 	
 	/**
 	 * 공연정보아이디와 사용자아이디가 담긴 UserLikes 객체를 입력으로 받아 사용자가 해당공연에 대한 좋아요를 추가한다.

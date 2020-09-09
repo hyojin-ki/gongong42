@@ -458,6 +458,7 @@ a:hover {
 			</div>
 		</div>
 	</div>	
+	<!--  
 	<div class="container-fluid" style="background-color: #f5f5f5; width: 100%;">
 		<div class="row" style="height: 100px;">
 			<div class="col-6">
@@ -490,6 +491,8 @@ a:hover {
 			</div>
 		</div>
 	</div>
+	-->
+<%@ include file="../common/footer.jsp" %>	
 <%@ include file="qnaAddQuesModal.jsp" %>
 <%@ include file="qnaModifyQuesModal.jsp" %>
 <%@ include file="qnaAddAnswerModal.jsp" %>

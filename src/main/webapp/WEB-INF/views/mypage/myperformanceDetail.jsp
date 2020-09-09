@@ -46,9 +46,18 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <img style="width: 200px; height: 200px;"
+                                <c:choose>
+                                	<c:when test="${fn:substring(performance.imagePath,0,4 ) eq 'http'}">
+                                		<c:set var="path" value="${performance.imagePath }" />
+                                	</c:when>
+                                	<c:otherwise>
+                                		<c:set var="path" value="/resources/sample-images/${performance.imagePath}" />
+                                	</c:otherwise>
+                                </c:choose>
+                                    <img style="width: 200px; height: 200px;" 
                                          src="${performance.imagePath}"
                                          class="rounded float-left" alt="...">
+
                                 </div>
                                 <div class="col-9">
                                     <div class="row">
@@ -125,7 +134,12 @@
                     <div class="mypage-card-header mt-3 ">
                         <div class="row">
                             <div class="col-12">
-                                <h2 class="font-weight-bold">메이트 티켓</h2>
+                                <h2 class="font-weight-bold">메이트 티켓
+                                	<c:if test="${empty mate }">
+                                		<a class="btn btn-outline-danger" href="/mate/mate.do?pid=${PerformanceMain.id }">메이트 찾기</a>
+                                	</c:if>
+
+                                </h2>
                             </div>
                         </div>
                     </div>

@@ -90,10 +90,11 @@
 									</div>
 									
 									
-									<div class="row mt-5 mb-3 justify-content-center">				
-										<div>
+									<div class="row mt-5 mb-5 justify-content-center">				
+										<div class="mt-4">
 											<button type="button" id="goHome" class="btn btn-danger mr-3">홈</button>									
-											<button type="button" onclick="goList(category='${param.category }')" class="btn btn-primary ">공연목록</button>			
+											<button type="button" id="goAdminHome" class="btn btn-dark mr-3">관리자홈</button>									
+											<button type="button" onclick="goList(category='${param.category }')" class="btn btn-info">공연목록</button>			
 										</div>
 									</div>
 								</div>
@@ -162,6 +163,10 @@ $("#goHome").click(function() {
 	location.href="/home.do";
 	
 	
+})
+
+$("#goAdminHome").click(function() {
+	location.href="/admin/home.do";
 })
 
 function goList(category) {

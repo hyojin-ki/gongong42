@@ -103,6 +103,7 @@ public class MyPageController {
             System.out.println(reserve.getMate().getCategory());
             System.out.println(reserve.getMate().getMateTags().size());
         }
+        model.addAttribute("PerformanceMain", reserveService.getPerformanceMainByReserveId(reserve.getId()));
         // payment
         Payment payment = paymentService.getPaymentByReserveId(id);
         model.addAttribute("payment", payment);

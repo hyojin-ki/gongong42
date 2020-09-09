@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.dto.PerformanceDto;
 import com.sample.dto.PerformanceGenderReserveStats;
+import com.sample.dto.PerformanceAgeReserveStats;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.web.view.HallInfo;
 import com.sample.web.view.Performance;
@@ -118,6 +119,13 @@ public interface PerformanceService {
 	 */
 	int getGenderReserveCountByPerformanceInfoIdAndGender(PerformanceGenderReserveStats performanceGenderReserveStats);	
 	
+	/**
+	 * 공연 정보아이디와 연령대를 입력으로 받아 해당공연의 해당연령대의 공연 구매수를 반환한다.
+	 * @param performanceAgeReserveStats
+	 * @return
+	 */
+	int getAgeGroupReserveCountByPerformanceInfoIdAndAge(PerformanceAgeReserveStats performanceAgeReserveStats);
+	
 	
 	/**
      * 공연정보를 데이터베이스에 저장한다.
@@ -152,8 +160,18 @@ public interface PerformanceService {
 	 */
 	void deletePerformanceLikes(UserLikes userLikes);
     
-    		
+	/**
+	 * 공연정보의 공연정보아이디에 해당하는 좋아요수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceLikes(Performance performance);		
     
+	/**
+	 * 공연정보의 공연정보아이디에 해당하는 예매수를 업데이트한다.
+	 * @param performance
+	 */
+	void updatePerformanceReserveCount(Performance performance);
+	
     /**
      * 공연정보를 업데이트한다.
      * 공연정보, 공연장르 테이블이 업데이트 된다.

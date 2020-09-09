@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sample.dto.PaymentDto;
+import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
 import com.sample.service.PaymentService;
 import com.sample.service.PerformanceService;
@@ -27,6 +28,7 @@ import com.sample.web.form.PaymentForm;
 import com.sample.web.security.Auth;
 import com.sample.web.view.Coupon;
 import com.sample.web.view.Payment;
+import com.sample.web.view.Performance;
 import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.PerformanceSchedule;
 import com.sample.web.view.PerformanceSeatPrice;
@@ -59,6 +61,8 @@ public class PaymentController {
 			bf.append(sd.format(p.getShowDate()));
 			bf.append(",");
 		}
+		
+		
 		
 		PaymentForm paymentForm = new PaymentForm();
 		
@@ -113,6 +117,18 @@ public class PaymentController {
 		userPoint.setValue(paymentForm.getUsedPoint());
 		
 		payment = paymentService.addPayment(paymentForm);
+		
+		// performance_info의 reserveCount 변경
+		Performance performance = payment.getReserve().getPerformance();	// main 아이디가 저장됨
+		//System.out.println("예약 카운트용: "+performance.getId());// main아이디
+		
+		// main id를 통해 performanceDetailDto 정보 조회
+		PerformanceDetailDto performanceOrigin = performanceService.getPerformanceByPerformanceMainId(performance.getId());
+		
+		//System.out.println("이전 예약자수: " + performanceOrigin.getReserveCount());
+		performance.setReserveCount(performanceOrigin.getReserveCount());
+		performance.setId(performanceOrigin.getId()); 	// info 아이디로 변경
+		performanceService.updatePerformanceReserveCount(performance);
 		
 		userService.updateUser(user);
 		userPoint.setPayment(payment);

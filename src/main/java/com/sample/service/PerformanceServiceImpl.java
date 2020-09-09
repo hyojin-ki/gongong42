@@ -36,6 +36,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.dao.PerformanceDao;
+import com.sample.dto.PerformanceAgeReserveStats;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceDto;
 import com.sample.dto.PerformanceGenderReserveStats;
@@ -491,6 +492,24 @@ public class PerformanceServiceImpl implements PerformanceService {
 			PerformanceGenderReserveStats performanceGenderReserveStats) {
 		// TODO Auto-generated method stub
 		return performanceDao.getGenderReserveCountByPerformanceInfoIdAndGender(performanceGenderReserveStats);
+	}
+
+	@Override
+	public void updatePerformanceLikes(Performance performance) {
+		// TODO Auto-generated method stub
+		performanceDao.updatePerformanceLikes(performance);
+	}
+
+	@Override
+	public void updatePerformanceReserveCount(Performance performance) {
+		// TODO Auto-generated method stub
+		performanceDao.updatePerformanceReserveCount(performance);
+	}
+
+	@Override
+	public int getAgeGroupReserveCountByPerformanceInfoIdAndAge(PerformanceAgeReserveStats performanceAgeReserveStats) {
+		// TODO Auto-generated method stub
+		return performanceDao.getAgeGroupReserveCountByPerformanceInfoIdAndAge(performanceAgeReserveStats);
 	}
  
 }

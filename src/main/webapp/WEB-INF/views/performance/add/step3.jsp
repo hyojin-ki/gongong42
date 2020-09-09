@@ -84,7 +84,7 @@
 								<div class="col-2">
 								<label >A석 가격</label>		
 								</div>
-								<div class="col-3">
+								<div class="col-4">
 									<label><input type="number" name="aPrice" class="form-control" 
 									min="0" onblur="checkNum()" ></label>
 									<label>원</label>
@@ -96,7 +96,7 @@
 								<div class="col-2">
 								<label >S석 가격</label>		
 								</div>
-								<div class="col-3">
+								<div class="col-4">
 									<label><input type="number" name="sPrice" class="form-control" min="0" ></label>
 									<label>원</label>
 								</div>
@@ -107,7 +107,7 @@
 								<div class="col-2">
 								<label >R석 가격</label>		
 								</div>
-								<div class="col-3">
+								<div class="col-4">
 									<label><input type="number" name="rPrice" class="form-control" min="0" ></label>
 									<label>원</label>
 								</div>
@@ -138,6 +138,9 @@
 
 $(function() {
 	
+	$("#addSeatForm input[name=aPrice]").val(0);
+	$("#addSeatForm input[name=sPrice]").val(0);
+	$("#addSeatForm input[name=rPrice]").val(0);
 	
 	
 })

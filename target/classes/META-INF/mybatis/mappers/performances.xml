@@ -43,8 +43,10 @@
 					A.reserveCount  as reserveCount	
 		FROM 
 			performance_info A		
+		<if test="admin == null">
 		JOIN
-			performance_main B ON B.infoId = A.id
+			performance_main B ON B.infoId = A.id		
+		</if>
 		JOIN 
 			hall_info_main C ON C.id =A.hallInfoId
 		JOIN 
@@ -66,12 +68,27 @@
 		<if test="endDate != null">
 			and #{endDate} > A.endDate
 		</if>
-			and endDate >= NOW()		
+			and endDate >= CURDATE()		
 		<if test="age != null">
 			and A.rating = #{age}
 		</if>
 		ORDER BY 
-			A.startDate		
+			<choose>
+				<when test="listOrder == 'dateOrder'">
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'likeOrder'">
+					A.likes desc, 
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'salesOrder'">
+					A.reserveCount desc,
+					A.startDate	asc	
+				</when>
+				<otherwise>
+					A.startDate	asc	
+				</otherwise>
+			</choose>			
 	</select>
 		
 	<select id="searchPerformanceByPage" parameterType="map" resultMap="PerformanceDetailDtoResultMap">
@@ -93,8 +110,10 @@
 					A.reserveCount  as reserveCount						
 		FROM 
 			performance_info A		
+		<if test="admin == null">
 		JOIN
-			performance_main B ON B.infoId = A.id	
+			performance_main B ON B.infoId = A.id		
+		</if>
 		JOIN 
 			hall_info_main C ON C.id = A.hallInfoId
 		JOIN 
@@ -116,12 +135,27 @@
 		<if test="endDate != null">
 			and #{endDate} > A.endDate
 		</if>			
-			and A.endDate >= NOW()
+			and A.endDate >= CURDATE()
 		<if test="age != null">
 			and A.rating = #{age}
 		</if>
 		ORDER BY 
-			A.startDate		
+			<choose>
+				<when test="listOrder == 'dateOrder'">
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'likeOrder'">
+					A.likes desc, 
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'salesOrder'">
+					A.reserveCount desc,
+					A.startDate	asc	
+				</when>
+				<otherwise>
+					A.startDate	asc	
+				</otherwise>
+			</choose>			
 		LIMIT 
 			#{endIndex} OFFSET #{beginIndex}	
 		
@@ -149,8 +183,10 @@
 						A.reserveCount  as reserveCount						
 			FROM 
 				performance_info A		
+			<if test="admin == null">
 			JOIN
-				performance_main B ON B.infoId = A.id
+				performance_main B ON B.infoId = A.id		
+			</if>
 			JOIN 
 				hall_info_main C ON C.id =A.hallInfoId
 			JOIN 
@@ -172,7 +208,7 @@
 			<if test="endDate != null">
 				and #{endDate} > A.endDate
 			</if>		
-				and A.endDate >= NOW()	
+				and A.endDate >= CURDATE()	
 			<if test="age != null">
 				and A.rating = #{age}
 			</if>
@@ -209,9 +245,24 @@
 		WHERE 
 			A.title like CONCAT('%', #{title}, '%') 
 		AND
-			endDate >= NOW()
+			endDate >= CURDATE()
 		ORDER BY 
-			A.startDate		
+			<choose>
+				<when test="listOrder == 'dateOrder'">
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'likeOrder'">
+					A.likes desc, 
+					A.startDate	asc	
+				</when>
+				<when test="listOrder == 'salesOrder'">
+					A.reserveCount desc,
+					A.startDate	asc	
+				</when>
+				<otherwise>
+					A.startDate	asc	
+				</otherwise>
+			</choose>		
 		LIMIT 
 			#{endIndex} OFFSET #{beginIndex}	
 	</select>
@@ -246,7 +297,7 @@
 			WHERE 
 				A.title like CONCAT('%', #{title}, '%') 
 			AND
-				endDate >= NOW()
+				endDate >= CURDATE()
 			ORDER BY 
 				A.startDate	
 		) F
@@ -413,7 +464,7 @@
 		WHERE 
 			A.category=	#{value}
 		AND 
-			A.endDate >= NOW()
+			A.endDate >= CURDATE()
 		ORDER BY 
 			A.startDate		
 	</select>
@@ -487,6 +538,42 @@
 			AND 
 				C.gender LIKE #{gender}
 		) D
+	</select>
+	
+	<select id="getAgeGroupReserveCountByPerformanceInfoIdAndAge" parameterType="PerformanceAgeReserveStats"
+	resultType="int">
+		
+		SELECT COUNT(*) 
+		FROM (
+			SELECT DISTINCT  A.reserveUser, B.infoId, C.gender, C.birthday, CURDATE(),
+				<![CDATA[(YEAR(CURDATE())-YEAR(C.birthday))-(RIGHT(CURDATE(),5) < RIGHT(C.birthday,5))]]> AS age
+			FROM 
+				reserve_main A
+			JOIN 
+				performance_main B ON A.performanceId = B.id 
+			JOIN
+				user_main C ON A.reserveUser = C.id
+			WHERE 
+				B.infoId = #{performanceInfoId}
+		)D
+		WHERE 
+			<choose>
+				<when test="ageGroup == 10">
+					<![CDATA[D.age < 20]]>
+				</when>
+				<when test="ageGroup == 20">
+					D.age between 20 and 29
+				</when>
+				<when test="ageGroup == 30">
+					D.age between 30 and 39
+				</when>
+				<when test="ageGroup == 40">
+					D.age between 40 and 49
+				</when>
+				<when test="ageGroup == 50">
+					<![CDATA[D.age >= 50]]>
+				</when>
+			</choose>
 	</select>
 	
 	
@@ -602,6 +689,23 @@
 	
 	</update>
 	
+	<update id="updatePerformanceLikes" parameterType="Performance">
+		UPDATE performance_info
+		SET
+			likes = #{likes}
+		WHERE
+			id = #{id}	
+	</update>
+	
+	<update id="updatePerformanceReserveCount" parameterType="Performance">
+		UPDATE performance_info
+		SET
+			reserveCount = #{reserveCount}
+		WHERE
+			id = #{id}
+	
+	</update>
+	
 	<select id="getHallInfoByPerformanceInfoId" parameterType="int" resultType="HallInfo">
 		SELECT 
 			A.id , A.`name`, A.address, A.gpsX, A.gpsY
@@ -612,7 +716,6 @@
 		WHERE 
 			B.id=#{value}	
 	</select>
-	
 	
 	
 	
@@ -811,7 +914,7 @@
 		JOIN 
 			mate_main E ON E.performanceId = B.id
 		WHERE A.category = #{value}
-		AND A.endDate >= NOW()
+		AND A.endDate >= CURDATE()
 		GROUP BY B.infoId
 		ORDER BY B.registeredDate DESC 
 		LIMIT 3

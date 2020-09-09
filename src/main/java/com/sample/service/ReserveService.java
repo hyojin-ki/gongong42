@@ -2,6 +2,7 @@ package com.sample.service;
 
 import java.util.List;
 
+import com.sample.web.view.PerformanceMain;
 import com.sample.web.view.Reserve;
 
 public interface ReserveService {
@@ -29,4 +30,6 @@ public interface ReserveService {
     Reserve getReservedMateByPerformanceIdAndUserId(String userId, int performanceId);
     List<Reserve> getReserveCurrentCnt();
     List<Reserve> getReserveByPerformanceId(int performanceId);
+    
+    PerformanceMain getPerformanceMainByReserveId(int reserveId);
 }

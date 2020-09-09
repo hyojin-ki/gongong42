@@ -80,11 +80,11 @@
 							<span>검색결과</span>
 						</div>
 						<div class="p-2">
-							<button type="button" class="btn btn-link text-danger"
-								onclick="selectOrder('dateOrder')"  id="dateOrder">개봉일순</button>
-							<button type="button" class="btn btn-link text-dark"
+							<button type="button" class="btn btn-link ${param.order eq 'dateOrder' || empty param.order? 'text-danger' : 'text-dark' }"
+								onclick="selectOrder('dateOrder')" id="dateOrder">개봉일순</button>
+							<button type="button" class="btn btn-link ${param.order eq 'likeOrder'? 'text-danger' : 'text-dark' }"
 								onclick="selectOrder('likeOrder')" id="likeOrder">좋아요순</button>
-							<button type="button" class="btn btn-link text-dark"
+							<button type="button" class="btn btn-link ${param.order eq 'salesOrder'? 'text-danger' : 'text-dark' }"
 								onclick="selectOrder('salesOrder')" id="salesOrder">예매순</button>
 						</div>
 					</div>
@@ -96,7 +96,7 @@
 			<div class="row mt-2 justify-content-center">
 				<div class="col-12 border p-3">
 					<form method="get" id="search-form">
-						<input type="hidden" name="order" id="listOrder" value="dateOrder" />
+						<input type="hidden" name="order" id="listOrder" value="${param.order }" />
 						<input type="hidden" name="category" value="${category }" />
 						<input type="hidden" name="pageNo" id="pageNo" />
 						<input type="hidden" name="changed" id="formChanged" value="N" />
@@ -178,7 +178,7 @@
 			</div>
 
 			<!-- 공연 목록 row시작 -->
-			<div class="row mt-5 justify-content-center">
+			<div class="row mt-4 justify-content-center">
 				<!-- 공연 목록 시작 -->
 				<div class="col-12 mt-3">
 
@@ -593,32 +593,28 @@
 										 <p id="modalDetailExplain"></p>
 									</div>									
 								</div>
-								<div class="mt-3 p-2">
-									<h5 class="font-weight-bold">이벤트 정보</h5>				
-									<div class="mt-3" style="width:85%">
-										<p>이벤트가 없습니다.</p>											
-									</div>	
-								</div>	
+									
 								<div class="mt-3 p-2">
 									<h5 class="font-weight-bold">성별 나이별 관람추이</h5>				
 									<div class="row mt-3 p-2 justify-content-start">
 										<div class="col-5">
-											<div class="card"> 
-												<div class="card-body"> 
+											<div class="card">
+												<div class="card-body">
 													<canvas id="chartGender">
 													</canvas>
-													<div id="defaultChart" class="text-center" style="display:none;" >
-													
-													</div>
-												</div> 
+													<div id="defaultChart" class="text-center"
+														style="display: none;"></div>
+												</div>
 											</div>
 										</div>
 										<div class="col-5">
-											<div class="card" style="display:none;"> 
-												<div class="card-body"> 
+											<div class="card" >
+												<div class="card-body">
 													<canvas id="chartAge">
 													</canvas>
-												</div> 
+													<div id="defaultAgeChart" class="text-center"
+														style="display: none;"></div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -809,7 +805,17 @@ function selectOrder(option) {
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
+	console.log("input필드값이 바뀌었습니다.");
+	var $changed = $("#search-form input[name=changed]");
+	console.log($changed);
+	console.log("변경전"+$changed.val());
+	$changed.val("Y");
+	console.log("변경후"+$changed.val());
+	
+	console.log($("#listOrder").val());
+	
 	// 이후 form submit 출력
+	$("#search-form").submit();
 }
 
 $("#performanceStartDay").change(function() {
@@ -894,6 +900,11 @@ function showDetail(performanceId) {
 			
 			var manReserveCount = data.manReserveCount;
 			var womanReserveCount = data.womanReserveCount;
+			var age10ReserveStats = data.age10ReserveStats;
+			var age20ReserveStats = data.age20ReserveStats;
+			var age30ReserveStats = data.age30ReserveStats;
+			var age40ReserveStats = data.age40ReserveStats;
+			var age50ReserveStats = data.age50ReserveStats;
 			
 			console.log("manReserveCount: "+ manReserveCount);
 			console.log("womanReserveCount: "+ womanReserveCount);
@@ -985,7 +996,7 @@ function showDetail(performanceId) {
 			kakaoMap(id, hallInfo);
 			
 			
-			// 통계 그래프 그리기
+// 통계 그래프 그리기
 			
 			// 성별 그래프
 			var genderColors=['skyblue', '#e23b3b'];
@@ -1038,6 +1049,70 @@ function showDetail(performanceId) {
 			
 			} // 데이터 값이 있을 때 그래프 그리기 
 			
+			// 나이대별 관람추이
+			var $chBar = $("#chartAge");
+			//var ageCanvas=  document.getElementById('chartAge');
+			//var context = ageCanvas.getContext('2d');			
+			var $defaultAgeChart = $("#defaultAgeChart");
+			//context.clearRect(0, 0, ageCanvas.width, ageCanvas.height);
+			$("#chartAge").empty();
+			
+			if ((age10ReserveStats == 0) && (age20ReserveStats == 0) && 
+					(age30ReserveStats == 0) && (age40ReserveStats == 0) &&
+					(age50ReserveStats == 0)) {
+				console.log("아직 아무도 구매를 하지 않음");
+				
+				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
+				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 연령대별 예매정보가 없습니다.</p>";
+				
+				$defaultAgeChart.html(defaultImage);
+				$defaultAgeChart.show();
+				$chBar.hide();
+			} else {
+				$defaultAgeChart.hide();
+				$chBar.show();
+				
+				if ($chBar) {
+					new Chart($chBar, {
+						type: 'bar',
+						data: {
+							labels: ['10대↓', '20대', '30대', '40대', '50대↑'],
+							datasets: [{
+								label: '# of ReserveCount',
+								data: [age10ReserveStats, age20ReserveStats,
+									age30ReserveStats, age40ReserveStats, age50ReserveStats],	// 퍼센트 구해서 넣기
+								backgroundColor: [
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(54, 162, 235, 0.2)'
+								],
+								borderColor: [
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)',
+									'rgba(54, 162, 235, 1)'
+								],
+								borderWidth: 1
+							}]
+						},
+						options: {
+							scales: {
+								yAxes: [{
+									ticks: {
+										beginAtZero: true
+									}
+								}]
+							}
+						}
+						
+					})		
+				}// bar 끝
+				
+				
+			} // 연령대별 예매정보가 있다면 끝
 			
 		} // success 끝
 	})
@@ -1046,46 +1121,7 @@ function showDetail(performanceId) {
 	
 	
 	
-	// 나이대별 관람추이
-	var $chBar = $("#chartAge");
 	
-	if ($chBar) {
-		new Chart($chBar, {
-			type: 'bar',
-			data: {
-				labels: ['10대', '20대', '30대', '40대', '50대↑'],
-				datasets: [{
-					label: '# of Numbers',
-					data: [12,34,47,16,12],	// 퍼센트 구해서 넣기
-					backgroundColor: [
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)',
-						'rgba(54, 162, 235, 0.2)'
-					],
-					borderColor: [
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(54, 162, 235, 1)'
-					],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero: true
-						}
-					}]
-				}
-			}
-			
-		})		
-	}
 	
 	
 	

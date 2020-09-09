@@ -29,6 +29,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sample.dao.PerformanceDao;
+import com.sample.dto.PerformanceAgeReserveStats;
 import com.sample.dto.PerformanceDetailDto;
 import com.sample.dto.PerformanceGenderReserveStats;
 import com.sample.service.HallService;
@@ -73,9 +74,14 @@ public class PerformanceContoller {
 	}
 	
 	@GetMapping("/update/cancel.do")
-	public String cancelUpdate(SessionStatus sessionStatus) {
+	public String cancelUpdate(SessionStatus sessionStatus, @RequestParam("category") String category,
+			Model model) {
 		sessionStatus.setComplete();
-		return "redirect:/home.do";	// 나중엔 performance/list.do?category='category'로 변경
+		System.out.println("update의 cancel category "+ category);
+		
+		model.addAttribute("category", category);		
+		return "redirect:/performance/adminList.do";	// 나중엔 performance/list.do?category='category'로 변경
+		
 	}
 	
 	
@@ -623,8 +629,9 @@ public class PerformanceContoller {
 	@GetMapping("/add/cancel.do")
 	public String cancel(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
-		return "redirect:/home.do";	// 나중엔 performance/list.do?category='category'로 변경
+		return "redirect:/admin/home.do";	// 나중엔 performance/list.do?category='category'로 변경
 	}
+
 	
 	@GetMapping("/totalList.do")
 	public String totalList(Model model
@@ -644,6 +651,13 @@ public class PerformanceContoller {
 			pagingmap.put("title", title);
 			pagingmap.put("pageNo", pageNo);
 			pagingmap.put("rows", rows);	
+			
+			// 정렬 정리 
+			if (!listOrder.isEmpty()) {
+				pagingmap.put("listOrder", listOrder);
+			} else {
+				pagingmap.put("listOrder", "dateOrder");
+			}
 			
 			System.out.println("pagingmap: "+pagingmap);
 			
@@ -740,6 +754,16 @@ public class PerformanceContoller {
 			pagingmap.put("age", age);
 			//performanceForm.setAge(age);
 		}
+		// 정렬 정리 
+		if (!listOrder.isEmpty()) {
+			pagingmap.put("listOrder", listOrder);
+		} else {
+			pagingmap.put("listOrder", "dateOrder");
+		}
+				
+		// 관리자용		
+		String admin = "admin";
+		pagingmap.put("admin", admin);
 		
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
@@ -747,6 +771,13 @@ public class PerformanceContoller {
 		System.out.println(map);		
 		System.out.println("pagingmap: "+ pagingmap);		
 		List<PerformanceDetailDto> performances = performanceService.searchPerformances(map);
+		
+		// 테스트
+		System.out.println("performances 페이징 안한 전부");
+		for(PerformanceDetailDto p : performances) {
+			System.out.println("title:" +p.getTitle());
+		}
+		System.out.println("전부 끝");
 		
 		// 페이징 처리된 map을 조회한다.(검색조건에 해당하고, 특정 페이지 범위내의 자료를 가져온다.
 		Map<String, Object> resultMap = performanceService.getPerformanceForPaging(pagingmap);
@@ -877,7 +908,12 @@ public class PerformanceContoller {
 		}
 		
 		// 정렬 정리 
-		
+		if (!listOrder.isEmpty()) {
+			pagingmap.put("listOrder", listOrder);
+		} else {
+			pagingmap.put("listOrder", "dateOrder");
+		}
+						
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
 		
@@ -912,8 +948,17 @@ public class PerformanceContoller {
 		
 		//슬라이드용 performanceList 가져오기
 		List<PerformanceDetailDto> slidePerformances = performanceService.getPerformancesByCategory(category);
+		List<PerformanceDetailDto> sliedPerformanceTop3 = new ArrayList<>();
+		if(slidePerformances.size() > 2) {
+			for(int i = 0; i < 3; i++) {
+				sliedPerformanceTop3.add(slidePerformances.get(i));
+			}
+		} else {
+			sliedPerformanceTop3.addAll(slidePerformances);
+		}
 		
-		model.addAttribute("slidePerformances", slidePerformances);
+		
+		model.addAttribute("slidePerformances", sliedPerformanceTop3);
 		model.addAttribute("category", category);
 		model.addAttribute("genres", genres );
 		// 페이징 처리가 안된 것
@@ -947,16 +992,54 @@ public class PerformanceContoller {
 		PerformanceGenderReserveStats manReserveStats = new PerformanceGenderReserveStats();
 		PerformanceGenderReserveStats womanReserveStats = new PerformanceGenderReserveStats();
 		
+		PerformanceAgeReserveStats age10ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age20ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age30ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age40ReserveStats = new PerformanceAgeReserveStats();
+		PerformanceAgeReserveStats age50ReserveStats = new PerformanceAgeReserveStats();
+		
+		// 남자 공연예매수
 		manReserveStats.setPerformanceInfoId(performanceId);
 		manReserveStats.setGender("M");
 		manReserveStats.setReserveCount(performanceService.getGenderReserveCountByPerformanceInfoIdAndGender(manReserveStats));
 		
+		// 여자 공연예매수
 		womanReserveStats.setPerformanceInfoId(performanceId);
 		womanReserveStats.setGender("W");
 		womanReserveStats.setReserveCount(performanceService.getGenderReserveCountByPerformanceInfoIdAndGender(womanReserveStats));
-			
+		
+		// 10대이하 공연예매수
+		age10ReserveStats.setPerformanceInfoId(performanceId);
+		age10ReserveStats.setAgeGroup(10);
+		age10ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age10ReserveStats));
+		
+		// 20대 공연예매수
+		age20ReserveStats.setPerformanceInfoId(performanceId);
+		age20ReserveStats.setAgeGroup(20);
+		age20ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age20ReserveStats));
+		
+		// 30대 공연예매수
+		age30ReserveStats.setPerformanceInfoId(performanceId);
+		age30ReserveStats.setAgeGroup(30);
+		age30ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age30ReserveStats));
+		
+		// 40대 공연예매수
+		age40ReserveStats.setPerformanceInfoId(performanceId);
+		age40ReserveStats.setAgeGroup(40);
+		age40ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age40ReserveStats));
+		
+		// 50대 이상 공연예매수
+		age50ReserveStats.setPerformanceInfoId(performanceId);
+		age50ReserveStats.setAgeGroup(50);
+		age50ReserveStats.setReserveCount(performanceService.getAgeGroupReserveCountByPerformanceInfoIdAndAge(age50ReserveStats));
+		
 		System.out.println("남자 공연예매수: "+manReserveStats.getReserveCount());
 		System.out.println("여자 공연예매수: "+womanReserveStats.getReserveCount());
+		System.out.println("10대 공연예매수: "+age10ReserveStats.getReserveCount());
+		System.out.println("20대 공연예매수: "+age20ReserveStats.getReserveCount());
+		System.out.println("30대 공연예매수: "+age30ReserveStats.getReserveCount());
+		System.out.println("40대 공연예매수: "+age40ReserveStats.getReserveCount());
+		System.out.println("50대 공연예매수: "+age50ReserveStats.getReserveCount());
 		
 		if ("".equals(userId)) {
 			System.out.println("로그인되지 않았습니다.");
@@ -980,7 +1063,11 @@ public class PerformanceContoller {
 		map.put("userLiked", userLiked);
 		map.put("manReserveCount", manReserveStats.getReserveCount());
 		map.put("womanReserveCount", womanReserveStats.getReserveCount());
-		
+		map.put("age10ReserveStats", age10ReserveStats.getReserveCount());
+		map.put("age20ReserveStats", age20ReserveStats.getReserveCount());
+		map.put("age30ReserveStats", age30ReserveStats.getReserveCount());
+		map.put("age40ReserveStats", age40ReserveStats.getReserveCount());
+		map.put("age50ReserveStats", age50ReserveStats.getReserveCount());
 		
 		return map;
 	}
@@ -1020,7 +1107,13 @@ public class PerformanceContoller {
 		userLikes.setId(userId);
 		userLikes.setPerformanceInfoId(performanceId);
 		
+		PerformanceDetailDto performanceOrigin = performanceService.getPerformanceDetailById(performanceId);
+		Performance newPerformance = new Performance();
+		newPerformance.setId(performanceOrigin.getId());
+		newPerformance.setLikes(performanceOrigin.getLikes()+1);
+		
 		performanceService.insertPerformanceLikes(userLikes);
+		performanceService.updatePerformanceLikes(newPerformance);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("successYn", "Y");
@@ -1035,7 +1128,13 @@ public class PerformanceContoller {
 		userLikes.setId(userId);
 		userLikes.setPerformanceInfoId(performanceId);
 		
+		PerformanceDetailDto performanceOrigin = performanceService.getPerformanceDetailById(performanceId);
+		Performance newPerformance = new Performance();
+		newPerformance.setId(performanceOrigin.getId());
+		newPerformance.setLikes(performanceOrigin.getLikes()-1);
+		
 		performanceService.deletePerformanceLikes(userLikes);
+		performanceService.updatePerformanceLikes(newPerformance);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("successYn", "Y");

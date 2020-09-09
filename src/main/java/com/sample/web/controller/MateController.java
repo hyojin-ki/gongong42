@@ -28,6 +28,7 @@ import com.sample.service.MateManagerService;
 import com.sample.service.MateService;
 import com.sample.service.PerformanceService;
 import com.sample.service.ReserveService;
+import com.sample.service.UserService;
 import com.sample.web.form.MateSearchForm;
 import com.sample.web.security.Auth;
 import com.sample.web.view.Mate;
@@ -51,6 +52,8 @@ public class MateController {
 	private MateManagerService mateManagerService;
 	@Autowired
 	private HallService hallService;
+	@Autowired
+	private UserService userService;
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler(RuntimeException.class)
 	public String runtimeExceptionHandler(RuntimeException e) {
@@ -244,10 +247,10 @@ public class MateController {
 		MateDetailDto detail = mateService.getMateRoomDetail(mateId, performanceId);
 		//로그인한 유저정보를 가져온다.
 		User user = (User) session.getAttribute("LOGIN_USER");
-		String userId = null;
+		String userNickName = null;
 		if(user != null) {
-			userId = user.getId();
-			detail.setSessionUserId(userId);
+			userNickName = user.getNickname();
+			detail.setSessionUserId(userNickName);
 		}
 		
 		return detail;
@@ -361,5 +364,27 @@ public class MateController {
 		return map;
 	}
 	
+	@RequestMapping("/mateOut.do")
+	@ResponseBody
+	public void mateOut(@RequestParam("performanceMainId") int performanceId,
+							@RequestParam("mateId") int mateId,
+								@RequestParam("userId") String userId) {
+		
+		System.out.println("performanceId : " + performanceId);
+		System.out.println("mateId : " + mateId);
+		System.out.println("userId : " + userId);
+		
+		//해당 유저가 mate_memebers 인지 검사한다.
+		boolean existUser = mateService.getMateUserByMateIdAndUserId(userId, mateId);
+		if(!existUser) {
+			new RuntimeException("허용되지 않은 유저 입니다.");
+		}
+
+		User savedUser = userService.getUserDetail(userId);
+		if(savedUser == null) {
+			new RuntimeException("존재하지 않은 유저입니다.");
+		}
+		mateService.deleteMate(performanceId, mateId, userId);
+	}
 	
 }
