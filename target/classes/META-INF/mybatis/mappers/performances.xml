@@ -68,7 +68,7 @@
 		<if test="endDate != null">
 			and #{endDate} > A.endDate
 		</if>
-			and endDate >= NOW()		
+			and endDate >= CURDATE()		
 		<if test="age != null">
 			and A.rating = #{age}
 		</if>
@@ -135,7 +135,7 @@
 		<if test="endDate != null">
 			and #{endDate} > A.endDate
 		</if>			
-			and A.endDate >= NOW()
+			and A.endDate >= CURDATE()
 		<if test="age != null">
 			and A.rating = #{age}
 		</if>
@@ -208,7 +208,7 @@
 			<if test="endDate != null">
 				and #{endDate} > A.endDate
 			</if>		
-				and A.endDate >= NOW()	
+				and A.endDate >= CURDATE()	
 			<if test="age != null">
 				and A.rating = #{age}
 			</if>
@@ -245,7 +245,7 @@
 		WHERE 
 			A.title like CONCAT('%', #{title}, '%') 
 		AND
-			endDate >= NOW()
+			endDate >= CURDATE()
 		ORDER BY 
 			<choose>
 				<when test="listOrder == 'dateOrder'">
@@ -297,7 +297,7 @@
 			WHERE 
 				A.title like CONCAT('%', #{title}, '%') 
 			AND
-				endDate >= NOW()
+				endDate >= CURDATE()
 			ORDER BY 
 				A.startDate	
 		) F
@@ -464,7 +464,7 @@
 		WHERE 
 			A.category=	#{value}
 		AND 
-			A.endDate >= NOW()
+			A.endDate >= CURDATE()
 		ORDER BY 
 			A.startDate		
 	</select>
@@ -914,7 +914,7 @@
 		JOIN 
 			mate_main E ON E.performanceId = B.id
 		WHERE A.category = #{value}
-		AND A.endDate >= NOW()
+		AND A.endDate >= CURDATE()
 		GROUP BY B.infoId
 		ORDER BY B.registeredDate DESC 
 		LIMIT 3
