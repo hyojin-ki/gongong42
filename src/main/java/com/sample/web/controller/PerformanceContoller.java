@@ -772,6 +772,13 @@ public class PerformanceContoller {
 		System.out.println("pagingmap: "+ pagingmap);		
 		List<PerformanceDetailDto> performances = performanceService.searchPerformances(map);
 		
+		// 테스트
+		System.out.println("performances 페이징 안한 전부");
+		for(PerformanceDetailDto p : performances) {
+			System.out.println("title:" +p.getTitle());
+		}
+		System.out.println("전부 끝");
+		
 		// 페이징 처리된 map을 조회한다.(검색조건에 해당하고, 특정 페이지 범위내의 자료를 가져온다.
 		Map<String, Object> resultMap = performanceService.getPerformanceForPaging(pagingmap);
 		

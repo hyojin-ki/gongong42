@@ -1,8 +1,5 @@
 $(document).ready(()=>{
-    $("#mypagemenu li").click(function(){
-        const req = $(this).data('href')
-        $(location).attr('href', req)
-    })
+	activateMenu()
 
     $(document).on('click', '.reserve-list', function (event) {
         const reserveId = $(this).data('reserveId')
@@ -13,3 +10,10 @@ $(document).ready(()=>{
 
     })
 })
+
+const activateMenu = ()=>{
+    $("#mypagemenu li").click(function(){
+        const req = $(this).data('href')
+        $(location).attr('href', req)
+    })
+}

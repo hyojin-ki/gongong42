@@ -171,7 +171,8 @@
 											 	<c:set var="path" value="/resources/sample-images/${musical.imagePath }"/>
 											 </c:otherwise>
 										 </c:choose>
-										 	<a href="/performance/totalList.do?title=${musical.title }">
+										
+										 	<a href="/performance/totalList.do?title=<c:out value="${musical.title }"/> ">
 												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
 										 	</a>
 										</div>
