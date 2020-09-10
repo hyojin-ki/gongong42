@@ -283,6 +283,11 @@ $("#goNextStep").click(function() {
 		return false;
 	} 
 	
+	if ($("#addForm input[name=genre]:checked").length > 5) {
+		alert("최대 5개의 장르만 선택가능합니다.");
+		return false;
+	} 
+	
 	if ($("#addForm input[name=provider]").val() == 0) {
 		alert("주최자(기관/단체)를 입력해주세요.")
 		return false;
