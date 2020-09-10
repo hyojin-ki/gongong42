@@ -96,7 +96,7 @@
 									varStatus="status">
 									<c:set var="index" value="0" />
 									<div
-										class="carousel-item ${status.index == index ? 'active' : '' } bg-dark mb-5 pb-4 pt-4">
+										class="carousel-item ${status.index == index ? 'active' : '' } bg-dark mb-5 pb-1 pt-4">
 										<div class="row"
 											style="width: 70%; height: 530px; float: none; margin: 0 auto;">
 											<div class="col-12">
@@ -108,15 +108,16 @@
 																value="${status.end }"></c:out>
 														</div>
 														<hr style="background-color: #fff;" />
-														<div class="text-white font-weight-bold"
-															style="font-size: 4rem;">${performance.title }</div>
-														<div class="text-white" style="font-size: 2rem;">
+														<div class="text-white font-weight-bold slide-title-summary"
+															style="font-size: 3rem;"><c:out value="${performance.title }"></c:out>
+															</div>
+														<div class="text-white mt-2" style="font-size: 1.8rem;">
 															<span> <fmt:formatDate
-																	value="${performance.startDate }" pattern="yyyy년 M월 d일" />
+																	value="${performance.startDate }" pattern="yyyy년 M월 d일" /> <br />
 																~ <fmt:formatDate value="${performance.endDate }"
 																	pattern="yyyy년 M월 d일" />
 															</span>
-															<div>${performance.hallName }</div>
+															<div class="mt-4 slide-hallname-summary" style="font-size: 1.5rem;">${performance.hallName }</div>
 														</div>
 													</div>
 													<div class="col-4">
@@ -138,6 +139,9 @@
 																	<img class="card-img-top img-thumbnail" src="${path }"
 																		alt="" onclick="showDetail(${performance.id})"
 																		style="cursor: pointer; width: 438px; height: 463px;" />
+																	
+																	<!-- 슬라이드 태그 창		-->
+																	<!--  																  
 																	<div class="row">
 																		<div class="col-9  mt-2">
 																			<c:forEach var="genre" items="${performance.genres }">
@@ -147,6 +151,8 @@
 																			</c:forEach>
 																		</div>
 																	</div>
+																	-->
+																	<!-- 슬라이드 태그창 끝 -->
 																</div>
 
 															</div>
@@ -155,10 +161,13 @@
 													</div>
 													<div class="col-4 text-center ele-opacity"
 														style="margin: auto 0;">
-
+														<!--  
 														<div class="text-white font-weight-bold"
-															style="font-size: 3rem;">개봉임박!</div>
+															style="font-size: 2rem;">개봉임박!</div>
+															-->
+														<!--  
 														<hr style="background-color: #fff;" />
+														-->
 														<div class="text-white font-weight-bolder"
 															style="font-size: 2rem;">
 															<c:choose>
@@ -177,10 +186,12 @@
 															</c:choose>
 
 														</div>
-														<div class="text-white" style="font-size: 2rem;">
+														<hr style="background-color: #fff;" />
+														<div class="text-white mt-2" style="font-size: 2rem;">
 															<div>좋아요수: ${performance.likes }</div>
 															<div>예매횟수: ${performance.reserveCount }</div>
 														</div>
+														  
 														<div class="text-white mt-3" style="font-size: 1.5rem;">
 															<c:forEach var="seat" items="${performance.seatPrices }">
 																<div>
@@ -190,7 +201,18 @@
 																</div>
 															</c:forEach>
 														</div>
-														<div class="mt-5">
+														
+														<div class="text-white mt-3" style="font-size: 1.5rem;">
+															<c:forEach var="genre" items="${performance.genres }">
+																<a class="btn btn-link text-white"
+																	href="/performance/list.do?category=${performance.category }&genre=${genre }"
+																	style="font-size: 1.2rem;">
+																	#${genre } </a>
+																
+															</c:forEach>
+														</div>
+																												
+														<div class="mt-3">
 
 															<button type="button" class="btn btn-info btn-lg mr-3"
 																onclick="showDetail(${performance.id})">상세보기</button>
@@ -833,6 +855,39 @@ $(function(){
 	if ($checkedAge.val() != 0) {
 		$("#ageAll").prop("checked", false);
 		$("#ageAll").closest('label').removeClass("btn-outline-danger").addClass("btn-outline-danger");
+	}
+	
+	console.log("list.jsp입니다.");
+	
+	//var slide1=  $(".slide-title-summary:eq(0)").html();
+	//console.log(slide1+ slide1.length);
+	//var slide1 = $.trim(slide1);
+	//console.log("trim후: "+ slide1+ slide1.length)
+	//if (slide1.length > 10) {
+	//	slide1+="...";
+	//	console.log(slide1);
+	//}
+	
+	var slides = $(".slide-title-summary");
+	for (var i = 0; i<slides.length; i++) {
+		var slide = $(".slide-title-summary:eq("+i+")");
+		console.log(slide.html());
+		
+		var slideText = $.trim(slide.html());
+		if (slideText.length > 18) {
+			slideText = slideText.substring(0,18)+"...";			
+		}
+		
+		slide.html(slideText);
+		
+		// 공연장소
+		//var hallName=$(".slide-hallname-summary:eq("+i+")");
+		//var hallNameText= hallName.html();
+		//if (hallNameText.length > 12) {
+		//	hallNameText = hallNameText.substring(0,12)+"...";
+		//}
+		
+		//hallName.html(hallNameText);
 	}
 	
 	
