@@ -312,20 +312,18 @@
 											<!-- 공연정보 표시끝 -->
 										</div>
 									</div>
-									<div class="row mt-2 p-2 "> <!-- 좋아요수, 뒷풀이 게시판수, 예매하기, 상세보기 버튼그룹 -->
+									<div class="row mt-2 p-2 "> <!-- 좋아요수, 예매횟수, 예매하기, 상세보기 버튼그룹 -->
 										<div class="col-12 d-flex justify-content-between">
 											<div>
-												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
+												<!-- 좋아요 수 표시 -->
 												<div class="d-inline mr-2">
 													<i class='fas fa-heart mr-2'
 														style='font-size: 24px; color: red;'></i><label id="${performance.id }likes">${performance.likes }</label>
 												</div>
-												<!-- 뒷풀이게시판 -->
-												<!--  
-												<div class="d-inline" style="display:none;">
-													<i class='far fa-comment-alt mr-2' style='font-size: 24px'></i><label></label>
+												<!-- 예매횟수 -->													  
+												<div class="d-inline" >
+													<i class='fas fa-cart-arrow-down mr-2' style='font-size: 24px'></i><label>${performance.reserveCount }</label>
 												</div>
-												-->
 											</div>
 											<div>
 												<!--  
@@ -341,23 +339,7 @@
 											</div>
 										</div>
 									</div>	<!-- 예매하기 상세보기 버튼그룹 끝 -->
-									<!-- 사용자가 보는 창에선 수정하기와 삭제하기가 보이지 않도록 한다 -->
-									<!--  
-									<div class="row mt-2 p-2">
-										<div class="col-12 d-flex justify-content-end">
-											<button type="button" class="btn btn btn-info mr-2"
-													onclick="updatePerformance(${performance.id})">수정하기</button>
-											<button type="button" class="btn btn btn-danger "
-													onclick="deletePerformance(${performance.id})">삭제하기</button>
-										</div>
-									</div>
-									-->
-									<!--  
-									<div class="row">
-										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
-											href="#">#액션</a><a href="#">#스릴러</a></label>
-									</div>
-									-->
+									
 									<!-- 태그 창 끝 -->
 								</div>
 								<!-- card body 끝 -->
@@ -494,14 +476,11 @@
 													</button>
 													<label id="modalLikes"></label>
 												</div>
-												<!--  
+												<!-- 예매수 표시 -->
 												<div class="d-inline" style="display:none;">
-													<button type="button" class="btn btn-sm" id="goBoard">													
-														<i class='far fa-comment-alt mr-2' style='font-size: 24px'></i>
-													</button>
-													<label id="modalAfterParty"></label>
+													<i class='fas fa-cart-arrow-down mr-2' style='font-size: 24px'></i>													
+													<label id="modalReserveCount"></label>
 												</div>
-												-->
 											</div>
 											
 										</div>
@@ -681,14 +660,14 @@
 <script type="text/javascript">
 $(function(){
 	
-	console.log("시작");
+	//console.log("시작");
 	
 	var $checkedAge = $("input[name='age']:checked");
-	console.log($checkedAge);
+	//console.log($checkedAge);
+	
 	$($checkedAge).closest('label').siblings().find('input').prop("checked", false);
 	$($checkedAge).closest('label').removeClass("btn-danger").addClass("btn-outline-danger");
-	//$(this).siblings().find('input').prop("checked", false);
-	
+		
 	if ($checkedAge.val() != 0) {
 		$("#ageAll").prop("checked", false);
 		$("#ageAll").closest('label').removeClass("btn-outline-danger").addClass("btn-outline-danger");
@@ -698,7 +677,7 @@ $(function(){
 });
 
 function updatePerformance(no) {
-	console.log("updatePerformance(no="+no+")");
+	//console.log("updatePerformance(no="+no+")");
 	
 	var category = '${category}';
 	location.href='/performance/update/main.do?category='+category+'&performanceId='+no;
@@ -706,7 +685,7 @@ function updatePerformance(no) {
 }
 
 function deletePerformance(no) {
-	console.log("deletePerformance(no="+no+")");
+	//console.log("deletePerformance(no="+no+")");
 	
 	var category = '${category}';
 	
@@ -717,50 +696,45 @@ function deletePerformance(no) {
 
 
 $("#search-form").find("input").change(function() {
-	console.log("input필드값이 바뀌었습니다.");
+	//console.log("input필드값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	console.log($changed);
-	console.log("변경전"+$changed.val());
+	//console.log($changed);
+	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	console.log("변경후"+$changed.val());
-	//$($changed).val("Y");
-	//console.log("변경후 formChanged값: "+$($changed).val());
+	//console.log("변경후"+$changed.val());
+	
 });
 
 $(":input[name=genre]").closest('label').click(function(event) {
-	console.log("input필드 중 체크박스값이 바뀌었습니다.");
+	//console.log("input필드 중 체크박스값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	console.log($changed);
-	console.log("변경전"+$changed.val());
+	//console.log($changed);
+	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	console.log("변경후"+$changed.val());
-	//console.log("변경전 formChanged값: "+$($changed).val());
-	//$($changed).val("Y");
-	//console.log("변경후 formChanged값: "+$($changed).val());
+	//console.log("변경후"+$changed.val());
+	
 });
 
 $(":input[name=age]").closest('label').click(function(event) {
-	console.log("input필드 중 라디오값이 바뀌었습니다.");
+	//console.log("input필드 중 라디오값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	console.log($changed);
-	console.log("변경전"+$changed.val());
+	//console.log($changed);
+	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	console.log("변경후"+$changed.val());
-	//console.log("변경전 formChanged값: "+$($changed).val());
-	//$($changed).val("Y");
-	//console.log("변경후 formChanged값: "+$($changed).val());
+	//console.log("변경후"+$changed.val());
+	
 });
 
 
 
 function goPage(no) {
-	console.log("page 링크를 눌렀다.");
-	console.log("page: "+no);
+	//console.log("page 링크를 눌렀다.");
+	//console.log("page: "+no);
 	if ($("#pageNo").val() == "") {
-		console.log("비었ㄷ.");
+	//	console.log("비었ㄷ.");
 	}else{
 		
-		console.log("pageNo="+$("#pageNo").val());
+		//console.log("pageNo="+$("#pageNo").val());
 	}
 	
 	$("#pageNo").val(no);
@@ -768,22 +742,22 @@ function goPage(no) {
 }
 
 function searchGenre(genre) {
-	console.log("clickTag: "+genre);
+	//console.log("clickTag: "+genre);
 	
 	var checked = $("#search-form input[name=genre]:checked");
 	
-	console.log(checked);
+	//console.log(checked);
 	
 	var genreVals = $("#search-form input[name=genre]");
-	console.log(genreVals);
+	//console.log(genreVals);
 	
 	for (var idx = 0; idx < genreVals.length; idx++ ) {
 		
 		var genreBtn = genreVals[idx];
-		console.log($(genreBtn).val());
+		//console.log($(genreBtn).val());
 		
 		if ($(genreBtn).val() == genre) {
-			console.log($(genreBtn).val()+"가 누른 태그임");
+			//console.log($(genreBtn).val()+"가 누른 태그임");
 			$(genreBtn).prop("checked", true);			
 		}else {
 			$(genreBtn).prop("checked", false);	
@@ -805,14 +779,14 @@ function selectOrder(option) {
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
-	console.log("input필드값이 바뀌었습니다.");
+	//console.log("input필드값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	console.log($changed);
-	console.log("변경전"+$changed.val());
+	//console.log($changed);
+	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	console.log("변경후"+$changed.val());
+	//console.log("변경후"+$changed.val());
 	
-	console.log($("#listOrder").val());
+	//console.log($("#listOrder").val());
 	
 	// 이후 form submit 출력
 	$("#search-form").submit();
@@ -833,8 +807,8 @@ $("#performanceStartDay").change(function() {
 })
 
 $("#performanceEndDay").change(function() {
-	console.log(this);
-	console.log($(this).val());
+	//console.log(this);
+	//console.log($(this).val());
 	var now = new Date().toISOString().substring(0, 10);	
 	
 	var $startDay = $("#performanceStartDay");
@@ -852,26 +826,26 @@ $("#performanceEndDay").change(function() {
 })
 
 function buyTicket(no) {
-	console.log("buyTicket(no="+no+")");
+	//console.log("buyTicket(no="+no+")");
 	
 	location.href='/payment/step1.do?no='+no;
 }
 
 $("#modalBuyBtn").click(function() {
 	var no = $("#modalBuyBtn").data("no");
-	console.log("modalBuyBtn(no="+no+")");
+	//console.log("modalBuyBtn(no="+no+")");
 	buyTicket(no);
 })
 
 $("#modalUpdateBtn").click(function() {
 	var no = $("#modalUpdateBtn").data("no");
-	console.log("#modalUpdateBtn(no="+no+")");
+	//console.log("#modalUpdateBtn(no="+no+")");
 	updatePerformance(no);
 })
 
 $("#modalDeleteBtn").click(function() {
 	var no = $("#modalDeleteBtn").data("no");
-	console.log("#modalDeleteBtn"+no+")");
+	//console.log("#modalDeleteBtn"+no+")");
 	deletePerformance(no);
 })
 
@@ -909,10 +883,10 @@ function showDetail(performanceId) {
 			console.log("manReserveCount: "+ manReserveCount);
 			console.log("womanReserveCount: "+ womanReserveCount);
 			
-			console.log("디테일을 눌렀다.");
+			//console.log("디테일을 눌렀다.");
 			
 			var modalImagePath = performance.imagePath;
-			console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
+			//console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
 			if (modalImagePath.substring(0,4) != 'http') {
 				modalImagePath="/resources/sample-images/"+performance.imagePath;
 			}
@@ -933,7 +907,7 @@ function showDetail(performanceId) {
 			
 			$("#modalGenre").text(performanceGenres);	
 			
-			console.log(performance.runningTime);
+			//console.log(performance.runningTime);
 			$("#modalRunningTime").text(performance.runningTime);
 			
 			var period = performance.startDate + " ~ " +  performance.endDate;		
@@ -947,7 +921,7 @@ function showDetail(performanceId) {
 				+ numberWithComma(performance.seatPrices[idx].price) + "원 ";
 			}
 			
-			console.log(seatPrices);
+			//console.log(seatPrices);
 			
 			$("#modalSeatInfo").text(seatPrices);
 			
@@ -959,13 +933,13 @@ function showDetail(performanceId) {
 			$("#modalTags").text(tags).css("color", "#06F");
 			
 			$("#modalLikes").text(performance.likes);
-			$("#modalAfterParty").text();
+			$("#modalReserveCount").text(performance.reserveCount);
 			
 			$("#modalDetailtitle").text(performance.title);
 			$("#modalDetailHallName p:eq(0)").text(performance.hallName);
 			$("#modalDetailHallName p:eq(1)").text("("+performance.hallAddress+")");
 			$("#modalDetailPeriod").text(period);
-			//$("#modalDetailTime").text(performance.expla);
+			
 			$("#modalDetailRunningTime").text(performance.runningTime);
 			$("#modalDetailSeatInfo").text(seatPrices);
 			
@@ -980,7 +954,7 @@ function showDetail(performanceId) {
 			
 			
 			$("#modalBuyBtn").data("no", performance.id);
-			$("#showMateGroupBtn").data("no", performance.id);
+			//$("#showMateGroupBtn").data("no", performance.id);
 			$("#modalDeleteBtn").data("no", performance.id);
 			$("#modalUpdateBtn").data("no", performance.id);
 			$("#clickLike").data("no", performance.id);
@@ -989,8 +963,8 @@ function showDetail(performanceId) {
 			
 			
 			
-			console.log("성공함");
-			console.log(performance);
+			//console.log("성공함");
+			//console.log(performance);
 			
 			var id = document.getElementById('map');
 			kakaoMap(id, hallInfo);
@@ -1132,10 +1106,7 @@ function showDetail(performanceId) {
 	
 };
 
-function showMateGroup(no) {
-	console.log(no);
-	
-};
+
 
 $("#clickLike").click(function(){
 	//console.log(this);
@@ -1148,21 +1119,18 @@ $("#clickLike").click(function(){
 	
 })
 
-$("#goBoard").click(function() {
-	// board로 보냄
-})
 
 
 $(function() {
 	$(":input[name=genre]").closest('label').click(function(event) {
 		event.preventDefault();
-		console.log("before", ($(this).find('input').prop("checked")));
+		//console.log("before", ($(this).find('input').prop("checked")));
 
 		$(this).find('input').prop("checked", !($(this).find('input').prop("checked")))
 		
-		console.log("after", ($(this).find('input').prop("checked")));
+		//console.log("after", ($(this).find('input').prop("checked")));
 		
-		console.log($(this).find('input').val());
+		//console.log($(this).find('input').val());
 		
 		
 		
@@ -1178,14 +1146,14 @@ $(function() {
 				$(this).siblings().removeClass("btn-danger").addClass("btn-outline-danger");				
 			}else {	// 전체 말고 다른 버튼 눌렀을 때 전체 버튼이 이미 눌러져 있는경우 전체버튼 체크해제됨
 				if ($("#genreAll").prop("checked")) {
-					console.log("다른 장르버튼 눌렀을때 전체버튼이 체크되어있는가");
+					//console.log("다른 장르버튼 눌렀을때 전체버튼이 체크되어있는가");
 					$("#genreAll").closest('label').removeClass("btn-danger").addClass("btn-outline-danger");	
 					$("#genreAll").prop("checked", false);
 				}	
 			
 			}			
 			
-			console.log("체크되었음");
+			//console.log("체크되었음");
 		} else {
 			$(this).removeClass("btn-danger").addClass("btn-outline-danger");
 		}

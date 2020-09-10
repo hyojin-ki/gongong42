@@ -209,20 +209,18 @@
 											<!-- 공연정보 표시끝 -->
 										</div>
 									</div>
-									<div class="row mt-2 p-2 "> <!-- 좋아요수, 뒷풀이 게시판수, 예매하기, 상세보기 버튼그룹 -->
+									<div class="row mt-2 p-2 "> <!-- 좋아요수, 예매횟수, 예매하기, 상세보기 버튼그룹 -->
 										<div class="col-12 d-flex justify-content-between">
 											<div>
-												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
+												<!-- 좋아요수, 예매횟수 표시 -->
 												<div class="d-inline mr-2">
 													<i class='fas fa-heart mr-2'
 														style='font-size: 24px; color: red;'></i><label id="${performance.id }likes">${performance.likes }</label>
 												</div>
-												<!-- 뒷풀이게시판 -->
-												<!--  
-												<div class="d-inline" style="display:none;">
-													<i class='far fa-comment-alt mr-2' style='font-size: 24px'></i><label></label>
+												<!-- 예매횟수 -->
+												<div class="d-inline" >
+													<i class='fas fa-cart-arrow-down mr-2' style='font-size: 24px'></i><label>${performance.reserveCount }</label>
 												</div>
-												-->
 											</div>
 											<div>
 												<button type="button" class="btn btn-outline-danger mr-2"
@@ -386,14 +384,11 @@
 													</button>
 													<label id="modalLikes"></label>
 												</div>
-												<!--  
+												<!-- 예매수 표시 -->
 												<div class="d-inline" style="display:none;">
-													<button type="button" class="btn btn-sm" id="goBoard">													
-														<i class='far fa-comment-alt mr-2' style='font-size: 24px'></i>
-													</button>
-													<label id="modalAfterParty"></label>
+													<i class='fas fa-cart-arrow-down mr-2' style='font-size: 24px'></i>													
+													<label id="modalReserveCount"></label>
 												</div>
-												-->
 											</div>
 											
 										</div>
@@ -571,7 +566,7 @@
 <script type="text/javascript">
 $(function(){
 	
-	console.log("시작");
+	//console.log("시작");
 	
 	
 	
@@ -585,13 +580,13 @@ $(function(){
 
 
 function goPage(no) {
-	console.log("page 링크를 눌렀다.");
-	console.log("page: "+no);
+	//console.log("page 링크를 눌렀다.");
+	//console.log("page: "+no);
 	if ($("#pageNo").val() == "") {
-		console.log("비었ㄷ.");
+	//	console.log("비었ㄷ.");
 	}else{
 		
-		console.log("pageNo="+$("#pageNo").val());
+	//	console.log("pageNo="+$("#pageNo").val());
 	}
 	
 	$("#pageNo").val(no);
@@ -610,14 +605,14 @@ function selectOrder(option) {
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
-	console.log("input필드값이 바뀌었습니다.");
+	//console.log("input필드값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	console.log($changed);
-	console.log("변경전"+$changed.val());
+	//console.log($changed);
+	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	console.log("변경후"+$changed.val());
+	//console.log("변경후"+$changed.val());
 	
-	console.log($("#listOrder").val());
+	//console.log($("#listOrder").val());
 	
 	// 이후 form submit 출력
 	$("#totalListForm").submit();
@@ -639,43 +634,30 @@ $("#performanceStartDay").change(function() {
 })
 
 $("#performanceEndDay").change(function() {
-	console.log(this);
-	console.log($(this).val());
+	//console.log(this);
+	//console.log($(this).val());
 	
 	var $startDay = $("#performanceStartDay");
 	if ($(this).val() < $startDay.val()) {
 		$(this).val("");		
 	}
 	
-	//var now = new Date().toISOString().substring(0, 10);	
-	//if ($(this).val() < now) {
-	//	console.log("마감날짜가  오늘보다 작아");
-	//}
+	
 })
 
 function buyTicket(no) {
-	console.log("buyTicket(no="+no+")");
+	//console.log("buyTicket(no="+no+")");
 	
 	location.href='/payment/step1.do?no='+no;
 }
 
 $("#modalBuyBtn").click(function() {
 	var no = $("#modalBuyBtn").data("no");
-	console.log("modalBuyBtn(no="+no+")");
+	//console.log("modalBuyBtn(no="+no+")");
 	buyTicket(no);
 })
 
-$("#modalUpdateBtn").click(function() {
-	var no = $("#modalUpdateBtn").data("no");
-	console.log("#modalUpdateBtn(no="+no+")");
-	updatePerformance(no);
-})
 
-$("#modalDeleteBtn").click(function() {
-	var no = $("#modalDeleteBtn").data("no");
-	console.log("#modalDeleteBtn"+no+")");
-	deletePerformance(no);
-})
 
 
 function numberWithComma(num)
@@ -711,10 +693,10 @@ function showDetail(performanceId) {
 			console.log("manReserveCount: "+ manReserveCount);
 			console.log("womanReserveCount: "+ womanReserveCount);
 			
-			console.log("디테일을 눌렀다.");
+			//console.log("디테일을 눌렀다.");
 			
 			var modalImagePath = performance.imagePath;
-			console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
+			//console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
 			if (modalImagePath.substring(0,4) != 'http') {
 				modalImagePath="/resources/sample-images/"+performance.imagePath;
 			}
@@ -735,7 +717,7 @@ function showDetail(performanceId) {
 			
 			$("#modalGenre").text(performanceGenres);	
 			
-			console.log(performance.runningTime);
+			//console.log(performance.runningTime);
 			$("#modalRunningTime").text(performance.runningTime);
 			
 			var period = performance.startDate + " ~ " +  performance.endDate;		
@@ -749,7 +731,7 @@ function showDetail(performanceId) {
 				+ numberWithComma(performance.seatPrices[idx].price) + "원 ";
 			}
 			
-			console.log(seatPrices);
+			//console.log(seatPrices);
 			
 			$("#modalSeatInfo").text(seatPrices);
 			
@@ -761,13 +743,12 @@ function showDetail(performanceId) {
 			$("#modalTags").text(tags).css("color", "#06F");
 			
 			$("#modalLikes").text(performance.likes);
-			$("#modalAfterParty").text();
+			$("#modalReserveCount").text(performance.reserveCount);
 			
 			$("#modalDetailtitle").text(performance.title);
 			$("#modalDetailHallName p:eq(0)").text(performance.hallName);
 			$("#modalDetailHallName p:eq(1)").text("("+performance.hallAddress+")");
 			$("#modalDetailPeriod").text(period);
-			//$("#modalDetailTime").text(performance.expla);
 			$("#modalDetailRunningTime").text(performance.runningTime);
 			$("#modalDetailSeatInfo").text(seatPrices);
 			
@@ -797,8 +778,8 @@ function showDetail(performanceId) {
 				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");
 			}
 			
-			console.log("성공함");
-			console.log(performance);
+			//console.log("성공함");
+			//console.log(performance);
 			
 			var id = document.getElementById('map');
 			kakaoMap(id, hallInfo);
@@ -948,14 +929,14 @@ $("#clickLike").click(function(){
 	
 	// 로그인 여부 확인하고 로그인 상태이면, 좋아요 표시
 	var loginUser="${ LOGIN_USER.id}";
-	console.log(loginUser);
+	//console.log(loginUser);
 	
 	if (loginUser == "") {
-		console.log("로그인필요");
+	//	console.log("로그인필요");
 		location.href="/signin.do";
 		return;
 	} else {
-		console.log("로그인됨");
+	//	console.log("로그인됨");
 		// 아래의 작업을 수행한다.
 	}
 	
@@ -964,10 +945,10 @@ $("#clickLike").click(function(){
 	var modalLike = parseInt($("#modalLikes").text());
 	var listModalLike = parseInt($("#"+performanceId+"likes").text());
 	
-	console.log("clickLike-info-no:"+performanceId);
-	console.log("clickLike-info-liked:"+liked);	// 이미 좋아요를 했으면 Y, 아니면 N
-	console.log("modalLike:"+modalLike);
-	console.log("listModalLike:"+listModalLike);
+	//console.log("clickLike-info-no:"+performanceId);
+	//console.log("clickLike-info-liked:"+liked);	// 이미 좋아요를 했으면 Y, 아니면 N
+	//console.log("modalLike:"+modalLike);
+	//console.log("listModalLike:"+listModalLike);
 	
 	//$('#myModal').modal('hide');
 	// $(this).find("i").hasClass("far") 빈하트 표시	
@@ -980,7 +961,7 @@ $("#clickLike").click(function(){
 			dataType: 'json',
 			success: function(data) {
 				var successYn = data.successYn;
-				console.log("successYn: "+ successYn);
+				//console.log("successYn: "+ successYn);
 				
 				$("#clickLike").data("liked","Y");	// 좋아요를 눌렀다고 정보변경
 				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red"); // 하트 색깔 변경
@@ -989,7 +970,7 @@ $("#clickLike").click(function(){
 				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
 				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
 				
-				console.log("liked: "+$("#clickLike").data("liked"));
+				//console.log("liked: "+$("#clickLike").data("liked"));
 			}
 		})
 		
@@ -1002,7 +983,7 @@ $("#clickLike").click(function(){
 			dataType: 'json',
 			success: function(data) {
 				var successYn = data.successYn;
-				console.log("successYn: "+ successYn);
+				//console.log("successYn: "+ successYn);
 				
 				$("#clickLike").data("liked", "N");	// 좋아요를 취소햇다고 정보변경
 				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");	// 하트 색깔 변경
@@ -1012,7 +993,7 @@ $("#clickLike").click(function(){
 				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
 				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
 				
-				console.log("liked: "+$("#clickLike").data("liked"));
+				//console.log("liked: "+$("#clickLike").data("liked"));
 			}
 		})
 		
@@ -1021,49 +1002,9 @@ $("#clickLike").click(function(){
 	
 })
 
-$("#goBoard").click(function() {
-	// board로 보냄
-})
 
 
-$(function() {
-	$(":input[name=genre]").closest('label').click(function(event) {
-		event.preventDefault();
-		console.log("before", ($(this).find('input').prop("checked")));
 
-		$(this).find('input').prop("checked", !($(this).find('input').prop("checked")))
-		
-		console.log("after", ($(this).find('input').prop("checked")));
-		
-		console.log($(this).find('input').val());
-		
-		
-		
-		if ($(this).find('input').prop("checked")) {
-			
-			
-			$(this).removeClass("btn-outline-danger").addClass("btn-danger");
-			
-			// 무시해도되는 코드임
-			// 전체 누르면 다른 버튼은 취소되도록
-			if ($(this).find('input').val()=="전체") {				
-				$(this).siblings().find('input').prop("checked", false);
-				$(this).siblings().removeClass("btn-danger").addClass("btn-outline-danger");				
-			}else {	// 전체 말고 다른 버튼 눌렀을 때 전체 버튼이 이미 눌러져 있는경우 전체버튼 체크해제됨
-				if ($("#genreAll").prop("checked")) {
-					console.log("다른 장르버튼 눌렀을때 전체버튼이 체크되어있는가");
-					$("#genreAll").closest('label').removeClass("btn-danger").addClass("btn-outline-danger");	
-					$("#genreAll").prop("checked", false);
-				}	
-			
-			}			
-			
-			console.log("체크되었음");
-		} else {
-			$(this).removeClass("btn-danger").addClass("btn-outline-danger");
-		}
-	})
-})
 
 function kakaoMap(id, hallInfo) {
 	

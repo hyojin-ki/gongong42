@@ -115,7 +115,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 	public List<PerformanceDetailDto> searchPerformances(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		// 줄 출력 테스트
-		System.out.println("검색조건 퍼포먼스 총 줄 수:" + performanceDao.getTotalRowsOfPerformance(map));
+		//System.out.println("검색조건 퍼포먼스 총 줄 수:" + performanceDao.getTotalRowsOfPerformance(map));
 		return performanceDao.searchPerformance(map);
 	}
 
@@ -146,16 +146,16 @@ public class PerformanceServiceImpl implements PerformanceService {
 	public Map<String, Object> getTotalSearchForPaging(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 
-		System.out.println("페이징 처리를 위한 getPerformanceForPaging");
-
-		System.out.println("pageNo: "+map.get("pageNo"));
-		System.out.println("rows: "+map.get("rows"));
+//		System.out.println("페이징 처리를 위한 getPerformanceForPaging");
+//
+//		System.out.println("pageNo: "+map.get("pageNo"));
+//		System.out.println("rows: "+map.get("rows"));
 
 		int pageNo = (int) map.get("pageNo");
 		int rows = (int) map.get("rows");
 
 		int totalRows =  performanceDao.getTotalRowsOfPerformanceForTotalSearch(map);
-		System.out.println("totalRows: "+totalRows);
+//		System.out.println("totalRows: "+totalRows);
 
 		// 페이지 네비게이션에 필요한 정보 생성하기
 		// 한 화면에 보여줄 행의 갯수, 블록당 페이지번호 수, 현재 페이지 번호, 총 행의 갯수
@@ -168,17 +168,17 @@ public class PerformanceServiceImpl implements PerformanceService {
 		map.put("beginIndex", beginIndex);
 		map.put("endIndex", endIndex);		
 
-		System.out.println("기존 map에 추가됨");
+		//System.out.println("기존 map에 추가됨");
 		List<PerformanceDetailDto> performances = performanceDao.totalSearchPerformanceByPage(map);
 
-		System.out.println("beginIndex: "+map.get("beginIndex"));
-		System.out.println("endIndex: "+map.get("endIndex"));
+//		System.out.println("beginIndex: "+map.get("beginIndex"));
+//		System.out.println("endIndex: "+map.get("endIndex"));
 
 		// 테스트용
-		System.out.println("검색조건과 범위대로 조회되었나 체크합니다.");
-		for (PerformanceDetailDto p : performances) {
-			System.out.println(p.getTitle());
-		}
+		//System.out.println("검색조건과 범위대로 조회되었나 체크합니다.");
+//		for (PerformanceDetailDto p : performances) {
+//			System.out.println(p.getTitle());
+//		}
 
 		Map<String, Object> result = new HashMap<String, Object>();
 
@@ -193,17 +193,17 @@ public class PerformanceServiceImpl implements PerformanceService {
 	public Map<String, Object> getPerformanceForPaging(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 
-		System.out.println("페이징 처리를 위한 getPerformanceForPaging");
-
-		System.out.println("pageNo: "+map.get("pageNo"));
-		System.out.println("rows: "+map.get("rows"));
+//		System.out.println("페이징 처리를 위한 getPerformanceForPaging");
+//
+//		System.out.println("pageNo: "+map.get("pageNo"));
+//		System.out.println("rows: "+map.get("rows"));
 
 		int pageNo = (int) map.get("pageNo");
 		int rows = (int) map.get("rows");
 
 		// 검색조건에 해당하는 총 공연갯수
 		int totalRows = performanceDao.getTotalRowsOfPerformance(map);
-		System.out.println("totalRows: "+ totalRows);
+		//System.out.println("totalRows: "+ totalRows);
 
 		// 페이지 네비게이션에 필요한 정보 생성하기
 		// 한 화면에 보여줄 행의 갯수, 블록당 페이지번호 수, 현재 페이지 번호, 총 행의 갯수
@@ -222,19 +222,19 @@ public class PerformanceServiceImpl implements PerformanceService {
 		map.put("beginIndex", beginIndex);
 		map.put("endIndex", endIndex);		
 
-		System.out.println("기존 map에 추가됨");
+		//System.out.println("기존 map에 추가됨");
 		List<PerformanceDetailDto> performances = performanceDao.searchPerformanceByPage(map);
 
 
-		System.out.println("beginIndex: "+map.get("beginIndex"));
-		System.out.println("endIndex: "+map.get("endIndex"));
+//		System.out.println("beginIndex: "+map.get("beginIndex"));
+//		System.out.println("endIndex: "+map.get("endIndex"));
 
 
 		// 테스트용
-		System.out.println("검색조건과 범위대로 조회되었나 체크합니다.");
-		for (PerformanceDetailDto p : performances) {
-			System.out.println(p.getTitle());
-		}
+//		System.out.println("검색조건과 범위대로 조회되었나 체크합니다.");
+//		for (PerformanceDetailDto p : performances) {
+//			System.out.println(p.getTitle());
+//		}
 
 
 

@@ -77,8 +77,7 @@ public class PerformanceContoller {
 	public String cancelUpdate(SessionStatus sessionStatus, @RequestParam("category") String category,
 			Model model) {
 		sessionStatus.setComplete();
-		System.out.println("update의 cancel category "+ category);
-		
+			
 		model.addAttribute("category", category);		
 		return "redirect:/performance/adminList.do";	// 나중엔 performance/list.do?category='category'로 변경
 		
@@ -89,10 +88,9 @@ public class PerformanceContoller {
 	public String updateBasic(@RequestParam("performanceId") int performanceId, 
 			@RequestParam("category") String category, Model model) {
 		
-		System.out.println("여기는 updateBasicInfo");
-		
-		System.out.println("category: "+category);
-		System.out.println("performanceId: "+performanceId);
+//		System.out.println("여기는 updateBasicInfo");		
+//		System.out.println("category: "+category);
+//		System.out.println("performanceId: "+performanceId);
 		
 		String genreCat = "";
 		if (category.equals("콘서트")) {
@@ -104,8 +102,17 @@ public class PerformanceContoller {
 		String[] genres = performanceService.getGenreByCategory(genreCat);		
 		
 		PerformanceDetailDto performance = performanceService.getPerformanceDetailById(performanceId);
-		//PerformanceForm performanceForm = new PerformanceForm();
-		
+				
+		// 메이트가 등록된 공연정보인지 확인
+		List<PerformanceMain> performanceMain = performanceService.getPerformanceMain(performanceId);
+				
+		if (performanceMain.size() != 0) {
+			// 메이트가 등록된 공연정보라면 수정할 수 없음
+			model.addAttribute("dateDisable", "disable");
+		}else {			
+			model.addAttribute("dateDisable", "able");
+		}
+				
 		model.addAttribute("category",category);
 		model.addAttribute("genres", genres);
 		model.addAttribute("performanceId",performanceId);
@@ -116,23 +123,25 @@ public class PerformanceContoller {
 	
 	@PostMapping("/update/updateBasicInfo.do")
 	public String updateBasicSubmit(PerformanceUpdateForm performanceUpdateForm,
-			Model model) throws Exception{
+			HttpServletRequest request ,Model model) throws Exception{
 		
-		System.out.println("여기는 uddateBasicInfo를 submit한 폼입니다.");
-		System.out.println("id: "+performanceUpdateForm.getId());
-		System.out.println("category: "+performanceUpdateForm.getCategory());
-		System.out.println("title: "+performanceUpdateForm.getTitle());
-		System.out.println("genre: "+performanceUpdateForm.getGenre().toString());
-		System.out.println("startDate: "+performanceUpdateForm.getStartDate());
-		System.out.println("endDate: "+performanceUpdateForm.getEndDate());
-		System.out.println("rating: "+performanceUpdateForm.getRating());		
-		System.out.println("runningTime: "+performanceUpdateForm.getRunningTime());
-		System.out.println("provider: "+performanceUpdateForm.getProvider());
-		System.out.println("upfile: "+performanceUpdateForm.getUpfile().getOriginalFilename());
-		System.out.println("explain: "+performanceUpdateForm.getExplain());
-		System.out.println("imageSelect: " + performanceUpdateForm.getImageSelect());
-		System.out.println("upfile: " + performanceUpdateForm.getUpfile().getOriginalFilename());
+		String imageSaveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources/sample-images/";
 		
+//		System.out.println("여기는 uddateBasicInfo를 submit한 폼입니다.");
+//		System.out.println("id: "+performanceUpdateForm.getId());
+//		System.out.println("category: "+performanceUpdateForm.getCategory());
+//		System.out.println("title: "+performanceUpdateForm.getTitle());
+//		System.out.println("genre: "+performanceUpdateForm.getGenre().toString());
+//		System.out.println("startDate: "+performanceUpdateForm.getStartDate());
+//		System.out.println("endDate: "+performanceUpdateForm.getEndDate());
+//		System.out.println("rating: "+performanceUpdateForm.getRating());		
+//		System.out.println("runningTime: "+performanceUpdateForm.getRunningTime());
+//		System.out.println("provider: "+performanceUpdateForm.getProvider());
+//		System.out.println("upfile: "+performanceUpdateForm.getUpfile().getOriginalFilename());
+//		System.out.println("explain: "+performanceUpdateForm.getExplain());
+//		System.out.println("imageSelect: " + performanceUpdateForm.getImageSelect());
+//		System.out.println("upfile: " + performanceUpdateForm.getUpfile().getOriginalFilename());
+//		
 		// 장르 설정하기
 		List<String> genres = new ArrayList<String>();
 		for (String genre : performanceUpdateForm.getGenre()) {
@@ -144,15 +153,15 @@ public class PerformanceContoller {
 		BeanUtils.copyProperties(performanceUpdateForm, performance);
 		performance.setGenre(genres);
 		
-		System.out.println("id: "+performance.getId());
-		System.out.println("category: "+performance.getCategory());
-		System.out.println("title: "+performance.getTitle());
-		System.out.println("genre: "+performance.getGenre().toString());
-		System.out.println("startDate: "+performance.getStartDate());
-		System.out.println("endDate: "+performance.getEndDate());
-		System.out.println("rating: "+performance.getRating());		
-		System.out.println("runningTime: "+performance.getRunningTime());
-		System.out.println("provider: "+performance.getProvider());
+//		System.out.println("id: "+performance.getId());
+//		System.out.println("category: "+performance.getCategory());
+//		System.out.println("title: "+performance.getTitle());
+//		System.out.println("genre: "+performance.getGenre().toString());
+//		System.out.println("startDate: "+performance.getStartDate());
+//		System.out.println("endDate: "+performance.getEndDate());
+//		System.out.println("rating: "+performance.getRating());		
+//		System.out.println("runningTime: "+performance.getRunningTime());
+//		System.out.println("provider: "+performance.getProvider());
 		
 		if ("existing".equals(performanceUpdateForm.getImageSelect())) {
 			System.out.println("기존의 이미지");
@@ -161,8 +170,8 @@ public class PerformanceContoller {
 			PerformanceDetailDto performanceDetailDto = performanceService.getPerformanceDetailById(performance.getId());
 			performance.setImagePath(performanceDetailDto.getImagePath());
 			
-			System.out.println("imagePath: "+performance.getImagePath());
-			System.out.println("explain: "+performance.getExplain());
+//			System.out.println("imagePath: "+performance.getImagePath());
+//			System.out.println("explain: "+performance.getExplain());
 			
 			// performanceInfo 테이블 
 			
@@ -172,12 +181,13 @@ public class PerformanceContoller {
 			// 새 이미지 저장하기 
 			MultipartFile upFile = performanceUpdateForm.getUpfile();
 			if (!upFile.isEmpty()) {
+				
+				// 수정한 것
 				String filename = upFile.getOriginalFilename();
 				filename = System.currentTimeMillis()+filename;	
-				File file = new File(saveDirectory, filename);
+				File file = new File(imageSaveDirectory, filename);
 				FileCopyUtils.copy(upFile.getInputStream(), new FileOutputStream(file));	
 				performance.setImagePath(filename);
-//				performance.setImagePath(filename);		
 			}
 			
 		}
@@ -207,10 +217,10 @@ public class PerformanceContoller {
 	public String updateLocation(@RequestParam("performanceId") int performanceId, 
 			@RequestParam("category") String category, Model model) {
 		
-		System.out.println("여기는 updateLocationInfo");
-		
-		System.out.println("category: "+category);
-		System.out.println("performanceId: "+performanceId);
+//		System.out.println("여기는 updateLocationInfo");
+//		
+//		System.out.println("category: "+category);
+//		System.out.println("performanceId: "+performanceId);
 				
 		PerformanceDetailDto performance = performanceService.getPerformanceDetailById(performanceId);
 		//PerformanceForm performanceForm = new PerformanceForm();
@@ -234,23 +244,23 @@ public class PerformanceContoller {
 	public String updateLocationSubmit(PerformanceUpdateForm performanceUpdateForm,
 			Model model) {
 		
-		System.out.println("이곳은 updateLocationInfo를 submit한 폼입니다.!");
-				
-		System.out.println("id: "+performanceUpdateForm.getId());
-		System.out.println("category: "+performanceUpdateForm.getCategory());
-		System.out.println("hallInputType: "+performanceUpdateForm.getHallInputType());
-		System.out.println("originalHallId: " + performanceUpdateForm.getOriginalHallId());
-		System.out.println("hallName: "+performanceUpdateForm.getHallName());
-		System.out.println("hallAddress: "+performanceUpdateForm.getHallAddress());
+//		System.out.println("이곳은 updateLocationInfo를 submit한 폼입니다.!");
+//				
+//		System.out.println("id: "+performanceUpdateForm.getId());
+//		System.out.println("category: "+performanceUpdateForm.getCategory());
+//		System.out.println("hallInputType: "+performanceUpdateForm.getHallInputType());
+//		System.out.println("originalHallId: " + performanceUpdateForm.getOriginalHallId());
+//		System.out.println("hallName: "+performanceUpdateForm.getHallName());
+//		System.out.println("hallAddress: "+performanceUpdateForm.getHallAddress());
 		
 		Performance performance = new Performance();		
 		BeanUtils.copyProperties(performanceUpdateForm, performance);
 			
 		HallInfo hallInfo = performanceService.getHallInfoById(performanceUpdateForm.getOriginalHallId());
 		performance.setHallInfo(hallInfo);
-		
-		System.out.println("performanceId: "+performance.getId());
-		System.out.println("performanceInfoId: "+performance.getHallInfo().getId());
+//		
+//		System.out.println("performanceId: "+performance.getId());
+//		System.out.println("performanceInfoId: "+performance.getHallInfo().getId());
 		
 		
 		if ("new".equals(performanceUpdateForm.getHallInputType())) {			
@@ -258,7 +268,7 @@ public class PerformanceContoller {
 				&& (performanceUpdateForm.getHallAddress().equals(hallInfo.getAddress()))) {
 				// 직접입력이고 기존 정보와 차이가 없을때 (수정을 하지 않음)
 				// 아무일도 하지 않는다.
-				System.out.println("기존정보와 동일함");
+				//System.out.println("기존정보와 동일함");
 				
 			} else {
 				// 직접입력이고 새로 데이터를 입력할 때
@@ -270,11 +280,11 @@ public class PerformanceContoller {
 				newHallInfo.setGpsX(performanceUpdateForm.getGpsX());
 				newHallInfo.setGpsY(performanceUpdateForm.getGpsY());
 				String insertHallInfo = "Y";	// 새로 입력한 공연정보이다.
-				System.out.println("new HallInfo");
-				System.out.println("hallName: "+newHallInfo.getName());
-				System.out.println("hallAddress: "+newHallInfo.getAddress());
-				System.out.println("gpsX: "+newHallInfo.getGpsX());
-				System.out.println("gpsY: "+newHallInfo.getGpsY());
+//				System.out.println("new HallInfo");
+//				System.out.println("hallName: "+newHallInfo.getName());
+//				System.out.println("hallAddress: "+newHallInfo.getAddress());
+//				System.out.println("gpsX: "+newHallInfo.getGpsX());
+//				System.out.println("gpsY: "+newHallInfo.getGpsY());
 				
 				performanceService.updatePerformanceHallInfo(performance, newHallInfo, insertHallInfo);
 			}
@@ -284,14 +294,14 @@ public class PerformanceContoller {
 			if (performanceUpdateForm.getHallId() == performanceUpdateForm.getOriginalHallId()) {
 				// 기존 공연장 입력이고 기존 정보와 차이가 없을때(수정을 하지 않음)
 				// 아무일도 하지 않는다.
-				System.out.println("기존정보와 동일함");
+				//System.out.println("기존정보와 동일함");
 			}else  {
 				// 공연정보와 연결된 공연장정보를 바꿔준다.
 				// 기존의 공연장정보를 가져온후 그 공연장정보로 공연정보의 공연장정보를 바꿔준다.
-				System.out.println("새로운 공연정보 아이디: "+ performanceUpdateForm.getHallId());
+				//System.out.println("새로운 공연정보 아이디: "+ performanceUpdateForm.getHallId());
 				HallInfo newHallInfo = performanceService.getHallInfoById(performanceUpdateForm.getHallId());
-				System.out.println("new HallInfo");
-				System.out.println("hallInfoId: "+newHallInfo.getId());
+//				System.out.println("new HallInfo");
+//				System.out.println("hallInfoId: "+newHallInfo.getId());
 				String insertHallInfo = "N";	// 기존의 공연정보이다. 
 				
 				performanceService.updatePerformanceHallInfo(performance, newHallInfo, insertHallInfo);
@@ -311,9 +321,9 @@ public class PerformanceContoller {
 	public String updateSeat(@RequestParam("performanceId") int performanceId, 
 			@RequestParam("category") String category, Model model) {
 		
-		System.out.println("여기는 updateLocationInfo");
-		System.out.println("category: "+category);
-		System.out.println("performanceId: "+performanceId);
+//		System.out.println("여기는 updateLocationInfo");
+//		System.out.println("category: "+category);
+//		System.out.println("performanceId: "+performanceId);
 				
 		PerformanceDetailDto performance = performanceService.getPerformanceDetailById(performanceId);
 		
@@ -348,19 +358,19 @@ public class PerformanceContoller {
 	public String updateSeatSubmit(PerformanceUpdateForm performanceUpdateForm,
 			Model model) {
 		
-		System.out.println("여기는 updateLocationInfo를 submit한 폼입니다.");
-		
-		System.out.println("여기는 updateLocationInfo");
-		System.out.println("id: "+performanceUpdateForm.getId());
-		System.out.println("category: "+performanceUpdateForm.getCategory());
-		System.out.println("aPrice: " + performanceUpdateForm.getaPrice());
-		System.out.println("sPrice: " + performanceUpdateForm.getsPrice());
-		System.out.println("rPrice: " + performanceUpdateForm.getrPrice());
-		
+//		System.out.println("여기는 updateLocationInfo를 submit한 폼입니다.");
+//		
+//		System.out.println("여기는 updateLocationInfo");
+//		System.out.println("id: "+performanceUpdateForm.getId());
+//		System.out.println("category: "+performanceUpdateForm.getCategory());
+//		System.out.println("aPrice: " + performanceUpdateForm.getaPrice());
+//		System.out.println("sPrice: " + performanceUpdateForm.getsPrice());
+//		System.out.println("rPrice: " + performanceUpdateForm.getrPrice());
+//		
 		Performance performance = new Performance();		
 		BeanUtils.copyProperties(performanceUpdateForm, performance);
 		
-		System.out.println("performanceId: "+performance.getId());
+		//System.out.println("performanceId: "+performance.getId());
 		
 		// 새 좌석정보를 Map에 저장한다.
 		Map<String, Integer> map = new HashMap<>();
@@ -384,9 +394,8 @@ public class PerformanceContoller {
 	public String delete(@RequestParam("performanceId") int performanceId,
 			@RequestParam("category") String category, Model model) {
 		
-		System.out.println("여기는 delete.do 입니다.");
-		System.out.println("performanceId: "+performanceId );
-		//return "redirect:/home.do";
+		//System.out.println("여기는 delete.do 입니다.");
+		//System.out.println("performanceId: "+performanceId );
 		
 		PerformanceDetailDto performance =  performanceService.getPerformanceDetailById(performanceId);
 		
@@ -400,9 +409,9 @@ public class PerformanceContoller {
 			// 공연 좌석가격정보 조회
 			List<PerformanceSeatPrice> seatPrices = performanceService.getPerformanceSeatPriceById(performanceId);
 			
-			System.out.println("메인정보 길이: "+performanceMain.size());
-			System.out.println("공연장르 길이: "+performanceGenres.length);
-			System.out.println("공연좌석 정보 길이 조회: "+seatPrices.size());
+//			System.out.println("메인정보 길이: "+performanceMain.size());
+//			System.out.println("공연장르 길이: "+performanceGenres.length);
+//			System.out.println("공연좌석 정보 길이 조회: "+seatPrices.size());
 			
 			// 이미 해당공연에 예약을 한 사람이 있는 경우 삭제를 진행할 수 없다.
 			// performance_main 테이블에 performanceInfoId에 해당하는 행이 있는 경우이다.
@@ -448,25 +457,24 @@ public class PerformanceContoller {
 		
 		String imageSaveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources/sample-images/";
 		
-		System.out.println("왔다");
-		System.out.println("이곳은 step1 submit 이후입니다.");
+//		System.out.println("왔다");
+//		System.out.println("이곳은 step1 submit 이후입니다.");
 		
-		System.out.println("category: "+performanceForm.getCategory());
-		System.out.println("title: "+performanceForm.getTitle());
-		System.out.println("startDate: "+performanceForm.getStartDate());
-		System.out.println("endDate: "+performanceForm.getEndDate());
-		System.out.println("rating: "+performanceForm.getRating());
-		System.out.println("runningTime: "+performanceForm.getRunningTime());
-		System.out.println("provider: "+performanceForm.getProvider());
-		System.out.println("imagepath: "+performanceForm.getImagePath());
-			
-		System.out.println("upfile: "+performanceForm.getUpfile().getOriginalFilename());
-		System.out.println("explain: "+performanceForm.getExplain());				
-		//System.out.println("category: "+performanceForm.getGenre().toString());
-		System.out.println("hallInputType: " + performanceForm.getHallInputType() );
-		System.out.println("hallInputType: " + performanceForm.getHallId() );
-		System.out.println("hallInputType: " + performanceForm.getHallName() );
-		System.out.println("hallInputType: " + performanceForm.getHallAddress() );
+//		System.out.println("category: "+performanceForm.getCategory());
+//		System.out.println("title: "+performanceForm.getTitle());
+//		System.out.println("startDate: "+performanceForm.getStartDate());
+//		System.out.println("endDate: "+performanceForm.getEndDate());
+//		System.out.println("rating: "+performanceForm.getRating());
+//		System.out.println("runningTime: "+performanceForm.getRunningTime());
+//		System.out.println("provider: "+performanceForm.getProvider());
+//		System.out.println("imagepath: "+performanceForm.getImagePath());
+//			
+//		System.out.println("upfile: "+performanceForm.getUpfile().getOriginalFilename());
+//		System.out.println("explain: "+performanceForm.getExplain());				
+//		System.out.println("hallInputType: " + performanceForm.getHallInputType() );
+//		System.out.println("hallInputType: " + performanceForm.getHallId() );
+//		System.out.println("hallInputType: " + performanceForm.getHallName() );
+//		System.out.println("hallInputType: " + performanceForm.getHallAddress() );
 		
 		
 		MultipartFile upFile = performanceForm.getUpfile();
@@ -485,10 +493,7 @@ public class PerformanceContoller {
 		
 		
 		
-		System.out.println("genre");
-		for (String g : performanceForm.getGenre()) {
-			System.out.print(g + " ");
-		}
+		
 		
 		return "redirect:step2.do";
 	}
@@ -506,23 +511,23 @@ public class PerformanceContoller {
 	@PostMapping("/add/step2.do")
 	public String addStep2Submit(@ModelAttribute("performanceForm") PerformanceForm performanceForm ) {
 		
-		System.out.println("이곳은 step2 submit 이후입니다.");
-		System.out.println("category: "+performanceForm.getCategory());
-		System.out.println("title: "+performanceForm.getTitle());
-		System.out.println("startDate: "+performanceForm.getStartDate());
-		System.out.println("endDate: "+performanceForm.getEndDate());
-		System.out.println("rating: "+performanceForm.getRating());
-		System.out.println("runningTime: "+performanceForm.getRunningTime());
-		System.out.println("provider: "+performanceForm.getProvider());
-		System.out.println("upfile: "+performanceForm.getUpfile().getOriginalFilename());
-		System.out.println("explain: "+performanceForm.getExplain());				
-		System.out.println("hallInputType: " + performanceForm.getHallInputType() );
-		System.out.println("hallId: " + performanceForm.getHallId() );
-		System.out.println("hallName: " + performanceForm.getHallName() );
-		System.out.println("hallAddress: " + performanceForm.getHallAddress() );
-		System.out.println("gpsX: " + performanceForm.getGpsX());
-		System.out.println("gpsY: " + performanceForm.getGpsY());
-		
+//		System.out.println("이곳은 step2 submit 이후입니다.");
+//		System.out.println("category: "+performanceForm.getCategory());
+//		System.out.println("title: "+performanceForm.getTitle());
+//		System.out.println("startDate: "+performanceForm.getStartDate());
+//		System.out.println("endDate: "+performanceForm.getEndDate());
+//		System.out.println("rating: "+performanceForm.getRating());
+//		System.out.println("runningTime: "+performanceForm.getRunningTime());
+//		System.out.println("provider: "+performanceForm.getProvider());
+//		System.out.println("upfile: "+performanceForm.getUpfile().getOriginalFilename());
+//		System.out.println("explain: "+performanceForm.getExplain());				
+//		System.out.println("hallInputType: " + performanceForm.getHallInputType() );
+//		System.out.println("hallId: " + performanceForm.getHallId() );
+//		System.out.println("hallName: " + performanceForm.getHallName() );
+//		System.out.println("hallAddress: " + performanceForm.getHallAddress() );
+//		System.out.println("gpsX: " + performanceForm.getGpsX());
+//		System.out.println("gpsY: " + performanceForm.getGpsY());
+//		
 		
 		
 		return "redirect:step3.do";
@@ -540,26 +545,25 @@ public class PerformanceContoller {
 		
 		// 미완성
 		
-		System.out.println("이곳은 step3 submit 이후입니다.");
-		System.out.println("category: "+performanceForm.getCategory());
-		System.out.println("title: "+performanceForm.getTitle());
-		System.out.println("startDate: "+performanceForm.getStartDate());
-		System.out.println("endDate: "+performanceForm.getEndDate());
-		System.out.println("rating: "+performanceForm.getRating());
-		System.out.println("runningTime: "+performanceForm.getRunningTime());
-		System.out.println("provider: "+performanceForm.getProvider());
-		//System.out.println("upfile: "+performanceForm.getUpfile().getOriginalFilename());
-		System.out.println("explain: "+performanceForm.getExplain());				
-		System.out.println("hallInputType: " + performanceForm.getHallInputType() );
-		System.out.println("hallId: " + performanceForm.getHallId() );
-		System.out.println("hallName: " + performanceForm.getHallName() );
-		System.out.println("hallAddress: " + performanceForm.getHallAddress() );
-		System.out.println("gpsX: " + performanceForm.getGpsX());
-		System.out.println("gpsY: " + performanceForm.getGpsY());
-		
-		System.out.println("aPrice: " + performanceForm.getaPrice());
-		System.out.println("sPrice: " + performanceForm.getsPrice());
-		System.out.println("rPrice: " + performanceForm.getrPrice());
+//		System.out.println("이곳은 step3 submit 이후입니다.");
+//		System.out.println("category: "+performanceForm.getCategory());
+//		System.out.println("title: "+performanceForm.getTitle());
+//		System.out.println("startDate: "+performanceForm.getStartDate());
+//		System.out.println("endDate: "+performanceForm.getEndDate());
+//		System.out.println("rating: "+performanceForm.getRating());
+//		System.out.println("runningTime: "+performanceForm.getRunningTime());
+//		System.out.println("provider: "+performanceForm.getProvider());
+//		System.out.println("explain: "+performanceForm.getExplain());				
+//		System.out.println("hallInputType: " + performanceForm.getHallInputType() );
+//		System.out.println("hallId: " + performanceForm.getHallId() );
+//		System.out.println("hallName: " + performanceForm.getHallName() );
+//		System.out.println("hallAddress: " + performanceForm.getHallAddress() );
+//		System.out.println("gpsX: " + performanceForm.getGpsX());
+//		System.out.println("gpsY: " + performanceForm.getGpsY());
+//		
+//		System.out.println("aPrice: " + performanceForm.getaPrice());
+//		System.out.println("sPrice: " + performanceForm.getsPrice());
+//		System.out.println("rPrice: " + performanceForm.getrPrice());
 		
 		//Performance에 performanceForm 정보 담기
 		Performance performance = new Performance();
@@ -640,11 +644,11 @@ public class PerformanceContoller {
 			, @RequestParam(value = "rows", defaultValue = "5") int rows
 			, @RequestParam(value= "order", defaultValue = "dateOrder") String listOrder) {
 		
-			System.out.println("여기는 totalList입니다.");
-			System.out.println("title: " + title);
-			System.out.println("pageNo: " +pageNo);
-			System.out.println("rows: " + rows);
-			System.out.println("order: " + listOrder);
+//			System.out.println("여기는 totalList입니다.");
+//			System.out.println("title: " + title);
+//			System.out.println("pageNo: " +pageNo);
+//			System.out.println("rows: " + rows);
+//			System.out.println("order: " + listOrder);
 		
 			Map<String, Object> pagingmap = new HashMap<String, Object>();
 						
@@ -659,12 +663,12 @@ public class PerformanceContoller {
 				pagingmap.put("listOrder", "dateOrder");
 			}
 			
-			System.out.println("pagingmap: "+pagingmap);
+			//System.out.println("pagingmap: "+pagingmap);
 			
 			// 페이징 처리된 map을 조회한다.(검색조건에 해당하고, 특정 페이지 범위내의 자료를 가져온다.
 			Map<String, Object> resultMap = performanceService.getTotalSearchForPaging(pagingmap);
 			
-			System.out.println("totalList를 컨트롤러에서 페이징처리한 결과");
+			//System.out.println("totalList를 컨트롤러에서 페이징처리한 결과");
 			
 			Pagination pagination = (Pagination) resultMap.get("pagination");
 			
@@ -674,8 +678,8 @@ public class PerformanceContoller {
 			int totalRows = (Integer)resultMap.get("totalRows");
 			int totalPageCount = (int)Math.ceil(((double)totalRows/(double)rows));
 			
-			System.out.println("totalRows: "+totalRows);
-			System.out.println("totalPageCount: "+totalPageCount);
+			//System.out.println("totalRows: "+totalRows);
+			//System.out.println("totalPageCount: "+totalPageCount);
 			
 			model.addAttribute("title", title);
 			model.addAttribute("performances", performancesWithPaging);
@@ -700,16 +704,16 @@ public class PerformanceContoller {
 			, @RequestParam(value= "age", defaultValue="0") String age
 			, @RequestParam(value="changed", defaultValue="N", required=false) String changed) {
 		
-		System.out.println("pageNo: " +pageNo);
-		System.out.println("rows: " + rows);
-		System.out.println("order: " + listOrder);
-		System.out.println("title: " + title);
-		System.out.println("genres: " + Arrays.toString(searchGenres));
-		
-		System.out.println(Arrays.toString(searchGenres));
-		System.out.println("startDate: " + startDay);
-		System.out.println("endDate: " + endDay);
-		System.out.println("age: " + age);
+//		System.out.println("pageNo: " +pageNo);
+//		System.out.println("rows: " + rows);
+//		System.out.println("order: " + listOrder);
+//		System.out.println("title: " + title);
+//		System.out.println("genres: " + Arrays.toString(searchGenres));
+//		
+//		System.out.println(Arrays.toString(searchGenres));
+//		System.out.println("startDate: " + startDay);
+//		System.out.println("endDate: " + endDay);
+//		System.out.println("age: " + age);
 		
 		// 검색조건 표시하기 위한 폼 만들기
 		//PerformanceSearchForm performanceForm = new PerformanceSearchForm();
@@ -768,21 +772,21 @@ public class PerformanceContoller {
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
 		
-		System.out.println(map);		
-		System.out.println("pagingmap: "+ pagingmap);		
+//		System.out.println(map);		
+//		System.out.println("pagingmap: "+ pagingmap);		
 		List<PerformanceDetailDto> performances = performanceService.searchPerformances(map);
 		
 		// 테스트
-		System.out.println("performances 페이징 안한 전부");
-		for(PerformanceDetailDto p : performances) {
-			System.out.println("title:" +p.getTitle());
-		}
-		System.out.println("전부 끝");
+//		System.out.println("performances 페이징 안한 전부");
+//		for(PerformanceDetailDto p : performances) {
+//			System.out.println("title:" +p.getTitle());
+//		}
+//		System.out.println("전부 끝");
 		
 		// 페이징 처리된 map을 조회한다.(검색조건에 해당하고, 특정 페이지 범위내의 자료를 가져온다.
 		Map<String, Object> resultMap = performanceService.getPerformanceForPaging(pagingmap);
 		
-		System.out.println("Controller에서 페이징처리된 결과 테스트");
+		//System.out.println("Controller에서 페이징처리된 결과 테스트");
 		Pagination pagination = (Pagination) resultMap.get("pagination");
 		
 		List<PerformanceDetailDto> performancesWithPaging 
@@ -792,8 +796,8 @@ public class PerformanceContoller {
 		int totalPageCount = (int)Math.ceil(((double)totalRows/(double)rows));
 	
 		// 전체 누르면 전체 12개의 줄이 나오는 오류
-		System.out.println("totalRows: "+totalRows);
-		System.out.println("totalPageCount: "+totalPageCount);
+//		System.out.println("totalRows: "+totalRows);
+//		System.out.println("totalPageCount: "+totalPageCount);
 		
 		String genreCat = "";
 		if (category.equals("콘서트")) {
@@ -804,18 +808,7 @@ public class PerformanceContoller {
 		
 		String[] genres = performanceService.getGenreByCategory(genreCat);	
 		
-		// 슬라이드로 보여줄 공연들				
-//		List<PerformanceDetailDto> slidePerformances =  performanceService.getPerformanceByCategoryLimit(category);
-//		
-//		List<Object> slideSeatList = new ArrayList<>();
-//		
-//		for(PerformanceDetailDto dto : slidePerformances) {
-//			int slidePerformanceId = dto.getPerformanceMainId();
-//			slideSeatList.add(mateService.getMateSeatsAllCnt(slidePerformanceId));
-//		}
-//		
-//		model.addAttribute("slideSeatList", slideSeatList);		
-//		model.addAttribute("slidePerformances", slidePerformances);
+		
 				
 		model.addAttribute("category", category);
 		model.addAttribute("genres", genres );
@@ -828,9 +821,7 @@ public class PerformanceContoller {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("rows", rows);
 		
-		//model.addAttribute("performanceForm", performanceForm);
-		
-				
+						
 		return "/performance/adminList";
 		
 		
@@ -852,20 +843,18 @@ public class PerformanceContoller {
 			, @RequestParam(value="changed", defaultValue="N", required=false) String changed) {
 		
 		
-		System.out.println("pageNo: " +pageNo);
-		System.out.println("rows: " + rows);
-		System.out.println("order: " + listOrder);
-		System.out.println("title: " + title);
-		System.out.println("genres: " + Arrays.toString(searchGenres));
+//		System.out.println("pageNo: " +pageNo);
+//		System.out.println("rows: " + rows);
+//		System.out.println("order: " + listOrder);
+//		System.out.println("title: " + title);
+//		System.out.println("genres: " + Arrays.toString(searchGenres));
+//		
+//		System.out.println(Arrays.toString(searchGenres));
+//		System.out.println("startDate: " + startDay);
+//		System.out.println("endDate: " + endDay);
+//		System.out.println("age: " + age);
 		
-		System.out.println(Arrays.toString(searchGenres));
-		System.out.println("startDate: " + startDay);
-		System.out.println("endDate: " + endDay);
-		System.out.println("age: " + age);
 		
-		// 검색조건 표시하기 위한 폼 만들기
-		//PerformanceSearchForm performanceForm = new PerformanceSearchForm();
-		//performanceForm.setCategory(category);
 		
 		//만약 폼이 변경된 뒤에 페이지번호나 검색버튼을 눌렀을 시
 		if ("Y".equals(changed)) {
@@ -917,14 +906,14 @@ public class PerformanceContoller {
 		pagingmap.put("pageNo", pageNo);
 		pagingmap.put("rows", rows);		
 		
-		System.out.println(map);		
-		System.out.println("pagingmap: "+ pagingmap);		
+//		System.out.println(map);		
+//		System.out.println("pagingmap: "+ pagingmap);		
 		List<PerformanceDetailDto> performances = performanceService.searchPerformances(map);
 		
 		// 페이징 처리된 map을 조회한다.(검색조건에 해당하고, 특정 페이지 범위내의 자료를 가져온다.
 		Map<String, Object> resultMap = performanceService.getPerformanceForPaging(pagingmap);
 		
-		System.out.println("Controller에서 페이징처리된 결과 테스트");
+		//System.out.println("Controller에서 페이징처리된 결과 테스트");
 		Pagination pagination = (Pagination) resultMap.get("pagination");
 		
 		List<PerformanceDetailDto> performancesWithPaging 
@@ -933,9 +922,9 @@ public class PerformanceContoller {
 		int totalRows = (Integer)resultMap.get("totalRows");
 		int totalPageCount = (int)Math.ceil(((double)totalRows/(double)rows));
 	
-		// 전체 누르면 전체 12개의 줄이 나오는 오류
-		System.out.println("totalRows: "+totalRows);
-		System.out.println("totalPageCount: "+totalPageCount);
+//		// 전체 누르면 전체 12개의 줄이 나오는 오류
+//		System.out.println("totalRows: "+totalRows);
+//		System.out.println("totalPageCount: "+totalPageCount);
 		
 		String genreCat = "";
 		if (category.equals("콘서트")) {
@@ -1112,6 +1101,7 @@ public class PerformanceContoller {
 		newPerformance.setId(performanceOrigin.getId());
 		newPerformance.setLikes(performanceOrigin.getLikes()+1);
 		
+		// 이부분 서비스에 가서 트랜잭션 처리한다.
 		performanceService.insertPerformanceLikes(userLikes);
 		performanceService.updatePerformanceLikes(newPerformance);
 		
@@ -1133,6 +1123,7 @@ public class PerformanceContoller {
 		newPerformance.setId(performanceOrigin.getId());
 		newPerformance.setLikes(performanceOrigin.getLikes()-1);
 		
+		// 이부분 서비스 간뒤 트랜젝션 처리한다.
 		performanceService.deletePerformanceLikes(userLikes);
 		performanceService.updatePerformanceLikes(newPerformance);
 		
