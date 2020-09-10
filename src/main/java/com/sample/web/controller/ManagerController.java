@@ -59,7 +59,6 @@ public class ManagerController {
 	@Autowired
 	private PaymentService paymentService;
 	
-	
 	@Value("${directory.save.noticeImg}")
 	private String saveDirectory;
 	
@@ -80,21 +79,22 @@ public class ManagerController {
 		
 		List<UserInfoDto> userList = userService.getAllUsers(regParam);
 		List<Reserve> topReserves = reserveService.getReserveCurrentCnt();
-		
-		
-
+	
 		
 		param.put("sort", "date");
 		param.put("query", "regDate");
 		int total = userService.getAllUsersCount(param);
 		int paymentTotal = paymentService.getCurrentMothPaymentCnt();
 		int noanswerQnaCnt = qnaService.getNoAnswerQnaCnt();
+		int noticeNowTotal = noticeService.getTotalNoticeNow();
 		
 		model.addAttribute("topReserves", topReserves);
 		model.addAttribute("userCount", total);
 		model.addAttribute("userList", userList);
 		model.addAttribute("paymentTotal", paymentTotal);
 		model.addAttribute("noanswerCnt", noanswerQnaCnt);
+		model.addAttribute("noticeNowTotal", noticeNowTotal);
+		
 		
 		return "/manager/managerhome";  
 	}

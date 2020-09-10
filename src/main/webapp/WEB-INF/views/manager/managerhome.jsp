@@ -81,7 +81,12 @@
               <div class="card-body-icon">
                 <i class="fa fa-fw fa-list fa-2x"></i>
               </div>
-              <div class="mr-5">새로운 공지사항 <span class="badge badge-light">9</span></div>
+              <div class="mr-5">새로운 공지사항 
+	            <c:if test="${noticeNowTotal ne null }">
+	            	<span class="badge badge-light">${noticeNowTotal }</span>
+	            </c:if>  
+              </div>
+            
             </div>
             <a class="card-footer text-white clearfix small z-1" href="/admin/notice/list.do">
               <span class="float-left">View Details</span>

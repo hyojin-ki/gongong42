@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.HttpRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -648,6 +649,8 @@ public class PerformanceContoller {
 		
 			Map<String, Object> pagingmap = new HashMap<String, Object>();
 						
+			title = StringEscapeUtils.escapeHtml4(title);
+			title.replace("`", " ");
 			pagingmap.put("title", title);
 			pagingmap.put("pageNo", pageNo);
 			pagingmap.put("rows", rows);	

@@ -70,7 +70,7 @@
 											 	<c:set var="path" value="/resources/sample-images/${consert.imagePath }"/>
 											 </c:otherwise>
 										 </c:choose>
-										 	<a href="/performance/totalList.do?title=${consert.title }">
+										 	<a href="/performance/totalList.do?title=${fn:replace(consert.title,'`','&#96') }">
 												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
 										 	</a>
 										</div>
