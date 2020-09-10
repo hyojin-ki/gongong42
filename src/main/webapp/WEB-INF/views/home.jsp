@@ -70,7 +70,7 @@
 											 <c:otherwise>
 											 	<c:set var="path" value="/resources/sample-images/${consert.imagePath }"/>
 											 </c:otherwise>
-										 </c:choose>
+										 </c:choose> 
 										 	<a href="/performance/totalList.do?title=${rutil:replaceTag(consert.title)}">
 												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
 										 	</a>
