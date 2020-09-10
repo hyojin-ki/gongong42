@@ -3,6 +3,8 @@ package com.sample.dto;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sample.web.view.PerformanceSeatPrice;
 

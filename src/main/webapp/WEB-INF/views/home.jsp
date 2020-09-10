@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="rutil" uri="com.sample.gongsa" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,12 +71,15 @@
 											 	<c:set var="path" value="/resources/sample-images/${consert.imagePath }"/>
 											 </c:otherwise>
 										 </c:choose>
-										 	<a href="/performance/totalList.do?title=${consert.title }">
+										 	<a href="/performance/totalList.do?title=${rutil:replaceTag(consert.title)}">
 												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
 										 	</a>
 										</div>
 										<div class="card-footer">
 											<div class="row">
+												<div>
+													<c:if test="${consert.title }"></c:if>
+												</div>
 												<div class="col-9 text-center">
 												 <c:forEach var="genre" items="${consert.genres }"> 
 												 <a	class="btn btn-link" href="/performance/list.do?category=${consert.category }&genre=${genre }">
@@ -84,7 +88,7 @@
 												</c:forEach>
 												</div>
 												<div class="col-3 text-right">
-													<a href="/performance/totalList.do?title=${consert.title }" class="btn">
+													<a href="/performance/totalList.do?title=${rutil:replaceTag(consert.title)}" class="btn">
 														<i class="fas fa-chevron-circle-right fa-2x text-danger"></i>
 													</a>
 												</div>
@@ -172,7 +176,7 @@
 											 </c:otherwise>
 										 </c:choose>
 										
-										 	<a href="/performance/totalList.do?title=<c:out value="${musical.title }"/> ">
+										 	<a href="/performance/totalList.do?title=${rutil:replaceTag(musical.title)}">
 												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
 										 	</a>
 										</div>
@@ -186,7 +190,7 @@
 												</c:forEach>
 												</div>
 												<div class="col-3 text-right">
-													<a href="/performance/totalList.do?title=${musical.title }" class="btn">
+													<a href="/performance/totalList.do?title=${rutil:replaceTag(musical.title)}" class="btn">
 														<i class="fas fa-chevron-circle-right fa-2x text-danger"></i>
 													</a>
 												</div>
@@ -273,7 +277,7 @@
 											 	<c:set var="path" value="/resources/sample-images/${theater.imagePath }"/>
 											 </c:otherwise>
 										 </c:choose>
-										 	<a href="/performance/totalList.do?title=${theater.title }">
+										 	<a href="/performance/totalList.do?title=${rutil:replaceTag(theater.title)}">
 												<img class="card-img-top" style="width: 438px; height: 613px;" src="${path }" alt="" />
 										 	</a>
 										</div>
@@ -287,7 +291,7 @@
 												</c:forEach>
 												</div>
 												<div class="col-3 text-right">
-													<a href="/performance/totalList.do?title=${theater.title }" class="btn">
+													<a href="/performance/totalList.do?title=${rutil:replaceTag(theater.title)}" class="btn">
 														<i class="fas fa-chevron-circle-right fa-2x text-danger"></i>
 													</a>
 												</div>

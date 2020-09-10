@@ -38,7 +38,6 @@ public class HomeController {
 		List<PerformanceDetailDto> musicals =  performanceService.getPerformanceByCategoryLimit(musical);
 		List<PerformanceDetailDto> theaters =  performanceService.getPerformanceByCategoryLimit(theater);		
 	
-
 		List<Object> consertSeatList = new ArrayList<>();
 		List<Object> musicalsSeatList = new ArrayList<>();
 		List<Object> theatersSeatList = new ArrayList<>();

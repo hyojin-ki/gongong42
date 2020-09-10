@@ -227,5 +227,12 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeDao.getAllImagesBySearchKeyword(keyword);
 		
 	}
+	public int getTotalNoticeNow() {
+		Map<String, String> map = new HashMap<>();
+		map.put("status", "전체");
+		map.put("regDate", "now");
+		
+		return noticeDao.getTotalRowsOfNoticeList(map);
+	}
 	
 }

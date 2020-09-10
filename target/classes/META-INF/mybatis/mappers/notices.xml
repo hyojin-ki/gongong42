@@ -97,6 +97,10 @@
 				and title like concat('%', #{keyword}, '%')
 			</if>
 		and deleted = 'N'
+			<if test="regDate != null and regDate == now">
+			    and regDate = NOW();
+			</if>
+			
 		</where>
 	</select>
 	

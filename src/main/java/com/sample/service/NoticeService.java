@@ -39,5 +39,5 @@ public interface NoticeService {
 	
 	List<Image> getAllImageByKeyword(String keyword);
 	
-	
+	int getTotalNoticeNow();
 }

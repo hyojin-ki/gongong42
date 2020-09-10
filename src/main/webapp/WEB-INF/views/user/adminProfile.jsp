@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,9 +75,10 @@
 								</tr>
 							</c:when>
 							<c:otherwise>
-								<c:forEach var="userDto" items="${users }">
+								<c:forEach var="userDto" items="${users }" varStatus="status">
+									<c:set var="row" value="${status.count }" />
 									<tr>
-										<td>11</td>
+										<td>${status.count }</td>
 										<td>${userDto.id }</td>
 										<td>${userDto.nickname }</td>
 										<td>${userDto.regDate }</td>
