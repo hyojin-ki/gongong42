@@ -524,7 +524,7 @@ div#A-seats4 button {
 										<tbody>
 											<tr>
 												<th rowspan="3"><img alt="sample-image"
-													src="/resources/sample-images/${performanceDto.imagePath }"
+													src="${performanceDto.imagePath }"
 													style="width: 150px; height: 200px;"></th>
 												<td>[${performanceDto.category}]
 													${performanceDto.title}</td>
