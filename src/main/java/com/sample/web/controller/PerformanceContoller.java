@@ -650,7 +650,7 @@ public class PerformanceContoller {
 			Map<String, Object> pagingmap = new HashMap<String, Object>();
 						
 			title = StringEscapeUtils.escapeHtml4(title);
-			title.replace("`", " ");
+			title.replace("\'","").replace("\"", "");
 			pagingmap.put("title", title);
 			pagingmap.put("pageNo", pageNo);
 			pagingmap.put("rows", rows);	
