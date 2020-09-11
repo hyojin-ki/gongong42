@@ -1103,8 +1103,11 @@ public class PerformanceContoller {
 		newPerformance.setLikes(performanceOrigin.getLikes()+1);
 		
 		// 이부분 서비스에 가서 트랜잭션 처리한다.
-		performanceService.insertPerformanceLikes(userLikes);
-		performanceService.updatePerformanceLikes(newPerformance);
+		//performanceService.insertPerformanceLikes(userLikes);
+		//performanceService.updatePerformanceLikes(newPerformance);
+		performanceService.insertPerformanceLikes(userLikes, newPerformance);
+		
+		
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("successYn", "Y");
@@ -1124,9 +1127,11 @@ public class PerformanceContoller {
 		newPerformance.setId(performanceOrigin.getId());
 		newPerformance.setLikes(performanceOrigin.getLikes()-1);
 		
-		// 이부분 서비스 간뒤 트랜젝션 처리한다.
-		performanceService.deletePerformanceLikes(userLikes);
-		performanceService.updatePerformanceLikes(newPerformance);
+		// 이부분 서비스에서 트랜젝션 처리한다.
+		//performanceService.deletePerformanceLikes(userLikes);
+		//performanceService.updatePerformanceLikes(newPerformance);
+		performanceService.deletePerformanceLikes(userLikes, newPerformance);
+		
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("successYn", "Y");

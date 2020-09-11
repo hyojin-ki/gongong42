@@ -189,7 +189,7 @@
 														</div>
 														<hr style="background-color: #fff;" />
 														<div class="text-white mt-2" style="font-size: 2rem;">
-															<div>좋아요수: ${performance.likes }</div>
+															<div>좋아요수: <label id="${performance.id }likesSlide">${performance.likes }</label></div>
 															<div>예매횟수: ${performance.reserveCount }</div>
 														</div>
 														  
@@ -1336,6 +1336,7 @@ $("#clickLike").click(function(){
 				var updateLikes = modalLike+1;
 				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
 				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
+				$("#"+performanceId+"likesSlide").text(updateLikes);	// 공연슬라이드에서 좋아요 수 변경
 				
 				//console.log("liked: "+$("#clickLike").data("liked"));
 			}
@@ -1359,6 +1360,7 @@ $("#clickLike").click(function(){
 				
 				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
 				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
+				$("#"+performanceId+"likesSlide").text(updateLikes);	// 공연슬라이드에서 좋아요 수 변경
 				
 				//console.log("liked: "+$("#clickLike").data("liked"));
 			}

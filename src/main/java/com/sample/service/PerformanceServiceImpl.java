@@ -476,15 +476,18 @@ public class PerformanceServiceImpl implements PerformanceService {
 	}
 
 	@Override
-	public void insertPerformanceLikes(UserLikes userLikes) {
+	public void insertPerformanceLikes(UserLikes userLikes, Performance performance) {
 		// TODO Auto-generated method stub
 		performanceDao.insertPerformanceLikes(userLikes);
+		performanceDao.updatePerformanceLikes(performance);
+		
 	}
 
 	@Override
-	public void deletePerformanceLikes(UserLikes userLikes) {
+	public void deletePerformanceLikes(UserLikes userLikes, Performance performance) {
 		// TODO Auto-generated method stub
 		performanceDao.deletePerformanceLikes(userLikes);
+		performanceDao.updatePerformanceLikes(performance);
 	}
 
 	@Override
@@ -494,12 +497,14 @@ public class PerformanceServiceImpl implements PerformanceService {
 		return performanceDao.getGenderReserveCountByPerformanceInfoIdAndGender(performanceGenderReserveStats);
 	}
 
+	// performance_info 테이블 likes 변경
 	@Override
 	public void updatePerformanceLikes(Performance performance) {
 		// TODO Auto-generated method stub
 		performanceDao.updatePerformanceLikes(performance);
 	}
 
+	// performance_info 테이블 reserveCount 변경
 	@Override
 	public void updatePerformanceReserveCount(Performance performance) {
 		// TODO Auto-generated method stub
