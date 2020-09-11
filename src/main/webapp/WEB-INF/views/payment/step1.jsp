@@ -523,9 +523,22 @@ div#A-seats4 button {
 									<table class="table-bordered" style="margin-bottom: 10px; width: 100%">
 										<tbody>
 											<tr>
-												<th rowspan="3"><img alt="sample-image"
-													src="${performanceDto.imagePath }"
-													style="width: 150px; height: 200px;"></th>
+												<th rowspan="3">
+												<c:choose>
+													<c:when
+														test="${fn:substring(performanceDto.imagePath, 0,4) eq 'http' }">
+														<c:set var="path" value="${performanceDto.imagePath }" />
+													</c:when>
+													<c:otherwise>
+														<c:set var="path"
+															value="/resources/sample-images/${performanceDto.imagePath }" />
+													</c:otherwise>
+												</c:choose> 
+													<img alt="sample-image"
+													src="${path }"
+													style="width: 150px; height: 200px;">
+													
+													</th>
 												<td>[${performanceDto.category}]
 													${performanceDto.title}</td>
 											</tr>

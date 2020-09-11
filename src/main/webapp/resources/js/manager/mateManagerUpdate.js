@@ -414,6 +414,9 @@ $(function(){
 						$pImg.attr('src',pImagePath);
 						$pName.text(title);
 						$pCat.text(cat);
+						if(rating == 0){
+							rating = '전체관람가'
+						}
 						$pAthu.text(rating);
 						
 						startDate = $.datepicker.formatDate('yy-mm-dd',new Date(startDate));
@@ -801,15 +804,9 @@ $(function(){
 				}
 				
 			})
-			
-			console.log($('#create-cat-val').val());
-		
 			$('#create-cat-val').val('');
-			$('#create-cat-val').hide();
 		}
 	})
-	
-	
 	
 })
 	function timeToSeconds(time) {
