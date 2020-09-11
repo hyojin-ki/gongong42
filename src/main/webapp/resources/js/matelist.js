@@ -61,7 +61,7 @@ $(function(){
 						alert(message);
 						return;
 					} 
-					var con = confirm("정말 해당 방에 참여하시겠습니까? 예약되면 돌이킬 수 없습니다.");
+					var con = confirm("정말 해당 방에 참여하시겠습니까?");
 					if(con){
 						console.log(1);
 						location.href = '/mate/addMateMember.do?pid='+pid+'&mnum='+mnum;

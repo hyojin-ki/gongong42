@@ -132,11 +132,11 @@ public class MateManageController {
 
 		
 		//pagination
-		int rowsPerPage = 2;
+		int rowsPerPage = 5;
 		int pagesPerBlock = 5;
 		Pagination pagination = new Pagination(rowsPerPage, pagesPerBlock, pageNo, totalRows);
 		int beginIndex = pagination.getBeginIndex() - 1;
-		int endIndex = 2;
+		int endIndex = 5;
 		queryMap.put("beginIndex", beginIndex);
 		queryMap.put("endIndex", endIndex);
 		

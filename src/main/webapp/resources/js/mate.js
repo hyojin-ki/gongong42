@@ -22,19 +22,17 @@ $(function(){
 			
 			//mateTag정보
 			var mateTags = data.mate.mateTags;
-			
-			if(mateTags != null){
+			var mateTagName = '　';
+			if(mateTags[0].tagName != null){
 				
-				var mateTagName = '';
 				for(var i in mateTags){
 					mateTagName += mateTags[i].tagName;
 					if(i < mateTags.length - 1){
 						mateTagName += ', ';
 					}
 				}
-				$('#mTag').text(mateTagName);
 			}
-			
+		
 			
 			var mateCatId = mateCat.id;
 			var seatRate = mate.seatRate;
