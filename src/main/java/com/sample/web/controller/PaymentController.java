@@ -118,17 +118,17 @@ public class PaymentController {
 		
 		payment = paymentService.addPayment(paymentForm);
 		
+		// 주석된 아래의 코드는 paymentService의 addPayment 코드에 추가되는 것으로 변경 (트랜잭션 처리)
 		// performance_info의 reserveCount 변경
-		Performance performance = payment.getReserve().getPerformance();	// main 아이디가 저장됨
-		//System.out.println("예약 카운트용: "+performance.getId());// main아이디
-		
+		//Performance performance = payment.getReserve().getPerformance();	// main 아이디가 저장됨
+				
 		// main id를 통해 performanceDetailDto 정보 조회
-		PerformanceDetailDto performanceOrigin = performanceService.getPerformanceByPerformanceMainId(performance.getId());
+		//PerformanceDetailDto performanceOrigin = performanceService.getPerformanceByPerformanceMainId(performance.getId());
 		
 		//System.out.println("이전 예약자수: " + performanceOrigin.getReserveCount());
-		performance.setReserveCount(performanceOrigin.getReserveCount());
-		performance.setId(performanceOrigin.getId()); 	// info 아이디로 변경
-		performanceService.updatePerformanceReserveCount(performance);
+		//performance.setReserveCount(performanceOrigin.getReserveCount());
+		//performance.setId(performanceOrigin.getId()); 	// info 아이디로 변경
+		//performanceService.updatePerformanceReserveCount(performance);
 		
 		userService.updateUser(user);
 		userPoint.setPayment(payment);

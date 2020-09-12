@@ -522,30 +522,32 @@
 	</select>
 	
 	<select id="getGenderReserveCountByPerformanceInfoIdAndGender" parameterType="PerformanceGenderReserveStats"
-		resultType="int">
+		resultType="int">				
 		SELECT COUNT(*) AS reserveCount
 		FROM (
 			SELECT 
-				DISTINCT  A.reserveUser, B.infoId, C.gender
+				A.reserveUser, B.infoId, C.gender
 			FROM 
 				reserve_main A
 			JOIN 
 				performance_main B ON A.performanceId = B.id 
 			JOIN
 				user_main C ON A.reserveUser = C.id
+			JOIN
+				performance_info D ON B.infoId = D.id
 			WHERE 
-				B.infoId = #{performanceInfoId}
+				D.id = #{performanceInfoId}
 			AND 
 				C.gender LIKE #{gender}
-		) D
+		) F
 	</select>
 	
 	<select id="getAgeGroupReserveCountByPerformanceInfoIdAndAge" parameterType="PerformanceAgeReserveStats"
 	resultType="int">
 		
-		SELECT COUNT(*) 
+		SELECT COUNT(*) AS reserveCount
 		FROM (
-			SELECT DISTINCT  A.reserveUser, B.infoId, C.gender, C.birthday, CURDATE(),
+			SELECT A.reserveUser, B.infoId, C.gender, C.birthday,
 				<![CDATA[(YEAR(CURDATE())-YEAR(C.birthday))-(RIGHT(CURDATE(),5) < RIGHT(C.birthday,5))]]> AS age
 			FROM 
 				reserve_main A
@@ -553,25 +555,27 @@
 				performance_main B ON A.performanceId = B.id 
 			JOIN
 				user_main C ON A.reserveUser = C.id
+			JOIN 
+				performance_info D ON B.infoId = D.id
 			WHERE 
-				B.infoId = #{performanceInfoId}
-		)D
+				D.id = #{performanceInfoId}
+		)F
 		WHERE 
 			<choose>
 				<when test="ageGroup == 10">
-					<![CDATA[D.age < 20]]>
+					<![CDATA[F.age < 20]]>
 				</when>
 				<when test="ageGroup == 20">
-					D.age between 20 and 29
+					F.age between 20 and 29
 				</when>
 				<when test="ageGroup == 30">
-					D.age between 30 and 39
+					F.age between 30 and 39
 				</when>
 				<when test="ageGroup == 40">
-					D.age between 40 and 49
+					F.age between 40 and 49
 				</when>
 				<when test="ageGroup == 50">
-					<![CDATA[D.age >= 50]]>
+					<![CDATA[F.age >= 50]]>
 				</when>
 			</choose>
 	</select>

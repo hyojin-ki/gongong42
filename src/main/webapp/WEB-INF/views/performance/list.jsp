@@ -33,31 +33,6 @@
 		<%@ include file="../common/navi.jsp"%>
 	</div>
 
-	<!-- 테스트용 db -->
-	
-	
-	<div style="display: none;">
-		<c:set var="loop" value="false" />
-		<c:forEach var="performance" items="${performances }"
-			varStatus="status">
-			<c:if test="${not loop }">
-				<c:choose>
-					<c:when test="${status.count eq 4}">
-						<c:set var="loop" value="true" />
-					</c:when>
-					<c:otherwise>
-						<p>${status.count} ${performance.title }, 예매수:
-							${performance.reserveCount }</p>
-					</c:otherwise>
-				</c:choose>
-			</c:if>
-
-
-		</c:forEach>
-	</div>
-	<!-- 테스트용 db끝 -->
-
-
 	<div class="body" style="margin-top: 50px;">
 		<div class="container-fluid">
 			<div class="row">
@@ -77,6 +52,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="row h-50">
 				<div class="col-12">
 					<!-- 배너광고 슬라이드 시작  -->
@@ -132,6 +108,9 @@
 																			test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
 																			<c:set var="path" value="${performance.imagePath }" />
 																		</c:when>
+																		<c:when test="${performance.imagePath eq '' }">
+																		 	<c:set var="path" value="/resources/sample-images/noimage.png"/>
+																		 </c:when>
 																		<c:otherwise>
 																			<c:set var="path"
 																				value="/resources/sample-images/${performance.imagePath }" />
@@ -139,36 +118,14 @@
 																	</c:choose>
 																	<img class="card-img-top img-thumbnail" src="${path }"
 																		alt="" onclick="showDetail(${performance.id})"
-																		style="cursor: pointer; width: 438px; height: 463px;" />
-																	
-																	<!-- 슬라이드 태그 창		-->
-																	<!--  																  
-																	<div class="row">
-																		<div class="col-9  mt-2">
-																			<c:forEach var="genre" items="${performance.genres }">
-																				<a class="btn btn-link"
-																					href="/performance/list.do?category=${performance.category }&genre=${genre }">
-																					#${genre } </a>
-																			</c:forEach>
-																		</div>
-																	</div>
-																	-->
-																	<!-- 슬라이드 태그창 끝 -->
+																		style="cursor: pointer; width: 438px; height: 463px;" />																																		
 																</div>
-
 															</div>
-															<!-- card -->
+															<!-- card 끝 -->
 														</div>
 													</div>
 													<div class="col-4 text-center ele-opacity"
-														style="margin: auto 0;">
-														<!--  
-														<div class="text-white font-weight-bold"
-															style="font-size: 2rem;">개봉임박!</div>
-															-->
-														<!--  
-														<hr style="background-color: #fff;" />
-														-->
+														style="margin: auto 0;">														
 														<div class="text-white font-weight-bolder"
 															style="font-size: 2rem;">
 															<c:choose>
@@ -185,14 +142,12 @@
 																			청소년관람불가
 																		</c:when>
 															</c:choose>
-
 														</div>
 														<hr style="background-color: #fff;" />
 														<div class="text-white mt-2" style="font-size: 2rem;">
 															<div>좋아요수: <label id="${performance.id }likesSlide">${performance.likes }</label></div>
 															<div>예매횟수: ${performance.reserveCount }</div>
-														</div>
-														  
+														</div>														  
 														<div class="text-white mt-3" style="font-size: 1.5rem;">
 															<c:forEach var="seat" items="${performance.seatPrices }">
 																<div>
@@ -201,27 +156,22 @@
 																	원
 																</div>
 															</c:forEach>
-														</div>
-														
+														</div>														
 														<div class="text-white mt-3" style="font-size: 1.5rem;">
 															<c:forEach var="genre" items="${performance.genres }">
 																<a class="btn btn-link text-white"
 																	href="/performance/list.do?category=${performance.category }&genre=${genre }"
 																	style="font-size: 1.2rem;">
-																	#${genre } </a>
-																
+																	#${genre } </a>																
 															</c:forEach>
-														</div>
-																												
+														</div>																												
 														<div class="mt-3">
-
 															<button type="button" class="btn btn-info btn-lg mr-3"
 																onclick="showDetail(${performance.id})">상세보기</button>
 															<button type="button" class="btn btn-danger btn-lg"
 																onclick="buyTicket(${performance.id})">예매하기</button>
 														</div>
 													</div>
-
 												</div>
 											</div>
 										</div>
@@ -241,8 +191,9 @@
 					</div>
 					<!-- 배너광고 슬라이드 끝  -->
 				</div>
-			</div>
+			</div>			
 			<!-- 배너 광고 끝 -->
+						
 			<div class="row mt-5 justify-content-center">
 				<div class="col-8">
 					<div class="d-flex justify-content-between">
@@ -262,7 +213,6 @@
 					<hr />
 				</div>
 			</div>
-
 
 			<div class="row mt-2 justify-content-center">
 				<div class="col-8 border p-3">
@@ -309,7 +259,6 @@
 								</c:forEach>
 							</div>
 						</div>
-
 						<div class="form-group">
 							<div class="form-inline ">
 								<div>
@@ -355,19 +304,21 @@
 			<div class="row mt-4 justify-content-center">
 				<!-- 공연 목록 시작 -->
 				<div class="col-8 mt-3">
-
 					<c:forEach var="performance" items="${performances }">
 						<div class="row mt-2 mb-3">
 							<!-- 공연정보 카드 1 시작 -->
 							<div class="col-12">
 								<div class="card">
 									<div class="card-body">
-										<div class="row">
+										<div class="row"> <!-- 이미지 및 공연기본정보 시작-->
 											<div class="col-3">
 												<c:choose>
 													<c:when
 														test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
 														<c:set var="path" value="${performance.imagePath }" />
+													</c:when>
+													<c:when test="${performance.imagePath eq '' }">
+													 	<c:set var="path" value="/resources/sample-images/noimage.png"/>
 													</c:when>
 													<c:otherwise>
 														<c:set var="path"
@@ -418,7 +369,6 @@
 																		value="${performance.startDate }"
 																		pattern="yyyy년 M월 d일" /> ~ <fmt:formatDate
 																		value="${performance.endDate }" pattern="yyyy년 M월 d일" />
-
 																</td>
 															</tr>
 															<tr>
@@ -448,43 +398,14 @@
 															</tr>
 														</table>
 													</div>
-													<!-- 공연 간단 정보창 끝 -->
-													<!-- 메이트 정보(보여주지 않음) -->
-													<div class="col-5">
-														<div class="row justify-content-center">
-															<div class="col-12">
-																<div class="card" style="display: none;">
-																	<div class="card-body">
-																		<div class="mb-4">
-																			<i class='fas fa-bullhorn mr-2'
-																				style='font-size: 24px'></i>
-																			<h6 class="d-inline font-weight-bold">메이트 모집중</h6>
-																		</div>
-																		<div>
-																			<h6>현재 00/000명이 해당 공연의 메이트가 되었습니다.</h6>
-																		</div>
-																		<div class="progress mt-3">
-																			<div
-																				class="progress-bar bg-danger progress-bar-striped"
-																				role="progressbar" style="width: 75%;"
-																				aria-valuenow="75" aria-valuemin="0"
-																				aria-valuemax="100">75%</div>
-																		</div>
-																		<div class="mt-3 ">
-																			<h6 class="d-inline">메이트 그룹 현황</h6>
-																			<span class="d-inline">00/00</span>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<!-- 메이트 그룹 창 끝 -->
+													<!-- 공연 간단 정보창 끝 -->													
+													<div class="col-5">														
+													</div>												
 												</div>
 												<!-- 공연정보 표시끝 -->
 											</div>
-										</div>
-										<div class="row mt-2 p-2 ">
+										</div><!-- 이미지 및 공연기본정보 끝-->
+										<div class="row  p-2 ">
 											<!-- 좋아요수, 예메횟수, 예매하기, 상세보기 버튼그룹 -->
 											<div class="col-12 d-flex justify-content-between">
 												<div>
@@ -500,32 +421,13 @@
 													</div>													
 												</div>
 												<div>
-													<button type="button" class="btn btn-outline-danger mr-2"
+													<button type="button" class="btn btn-danger mr-2"
 														onclick="buyTicket(${performance.id})">예매하기</button>
 													<button type="button" class="btn btn-outline-dark"
 														onclick="showDetail(${performance.id})">상세보기</button>
 												</div>
 											</div>
-										</div>
-										<!-- 예매하기 상세보기 버튼그룹 끝 -->
-										<!-- 사용자가 보는 창에선 수정하기와 삭제하기가 보이지 않도록 한다 -->
-										<!--  
-									<div class="row mt-2 p-2">
-										<div class="col-12 d-flex justify-content-end">
-											<button type="button" class="btn btn btn-info mr-2"
-													onclick="updatePerformance(${performance.id})">수정하기</button>
-											<button type="button" class="btn btn btn-danger "
-													onclick="deletePerformance(${performance.id})">삭제하기</button>
-										</div>
-									</div>
-									-->
-										<!--  
-									<div class="row">
-										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
-											href="#">#액션</a><a href="#">#스릴러</a></label>
-									</div>
-									-->
-										<!-- 태그 창 끝 -->
+										</div>										
 									</div>
 									<!-- card body 끝 -->
 								</div>
@@ -535,8 +437,6 @@
 						</div>
 						<!-- 카드 row끝 공연정보카드1 끝남-->
 					</c:forEach>
-
-
 					<!-- 카드 row끝 -->
 				</div>
 			</div>
@@ -560,7 +460,7 @@
 								<div class="card-body">
 									<div class="row">
 										<div class="col-3">
-											<img src="/resources/sample-images/movie_image2.jpg"
+											<img src="/resources/sample-images/noimage.png"
 												class="img-thumbnail" id="modalImg">
 										</div>
 										<div class="col-9">
@@ -609,32 +509,11 @@
 													</table>
 												</div>
 												<!-- 공연 간단 정보창 끝 -->
+												<!-- 지도  -->
 												<div class="col-5">
 													<div class="row justify-content-center">
 														<div class="col-12">
-															<div class="card">
-																<!-- 뒷풀이게시판 -->
-																<div class="card-body" style="display: none;">
-																	<div class="mb-4">
-																		<i class='fas fa-bullhorn mr-2'
-																			style='font-size: 24px'></i>
-																		<h6 class="d-inline font-weight-bold">메이트 모집중</h6>
-																	</div>
-																	<div>
-																		<h6>현재 00/100명이 해당 공연의 메이트가 되었습니다.</h6>
-																	</div>
-																	<div class="progress mt-3">
-																		<div
-																			class="progress-bar bg-danger progress-bar-striped"
-																			role="progressbar" style="width: 75%;"
-																			aria-valuenow="75" aria-valuemin="0"
-																			aria-valuemax="100">75%</div>
-																	</div>
-																	<div class="mt-3 ">
-																		<h6 class="d-inline">메이트 그룹 현황</h6>
-																		<span class="d-inline">00/30</span>
-																	</div>
-																</div>
+															<div class="card">																
 																<!-- 카카오맵 api by LMS (start 2020.08.26) -->
 																<div class="card-body">
 																	<div id="map" style="width: 380px; height: 300px;"></div>
@@ -643,7 +522,7 @@
 														</div>
 													</div>
 												</div>
-												<!-- 메이트 그룹 창 끝 -->
+												<!-- 지도  끝 -->
 											</div>
 											<!-- 공연정보 표시끝 -->
 										</div>
@@ -663,41 +542,15 @@
 												<div class="d-inline" style="display:none;">
 													<i class='fas fa-cart-arrow-down mr-2' style='font-size: 24px'></i>													
 													<label id="modalReserveCount"></label>
-												</div>
-											
+												</div>											
 											</div>
-
 										</div>
 									</div>
-									<div class="row justify-content-center">
-										<!--  
-										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
-											href="#">#액션</a><a href="#">#스릴러</a></label>
-									-->
-										<!--
-										여기서 버튼 onclick 정의하지 말고 아래에 클릭이벤트 정의
-										$("#bton").click(function(no){
-										})
-									-->
-
+									<div class="row justify-content-center">										
 										<button type="button"
-											class="btn btn-outline-danger mr-4 btn-lg" id="modalBuyBtn"
-											data-no="">예매하기</button>
-										<button type="button" class="btn btn-outline-dark btn-lg"
-											style="display: none;" id="modalMateGroupBtn" data-no="">메이트
-											그룹</button>
-									</div>
-
-									<!--  
-									<div class="row justify-content-end mt-3">
-										<button type="button" class="btn btn btn-info mr-4 btn-lg"
-												id="modalUpdateBtn" data-no="" >수정하기</button>
-										<button type="button" class="btn btn btn-danger mr-2 btn-lg"
-												id="modalDeleteBtn" data-no="">삭제하기</button>	
-									</div>
-									-->
-
-									<!-- 태그 창 끝 -->
+											class="btn btn-danger mr-4 btn-lg" id="modalBuyBtn"
+											data-no="">예매하기</button>										
+									</div>								
 								</div>
 								<!-- card body 끝 -->
 							</div>
@@ -726,13 +579,7 @@
 											<tr>
 												<th>공연기간(개봉일)</th>
 												<td id="modalDetailPeriod"></td>
-											</tr>
-											<!--  
-											<tr>
-												<th>공연시간</th>
-												<td id="modalDetailTime"></td>
-											</tr>
-											-->
+											</tr>											
 											<tr>
 												<th>러닝타임</th>
 												<td id="modalDetailRunningTime"></td>
@@ -763,8 +610,10 @@
 										<div class="col-5">
 											<div class="card">
 												<div class="card-body">
-													<canvas id="chartGender">
-													</canvas>
+													<div id="chartGenderDiv">
+														<canvas id="chartGender">
+														</canvas>													
+													</div>
 													<div id="defaultChart" class="text-center"
 														style="display: none;"></div>
 												</div>
@@ -773,8 +622,10 @@
 										<div class="col-5">
 											<div class="card" >
 												<div class="card-body">
-													<canvas id="chartAge">
-													</canvas>
+													<div id="chartAgeDiv">
+														<canvas id="chartAge">
+														</canvas>													
+													</div>
 													<div id="defaultAgeChart" class="text-center"
 														style="display: none;"></div>
 												</div>
@@ -783,44 +634,29 @@
 									</div>
 								</div>
 								<!-- 공연 상세정보 -->
-
 							</div>
 							<!-- 공연상세정보 끝 -->
-
 						</div>
-						<!-- Modal footer -->
-
-						<!--  -->
-
 					</div>
 				</div>
 			</div>
 			<!-- 공연 상세정보 모달창 끝 -->
 
-
-
 			<div class="row mt-5 justify-content-center">
 				<!-- 페이지네이션 -->
 				<nav aria-label="Page navigation example">
-
 					<c:if test="${pageNo > 1 }">
 						<button class="btn btn-light" onclick="goPage('${pageNo-1}')">이전</button>
 					</c:if>
-
 					<c:forEach var="idx" begin="${pagination.beginPage }"
 						end="${pagination.endPage }" step="1">
-
 						<button
 							class="btn btn-light paging-num ${pageNo == idx? 'active': '' }"
 							onclick="goPage('${idx}')">${idx }</button>
-
 					</c:forEach>
-
 					<c:if test="${pageNo < totalPageCount }">
 						<button class="btn btn-light" onclick="goPage('${pageNo+1}')">다음</button>
 					</c:if>
-
-
 				</nav>
 			</div>
 			<!-- 페이지네이션 끝 -->
@@ -839,12 +675,9 @@
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=333f1bf83c9503d02a701757427f6892&libraries=services"></script>
 	<script type="text/javascript">
-$(function(){
-	
-	
+$(function(){	
 	var $checkedAge = $("input[name='age']:checked");
-	
-	
+		
 	$($checkedAge).closest('label').siblings().find('input').prop("checked", false);
 	$($checkedAge).closest('label').removeClass("btn-danger").addClass("btn-outline-danger");
 	
@@ -852,8 +685,7 @@ $(function(){
 		$("#ageAll").prop("checked", false);
 		$("#ageAll").closest('label').removeClass("btn-outline-danger").addClass("btn-outline-danger");
 	}
-	
-	
+		
 	var slides = $(".slide-title-summary");
 	for (var i = 0; i<slides.length; i++) {
 		var slide = $(".slide-title-summary:eq("+i+")");
@@ -863,140 +695,79 @@ $(function(){
 			slideText = slideText.substring(0,18)+"...";			
 		}
 		
-		slide.html(slideText);
-		
-		// 공연장소
-		//var hallName=$(".slide-hallname-summary:eq("+i+")");
-		//var hallNameText= hallName.html();
-		//if (hallNameText.length > 12) {
-		//	hallNameText = hallNameText.substring(0,12)+"...";
-		//}
-		
-		//hallName.html(hallNameText);
-	}
-	
-	
+		slide.html(slideText);		
+	}	
 });
 
 $("#search-form").find("input").change(function() {
-//	console.log("input필드값이 바뀌었습니다.");
-	var $changed = $("#search-form input[name=changed]");
-//	console.log($changed);
-//	console.log("변경전"+$changed.val());
-	
-	$changed.val("Y");
-	
-//	console.log("변경후"+$changed.val());
+	var $changed = $("#search-form input[name=changed]");	
+	$changed.val("Y");	
 	
 });
 
-
-
-
-
 $(":input[name=genre]").closest('label').click(function(event) {
-//	console.log("input필드 중 체크박스값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-//	console.log($changed);
-//	console.log("변경전"+$changed.val());
 	$changed.val("Y");
-//	console.log("변경후"+$changed.val());
 	
 });
 
 $(":input[name=age]").closest('label').click(function(event) {
-//	console.log("input필드 중 라디오값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-//	console.log($changed);
-//	console.log("변경전"+$changed.val());
 	$changed.val("Y");
-//	console.log("변경후"+$changed.val());
 	
 });
 
 
-function goPage(no) {
-	//console.log("page 링크를 눌렀다.");
-	//console.log("page: "+no);
-	if ($("#pageNo").val() == "") {
-		//console.log("비었ㄷ.");
-	}else{
-		
-		//console.log("pageNo="+$("#pageNo").val());
-	}
-	
+function goPage(no) {		
 	$("#pageNo").val(no);
 	$("#search-form").submit();
 }
 
-function searchGenre(genre) {
-	//console.log("clickTag: "+genre);
-	
-	var checked = $("#search-form input[name=genre]:checked");
-	
-	//console.log(checked);
-	
+function searchGenre(genre) {	
+	var checked = $("#search-form input[name=genre]:checked");		
 	var genreVals = $("#search-form input[name=genre]");
-	//console.log(genreVals);
 	
 	for (var idx = 0; idx < genreVals.length; idx++ ) {
 		
 		var genreBtn = genreVals[idx];
-		//console.log($(genreBtn).val());
 		
 		if ($(genreBtn).val() == genre) {
-			//console.log($(genreBtn).val()+"가 누른 태그임");
 			$(genreBtn).prop("checked", true);			
 		}else {
 			$(genreBtn).prop("checked", false);	
 		}		
 	}
 	
-	$("#search-form").submit();
-	
+	$("#search-form").submit();	
 	
 }
 
-
 function selectOrder(option) {
-	//console.log(option);	
 	var optionId = "#"+option;
-	//console.log($(optionId));
 	
 	$(optionId).removeClass("text-dark").addClass("text-danger");
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
-	//console.log("input필드값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	//console.log($changed);
-	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	//console.log("변경후"+$changed.val());
-	
-	//console.log($("#listOrder").val());
 	
 	// 이후 form submit 출력
 	$("#search-form").submit();
 }
 
 $("#performanceStartDay").change(function() {
-	//console.log(this);
-	//console.log($(this).val());
 	
 	var now = new Date().toISOString().substring(0, 10);		
 	var $endDay = $("#performanceEndDay");
 	
 	if ($endDay.val() == "") return;
 	if ($endDay.val() < $(this).val()) {
-		//console.log("시작날짜가 끝나는 날짜보다 커");
 		$(this).val($endDay.val());
 	}
 })
 
 $("#performanceEndDay").change(function() {
-	//console.log(this);
-	//console.log($(this).val());
 	var now = new Date().toISOString().substring(0, 10);	
 	
 	var $startDay = $("#performanceStartDay");
@@ -1007,22 +778,16 @@ $("#performanceEndDay").change(function() {
 		$(this).val("");		
 	}
 	
-	
 })
 
-function buyTicket(no) {
-	//console.log("buyTicket(no="+no+")");
-	
+function buyTicket(no) {	
 	location.href='/payment/step1.do?no='+no;
 }
 
 $("#modalBuyBtn").click(function() {
 	var no = $("#modalBuyBtn").data("no");
-	//console.log("modalBuyBtn(no="+no+")");
 	buyTicket(no);
 })
-
-
 
 function numberWithComma(num)
 {
@@ -1030,11 +795,21 @@ function numberWithComma(num)
 	return num.toString().replace(regexp, ',');
 }
 
+function textWithBr(text) {
+	var text2 = "";
+	for (var i = 0; i < text.length; i++) {
+		if (text.charAt(i) == "\n") {
+			text2 += "</br>";
+		} else {
+			text2 += text.charAt(i);
+		}
+	}
+	return text2;
+}
+
 function showDetail(performanceId) {	
-	console.log("showDetail(performanceId="+performanceId+")");
+	console.log("performanceId="+performanceId);
 	var loginUser="${ LOGIN_USER.id}";
-	console.log("loginUserId: "+loginUser);
-	
 		
 	$.ajax({
 		type:"GET",
@@ -1053,15 +828,12 @@ function showDetail(performanceId) {
 			var age30ReserveStats = data.age30ReserveStats;
 			var age40ReserveStats = data.age40ReserveStats;
 			var age50ReserveStats = data.age50ReserveStats;
-			
-			console.log("manReserveCount: "+ manReserveCount);
-			console.log("womanReserveCount: "+ womanReserveCount);
-			
-			//console.log("디테일을 눌렀다.");
-			
+						
 			var modalImagePath = performance.imagePath;
-			//console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
-			if (modalImagePath.substring(0,4) != 'http') {
+
+			if (modalImagePath == '' ) {
+				modalImagePath = "/resources/sample-images/noimage.png";	
+			} else if (modalImagePath.substring(0,4) != 'http') {
 				modalImagePath="/resources/sample-images/"+performance.imagePath;
 			}
 			
@@ -1079,9 +851,7 @@ function showDetail(performanceId) {
 				performanceGenres += performance.genres[idx]+ " ";				
 			}			
 			
-			$("#modalGenre").text(performanceGenres);	
-			
-			//console.log(performance.runningTime);
+			$("#modalGenre").text(performanceGenres);				
 			$("#modalRunningTime").text(performance.runningTime);
 			
 			var period = performance.startDate + " ~ " +  performance.endDate;		
@@ -1094,8 +864,6 @@ function showDetail(performanceId) {
 				seatPrices += performance.seatPrices[idx].seatRate + "석 "
 				+ numberWithComma(performance.seatPrices[idx].price) + "원 ";
 			}
-			
-			//console.log(seatPrices);
 			
 			$("#modalSeatInfo").text(seatPrices);
 			
@@ -1113,7 +881,6 @@ function showDetail(performanceId) {
 			$("#modalDetailHallName p:eq(0)").text(performance.hallName);
 			$("#modalDetailHallName p:eq(1)").text("("+performance.hallAddress+")");
 			$("#modalDetailPeriod").text(period);
-			//$("#modalDetailTime").text(performance.expla);
 			$("#modalDetailRunningTime").text(performance.runningTime);
 			$("#modalDetailSeatInfo").text(seatPrices);
 			
@@ -1123,35 +890,26 @@ function showDetail(performanceId) {
 				rating = rating+"관람가";
 			}			
 			
-			$("#modalDetailAge").text(rating);
-			$("#modalDetailExplain").text(performance.explain);
-			
+			$("#modalDetailAge").text(rating);												
+			$("#modalDetailExplain").html(textWithBr(performance.explain));						
 			
 			$("#modalBuyBtn").data("no", performance.id);
-			$("#showMateGroupBtn").data("no", performance.id);
 			$("#modalDeleteBtn").data("no", performance.id);
 			$("#modalUpdateBtn").data("no", performance.id);
 			$("#clickLike").data("no", performance.id);
 			$("#clickLike").data("liked", userLiked);	// 이전에 좋아요를 눌렀는지 여부 
-			
-			
-			
+						
 			// 이전에 좋아요 했으면 빨간 하트
 			if (userLiked == "Y") {
 				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red");
 			} else {
 				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");
 			}
-			
-			//console.log("성공함");
-			//console.log(performance);
-			
+						
 			var id = document.getElementById('map');
 			kakaoMap(id, hallInfo);
-			
-			
-			// 통계 그래프 그리기
-			
+						
+			// 통계 그래프 그리기			
 			// 성별 그래프
 			var genderColors=['skyblue', '#e23b3b'];
 			
@@ -1166,8 +924,7 @@ function showDetail(performanceId) {
 							}
 						}
 			};
-			
-						
+									
 			var chDonutData = {
 				labels: ['남자', '여자'], 
 				datasets: [ { 
@@ -1177,21 +934,22 @@ function showDetail(performanceId) {
 				} ]
 			};
 			
+			var $defaultChart = $("#defaultChart");			
+			var $chGenderDiv= $("#chartGenderDiv").empty();
+			$chGenderDiv.html("<canvas id='chartGender'></canvas>");
 			var $chDonut = $("#chartGender"); 
-			var $defaultChart = $("#defaultChart");
 			
 			if ((manReserveCount == 0) && (womanReserveCount == 0)) {
-				console.log("아직 아무도 구매를 하지 않음");
 				
 				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
 				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 성별 예매정보가 없습니다.</p>";
 				
 				$defaultChart.html(defaultImage);
 				$defaultChart.show();
-				$chDonut.hide();
+				$chGenderDiv.hide();
 			} else {
 				$defaultChart.hide();
-				$chDonut.show();
+				$chGenderDiv.show();
 				if ($chDonut) { 
 					new Chart($chDonut, { 
 						type: 'pie', 
@@ -1204,27 +962,24 @@ function showDetail(performanceId) {
 			} // 데이터 값이 있을 때 그래프 그리기 
 			
 			// 나이대별 관람추이
-			var $chBar = $("#chartAge");
-			//var ageCanvas=  document.getElementById('chartAge');
-			//var context = ageCanvas.getContext('2d');			
+			var $chAgeDiv= $("#chartAgeDiv").empty();
 			var $defaultAgeChart = $("#defaultAgeChart");
-			//context.clearRect(0, 0, ageCanvas.width, ageCanvas.height);
-			$("#chartAge").empty();
-			
+			$chAgeDiv.html("<canvas id='chartAge'></canvas>");
+			var $chBar = $("#chartAge");
+									
 			if ((age10ReserveStats == 0) && (age20ReserveStats == 0) && 
 					(age30ReserveStats == 0) && (age40ReserveStats == 0) &&
 					(age50ReserveStats == 0)) {
-				console.log("아직 아무도 구매를 하지 않음");
 				
 				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
 				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 연령대별 예매정보가 없습니다.</p>";
 				
 				$defaultAgeChart.html(defaultImage);
 				$defaultAgeChart.show();
-				$chBar.hide();
+				$chAgeDiv.hide();
 			} else {
 				$defaultAgeChart.hide();
-				$chBar.show();
+				$chAgeDiv.show();
 				
 				if ($chBar) {
 					new Chart($chBar, {
@@ -1263,62 +1018,33 @@ function showDetail(performanceId) {
 						}
 						
 					})		
-				}// bar 끝
-				
-				
+				}// bar 끝				
 			} // 연령대별 예매정보가 있다면 끝
-			
-			
-			
+					
 		} // success 끝
 	})
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	$("#myModal").modal("show");
 	// modal 창이 열리는 시점(스타일이 변경되는 시점)에서 지도 영역이 변경되었다고 알려주는 함수 호출
 	map.relayout();
-	
-	
+		
 };
 
-
-
 $("#clickLike").click(function(){
-	//console.log(this);
-	
-	//console.log($(this).find("i"));
 	
 	// 로그인 여부 확인하고 로그인 상태이면, 좋아요 표시
 	var loginUser="${ LOGIN_USER.id}";
-	//console.log(loginUser);
 	
 	if (loginUser == "") {
-		//console.log("로그인필요");
 		location.href="/signin.do";
 		return;
-	} else {
-		//console.log("로그인됨");
-		// 아래의 작업을 수행한다.
-	}
+	} 
 	
 	var performanceId = $("#clickLike").data("no");
 	var liked = $("#clickLike").data("liked")
 	var modalLike = parseInt($("#modalLikes").text());
 	var listModalLike = parseInt($("#"+performanceId+"likes").text());
-	
-	//console.log("clickLike-info-no:"+performanceId);
-	//console.log("clickLike-info-liked:"+liked);	// 이미 좋아요를 했으면 Y, 아니면 N
-	//console.log("modalLike:"+modalLike);
-	//console.log("listModalLike:"+listModalLike);
-	
-	
+			
 	if (liked == "N"){	// 빈 하트라면, 좋아요를 하지 않았다면,
 			
 		$.ajax({
@@ -1328,7 +1054,6 @@ $("#clickLike").click(function(){
 			dataType: 'json',
 			success: function(data) {
 				var successYn = data.successYn;
-				//console.log("successYn: "+ successYn);
 				
 				$("#clickLike").data("liked","Y");	// 좋아요를 눌렀다고 정보변경
 				$("#clickLike").find("i").removeClass("far").addClass("fas").css("color", "red"); // 하트 색깔 변경
@@ -1337,8 +1062,6 @@ $("#clickLike").click(function(){
 				$("#modalLikes").text(updateLikes);	// 모달에서 보이는 좋아요 수 변경
 				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
 				$("#"+performanceId+"likesSlide").text(updateLikes);	// 공연슬라이드에서 좋아요 수 변경
-				
-				//console.log("liked: "+$("#clickLike").data("liked"));
 			}
 		})
 		
@@ -1351,7 +1074,6 @@ $("#clickLike").click(function(){
 			dataType: 'json',
 			success: function(data) {
 				var successYn = data.successYn;
-				//console.log("successYn: "+ successYn);
 				
 				$("#clickLike").data("liked", "N");	// 좋아요를 취소햇다고 정보변경
 				$("#clickLike").find("i").removeClass("fas").addClass("far").css("color", "black");	// 하트 색깔 변경
@@ -1362,53 +1084,35 @@ $("#clickLike").click(function(){
 				$("#"+performanceId+"likes").text(updateLikes);	// 공연목록에서 보이는 좋아요 수 변경
 				$("#"+performanceId+"likesSlide").text(updateLikes);	// 공연슬라이드에서 좋아요 수 변경
 				
-				//console.log("liked: "+$("#clickLike").data("liked"));
 			}
-		})
-		
-	}
-	
-	
+		})		
+	}	
 })
-
-//$("#goBoard").click(function() {
-	// board로 보냄
-//})
 
 
 $(function() {
 	$(":input[name=genre]").closest('label').click(function(event) {
 		event.preventDefault();
-		//console.log("before", ($(this).find('input').prop("checked")));
 
 		$(this).find('input').prop("checked", !($(this).find('input').prop("checked")))
-		
-		//console.log("after", ($(this).find('input').prop("checked")));
-		
-		//console.log($(this).find('input').val());
-		
-		
+				
 		
 		if ($(this).find('input').prop("checked")) {
-			
-			
+						
 			$(this).removeClass("btn-outline-danger").addClass("btn-danger");
-			
-			// 무시해도되는 코드임
+						
 			// 전체 누르면 다른 버튼은 취소되도록
 			if ($(this).find('input').val()=="전체") {				
 				$(this).siblings().find('input').prop("checked", false);
 				$(this).siblings().removeClass("btn-danger").addClass("btn-outline-danger");				
 			}else {	// 전체 말고 다른 버튼 눌렀을 때 전체 버튼이 이미 눌러져 있는경우 전체버튼 체크해제됨
 				if ($("#genreAll").prop("checked")) {
-					//console.log("다른 장르버튼 눌렀을때 전체버튼이 체크되어있는가");
+					//다른 장르버튼 눌렀을때 전체버튼이 체크되어있는가
 					$("#genreAll").closest('label').removeClass("btn-danger").addClass("btn-outline-danger");	
 					$("#genreAll").prop("checked", false);
-				}	
-			
+				}				
 			}			
 			
-			//console.log("체크되었음");
 		} else {
 			$(this).removeClass("btn-danger").addClass("btn-outline-danger");
 		}

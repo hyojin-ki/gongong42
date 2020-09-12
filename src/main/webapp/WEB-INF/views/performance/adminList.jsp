@@ -26,17 +26,14 @@
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <style type="text/css">
-
 	.title-inactive {
 		color: #424242;
-	}
-	
+	}	
 	
 	.title-active {
 		color: #DF013A;
 	}
-	
-	
+		
 </style>
 </head>
 <body>
@@ -66,9 +63,7 @@
 				          </li>       
 				        </ul>
 				      </li>
-				    </ul>
-							
-					
+				    </ul>					
 				</div>
 			</div>
 			
@@ -91,7 +86,6 @@
 					<hr />
 				</div>
 			</div>
-
 
 			<div class="row mt-2 justify-content-center">
 				<div class="col-12 border p-3">
@@ -154,8 +148,7 @@
 						</div>
 						<div class="form-group">
 							<label>관람연령</label>
-							<div class="btn-group-toggle  " data-toggle="buttons">
-							
+							<div class="btn-group-toggle  " data-toggle="buttons">							
 								<label class="btn btn-outline-danger mb-2"> 
 									<input type="radio" name="age" value="0" ${(empty param.age || param.age eq '0') ? "checked" : '' } id="ageAll">전체
 								</label> 
@@ -181,7 +174,6 @@
 			<div class="row mt-4 justify-content-center">
 				<!-- 공연 목록 시작 -->
 				<div class="col-12 mt-3">
-
 				<c:forEach var="performance" items="${performances }">
 					<div class="row mt-2 mb-3"> <!-- 공연정보 카드 1 시작 -->				
 						<div class="col-12">
@@ -192,6 +184,9 @@
 										 <c:choose>
 											 <c:when test="${fn:substring(performance.imagePath, 0,4) eq 'http' }">
 											 	<c:set var="path" value="${performance.imagePath }"/>
+											 </c:when>
+											 <c:when test="${performance.imagePath eq '' }">
+											 	<c:set var="path" value="/resources/sample-images/noimage.png"/>
 											 </c:when>
 											 <c:otherwise>
 											 	<c:set var="path" value="/resources/sample-images/${performance.imagePath }"/>
@@ -244,8 +239,7 @@
 															<td>
 																<fmt:formatDate value="${performance.startDate }" pattern="yyyy년 M월 d일" />
 																~
-																<fmt:formatDate value="${performance.endDate }" pattern="yyyy년 M월 d일" />
-																
+																<fmt:formatDate value="${performance.endDate }" pattern="yyyy년 M월 d일" />																
 															</td>
 														</tr>
 														<tr>
@@ -277,42 +271,13 @@
 													</table>
 												</div>
 												<!-- 공연 간단 정보창 끝 -->
-												<!-- 메이트 정보(보여주지 않음) -->
-												<div class="col-5">
-													<div class="row justify-content-center">
-														<div class="col-12">
-															<div class="card" style="display:none;">
-																<div class="card-body" >
-																	<div class="mb-4">
-																		<i class='fas fa-bullhorn mr-2'
-																			style='font-size: 24px'></i>
-																		<h6 class="d-inline font-weight-bold">메이트 모집중</h6>
-																	</div>
-																	<div>
-																		<h6>현재 00/000명이 해당 공연의 메이트가 되었습니다.</h6>
-																	</div>
-																	<div class="progress mt-3">
-																		<div
-																			class="progress-bar bg-danger progress-bar-striped"
-																			role="progressbar" style="width: 75%;"
-																			aria-valuenow="75" aria-valuemin="0"
-																			aria-valuemax="100">75%</div>
-																	</div>
-																	<div class="mt-3 ">
-																		<h6 class="d-inline">메이트 그룹 현황</h6>
-																		<span class="d-inline">00/00</span>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- 메이트 그룹 창 끝 -->
+												<div class="col-5">													
+												</div>												
 											</div>
 											<!-- 공연정보 표시끝 -->
 										</div>
 									</div>
-									<div class="row mt-2 p-2 "> <!-- 좋아요수, 예매횟수, 예매하기, 상세보기 버튼그룹 -->
+									<div class="row p-2 "> <!-- 좋아요수, 예매횟수, 예매하기, 상세보기 버튼그룹 -->
 										<div class="col-12 d-flex justify-content-between">
 											<div>
 												<!-- 좋아요 수 표시 -->
@@ -325,11 +290,7 @@
 													<i class='fas fa-cart-arrow-down mr-2' style='font-size: 24px'></i><label>${performance.reserveCount }</label>
 												</div>
 											</div>
-											<div>
-												<!--  
-												<button type="button" class="btn btn-outline-danger mr-2"
-													onclick="buyTicket(${performance.id})">예매하기</button>
-												-->
+											<div>												
 												<button type="button" class="btn btn-outline-dark mr-2"
 													onclick="showDetail(${performance.id})">상세보기</button>
 												<button type="button" class="btn btn btn-info mr-2"
@@ -338,7 +299,7 @@
 													onclick="deletePerformance(${performance.id})">삭제하기</button>
 											</div>
 										</div>
-									</div>	<!-- 예매하기 상세보기 버튼그룹 끝 -->
+									</div>	<!-- 상세보기 수정하기 삭제하기 버튼그룹 끝 -->
 									
 									<!-- 태그 창 끝 -->
 								</div>
@@ -349,9 +310,7 @@
 						<!-- 카드 row col-12끝 -->
 					</div>
 					<!-- 카드 row끝 공연정보카드1 끝남-->
-				</c:forEach>
-				
-					
+				</c:forEach>				
 					<!-- 카드 row끝 -->
 				</div>
 			</div>
@@ -362,20 +321,18 @@
 				<div class="modal-dialog"
 					style="max-width: 100%; width: 80%; display: table;">
 					<div class="modal-content">
-
 						<!-- Modal Header -->
 						<div class="modal-header">
 							<h6 class="modal-title font-weight-bold">공연 상세정보</h6>
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 						</div>
-
 						<!-- Modal body -->
 						<div class="modal-body">
 							<div class="card">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-3">
-											<img src="/resources/sample-images/movie_image2.jpg"
+											<img src="/resources/sample-images/noimage.png"
 												class="img-thumbnail" id="modalImg">
 										</div>
 										<div class="col-9">
@@ -428,29 +385,7 @@
 												<div class="col-5">
 													<div class="row justify-content-center">
 														<div class="col-12">
-															<div class="card">
-																<!-- 뒷풀이게시판 -->
-																<div class="card-body" style="display:none;">
-																	<div class="mb-4">
-																		<i class='fas fa-bullhorn mr-2'
-																			style='font-size: 24px'></i>
-																		<h6 class="d-inline font-weight-bold">메이트 모집중</h6>
-																	</div>
-																	<div>
-																		<h6>현재 00/100명이 해당 공연의 메이트가 되었습니다.</h6>
-																	</div>
-																	<div class="progress mt-3">
-																		<div
-																			class="progress-bar bg-danger progress-bar-striped"
-																			role="progressbar" style="width: 75%;"
-																			aria-valuenow="75" aria-valuemin="0"
-																			aria-valuemax="100">75%</div>
-																	</div>
-																	<div class="mt-3 ">
-																		<h6 class="d-inline">메이트 그룹 현황</h6>
-																		<span class="d-inline">00/30</span>
-																	</div>
-																</div>
+															<div class="card">																
 																<!-- 카카오맵 api by LMS (start 2020.08.26) -->
 																<div class="card-body">
 																	<div id="map" style="width:380px; height:300px;"></div>
@@ -458,8 +393,7 @@
 															</div>
 														</div>
 													</div>
-												</div>
-												<!-- 메이트 그룹 창 끝 -->
+												</div>												
 											</div>
 											<!-- 공연정보 표시끝 -->
 										</div>
@@ -467,7 +401,7 @@
 									<div class="row mt-2 ">
 										<div class="col-12 d-flex justify-content-between">
 											<div>
-												<!-- 좋아요수, 뒷풀이 게시판 수 표시 -->
+												<!-- 좋아요수, 예매 수 표시 -->
 												<div class="d-inline mr-2">
 													<button type="button" class="btn btn-sm" id="clickLike"
 													data-no="" data-liked="">
@@ -481,42 +415,15 @@
 													<i class='fas fa-cart-arrow-down mr-2' style='font-size: 24px'></i>													
 													<label id="modalReserveCount"></label>
 												</div>
-											</div>
-											
+											</div>											
 										</div>
 									</div>
-									<div class="row justify-content-center">
-									<!--  
-										<label class="pr-2 pl-2"><a href="#">#범죄</a><a
-											href="#">#액션</a><a href="#">#스릴러</a></label>
-									-->
-									<!--
-										여기서 버튼 onclick 정의하지 말고 아래에 클릭이벤트 정의
-										$("#bton").click(function(no){
-										})
-									-->
-									<!--  
-										<button type="button" class="btn btn-outline-danger mr-4 btn-lg"
-											id="modalBuyBtn" data-no="">예매하기</button>
-										<button type="button" class="btn btn-outline-dark btn-lg" style="display:none;"
-											id="modalMateGroupBtn" data-no="">메이트 그룹</button>
-									-->		
+									<div class="row justify-content-center">										
 										<button type="button" class="btn btn btn-info mr-4 btn-lg"
 												id="modalUpdateBtn" data-no="" >수정하기</button>
 										<button type="button" class="btn btn btn-danger mr-4 btn-lg"
 												id="modalDeleteBtn" data-no="">삭제하기</button>
-									</div>
-									
-									<!--  
-									<div class="row justify-content-end mt-3">
-										<button type="button" class="btn btn btn-info mr-4 btn-lg"
-												id="modalUpdateBtn" data-no="" >수정하기</button>
-										<button type="button" class="btn btn btn-danger mr-2 btn-lg"
-												id="modalDeleteBtn" data-no="">삭제하기</button>	
-									</div>
-									-->
-									
-									<!-- 태그 창 끝 -->
+									</div>						
 								</div>
 								<!-- card body 끝 -->
 							</div>
@@ -544,13 +451,7 @@
 											<tr>
 												<th>공연기간(개봉일)</th>
 												<td id="modalDetailPeriod"></td>
-											</tr>
-											<!--  
-											<tr>
-												<th>공연시간</th>
-												<td id="modalDetailTime"></td>
-											</tr>
-											-->
+											</tr>											
 											<tr>
 												<th>러닝타임</th>
 												<td id="modalDetailRunningTime"></td>
@@ -571,16 +472,17 @@
 									<div class="mt-3" style="width:85%">
 										 <p id="modalDetailExplain"></p>
 									</div>									
-								</div>
-									
+								</div>									
 								<div class="mt-3 p-2">
 									<h5 class="font-weight-bold">성별 나이별 관람추이</h5>				
 									<div class="row mt-3 p-2 justify-content-start">
 										<div class="col-5">
 											<div class="card">
 												<div class="card-body">
-													<canvas id="chartGender">
-													</canvas>
+													<div id="chartGenderDiv">
+														<canvas id="chartGender">
+														</canvas>													
+													</div>
 													<div id="defaultChart" class="text-center"
 														style="display: none;"></div>
 												</div>
@@ -589,63 +491,38 @@
 										<div class="col-5">
 											<div class="card" >
 												<div class="card-body">
-													<canvas id="chartAge">
-													</canvas>
+													<div id="chartAgeDiv">
+														<canvas id="chartAge">
+														</canvas>													
+													</div>
 													<div id="defaultAgeChart" class="text-center"
 														style="display: none;"></div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div> <!-- 공연 상세정보 -->	
-															
-							</div>	<!-- 공연상세정보 끝 -->						
-							
-						</div>
-						<!-- Modal footer -->
-						
-						<!--  -->						
-						
+								</div> <!-- 공연 상세정보 -->																
+							</div>	<!-- 공연상세정보 끝 -->									
+						</div>						
 					</div>
 				</div>
 			</div> <!-- 공연 상세정보 모달창 끝 -->
 			
-			<!--  
-			<div>
-				테스트용
-				
-				pageNo:  ${pageNo }
-				totalPageCount: ${totalPageCount }
-				rows: ${rows }
-				pagination.beginPage: ${pagination.beginPage }
-				pagination.endPage: ${pagination.endPage }
-			</div>
-			-->
-			
-			
-			
 			<div class="row mt-5 justify-content-center">
 				<!-- 페이지네이션 -->
-				<nav aria-label="Page navigation example">			
-							
+				<nav aria-label="Page navigation example">										
 					<c:if test="${pageNo > 1 }">
 						<button class="btn btn-light"
 						 onclick="goPage('${pageNo-1}')">이전</button>
-					</c:if>
-						
-					<c:forEach var="idx" begin="${pagination.beginPage }" end="${pagination.endPage }" step="1">
-						
+					</c:if>						
+					<c:forEach var="idx" begin="${pagination.beginPage }" end="${pagination.endPage }" step="1">						
 						<button class="btn btn-light paging-num ${pageNo == idx? 'active': '' }"
-						onclick="goPage('${idx}')" >${idx }</button>
-						
-					</c:forEach>	
-						
+						onclick="goPage('${idx}')" >${idx }</button>						
+					</c:forEach>							
 					<c:if test="${pageNo < totalPageCount }">
 						<button class="btn btn-light"
 						 onclick="goPage('${pageNo+1}')">다음</button>
-					</c:if>	
-						
-					
+					</c:if>					
 				</nav>
 			</div>
 			<!-- 페이지네이션 끝 -->
@@ -659,12 +536,9 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=333f1bf83c9503d02a701757427f6892&libraries=services"></script>	
 <script type="text/javascript">
 $(function(){
-	
-	//console.log("시작");
-	
+		
 	var $checkedAge = $("input[name='age']:checked");
-	//console.log($checkedAge);
-	
+		
 	$($checkedAge).closest('label').siblings().find('input').prop("checked", false);
 	$($checkedAge).closest('label').removeClass("btn-danger").addClass("btn-outline-danger");
 		
@@ -672,92 +546,61 @@ $(function(){
 		$("#ageAll").prop("checked", false);
 		$("#ageAll").closest('label').removeClass("btn-outline-danger").addClass("btn-outline-danger");
 	}
-	
-	
+		
 });
 
 function updatePerformance(no) {
-	//console.log("updatePerformance(no="+no+")");
-	
+		
 	var category = '${category}';
 	location.href='/performance/update/main.do?category='+category+'&performanceId='+no;
-	//location.href='/payment/step1.do?no='+no;
+	
 }
 
 function deletePerformance(no) {
-	//console.log("deletePerformance(no="+no+")");
-	
-	var category = '${category}';
-	
+		
+	var category = '${category}';	
 	location.href='/performance/delete.do?category='+category+'&performanceId='+no;
 	
 }
 
 
 
-$("#search-form").find("input").change(function() {
-	//console.log("input필드값이 바뀌었습니다.");
-	var $changed = $("#search-form input[name=changed]");
-	//console.log($changed);
-	//console.log("변경전"+$changed.val());
+$("#search-form").find("input").change(function() {	
+	var $changed = $("#search-form input[name=changed]");	
 	$changed.val("Y");
-	//console.log("변경후"+$changed.val());
-	
+		
 });
 
 $(":input[name=genre]").closest('label').click(function(event) {
-	//console.log("input필드 중 체크박스값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	//console.log($changed);
-	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	//console.log("변경후"+$changed.val());
 	
 });
 
 $(":input[name=age]").closest('label').click(function(event) {
-	//console.log("input필드 중 라디오값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	//console.log($changed);
-	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	//console.log("변경후"+$changed.val());
 	
 });
 
 
 
 function goPage(no) {
-	//console.log("page 링크를 눌렀다.");
-	//console.log("page: "+no);
-	if ($("#pageNo").val() == "") {
-	//	console.log("비었ㄷ.");
-	}else{
-		
-		//console.log("pageNo="+$("#pageNo").val());
-	}
 	
 	$("#pageNo").val(no);
 	$("#search-form").submit();
 }
 
 function searchGenre(genre) {
-	//console.log("clickTag: "+genre);
 	
 	var checked = $("#search-form input[name=genre]:checked");
-	
-	//console.log(checked);
-	
 	var genreVals = $("#search-form input[name=genre]");
-	//console.log(genreVals);
 	
 	for (var idx = 0; idx < genreVals.length; idx++ ) {
 		
 		var genreBtn = genreVals[idx];
-		//console.log($(genreBtn).val());
 		
 		if ($(genreBtn).val() == genre) {
-			//console.log($(genreBtn).val()+"가 누른 태그임");
 			$(genreBtn).prop("checked", true);			
 		}else {
 			$(genreBtn).prop("checked", false);	
@@ -766,49 +609,35 @@ function searchGenre(genre) {
 	
 	$("#search-form").submit();
 	
-	
 }
 
 
 function selectOrder(option) {
-	//console.log(option);	
 	var optionId = "#"+option;
-	//console.log($(optionId));
 	
 	$(optionId).removeClass("text-dark").addClass("text-danger");
 	$(optionId).siblings().removeClass("text-danger").addClass("text-dark");
 	$("#listOrder").val(option);
 	
-	//console.log("input필드값이 바뀌었습니다.");
 	var $changed = $("#search-form input[name=changed]");
-	//console.log($changed);
-	//console.log("변경전"+$changed.val());
 	$changed.val("Y");
-	//console.log("변경후"+$changed.val());
-	
-	//console.log($("#listOrder").val());
 	
 	// 이후 form submit 출력
 	$("#search-form").submit();
 }
 
 $("#performanceStartDay").change(function() {
-	//console.log(this);
-	//console.log($(this).val());
 	
 	var now = new Date().toISOString().substring(0, 10);		
 	var $endDay = $("#performanceEndDay");
 	
 	if ($endDay.val() == "") return;
 	if ($endDay.val() < $(this).val()) {
-		//console.log("시작날짜가 끝나는 날짜보다 커");
 		$(this).val($endDay.val());
 	}
 })
 
 $("#performanceEndDay").change(function() {
-	//console.log(this);
-	//console.log($(this).val());
 	var now = new Date().toISOString().substring(0, 10);	
 	
 	var $startDay = $("#performanceStartDay");
@@ -818,23 +647,7 @@ $("#performanceEndDay").change(function() {
 	if ($(this).val() < $startDay.val()) {
 		$(this).val("");		
 	}
-	
-	//var now = new Date().toISOString().substring(0, 10);	
-	//if ($(this).val() < now) {
-	//	console.log("마감날짜가  오늘보다 작아");
-	//}
-})
-
-function buyTicket(no) {
-	//console.log("buyTicket(no="+no+")");
-	
-	location.href='/payment/step1.do?no='+no;
-}
-
-$("#modalBuyBtn").click(function() {
-	var no = $("#modalBuyBtn").data("no");
-	//console.log("modalBuyBtn(no="+no+")");
-	buyTicket(no);
+		
 })
 
 $("#modalUpdateBtn").click(function() {
@@ -854,6 +667,18 @@ function numberWithComma(num)
 {
 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
 	return num.toString().replace(regexp, ',');
+}
+
+function textWithBr(text) {
+	var text2 = "";
+	for (var i = 0; i < text.length; i++) {
+		if (text.charAt(i) == "\n") {
+			text2 += "</br>";
+		} else {
+			text2 += text.charAt(i);
+		}
+	}
+	return text2;
 }
 
 function showDetail(performanceId) {	
@@ -879,15 +704,12 @@ function showDetail(performanceId) {
 			var age30ReserveStats = data.age30ReserveStats;
 			var age40ReserveStats = data.age40ReserveStats;
 			var age50ReserveStats = data.age50ReserveStats;
-			
-			console.log("manReserveCount: "+ manReserveCount);
-			console.log("womanReserveCount: "+ womanReserveCount);
-			
-			//console.log("디테일을 눌렀다.");
-			
+						
 			var modalImagePath = performance.imagePath;
-			//console.log("ImagePath 시작: " + modalImagePath.substring(0,4));
-			if (modalImagePath.substring(0,4) != 'http') {
+			
+			if (modalImagePath == '' ) {
+				modalImagePath = "/resources/sample-images/noimage.png";	
+			} else if (modalImagePath.substring(0,4) != 'http') {
 				modalImagePath="/resources/sample-images/"+performance.imagePath;
 			}
 			
@@ -906,8 +728,7 @@ function showDetail(performanceId) {
 			}			
 			
 			$("#modalGenre").text(performanceGenres);	
-			
-			//console.log(performance.runningTime);
+						
 			$("#modalRunningTime").text(performance.runningTime);
 			
 			var period = performance.startDate + " ~ " +  performance.endDate;		
@@ -920,9 +741,7 @@ function showDetail(performanceId) {
 				seatPrices += performance.seatPrices[idx].seatRate + "석 "
 				+ numberWithComma(performance.seatPrices[idx].price) + "원 ";
 			}
-			
-			//console.log(seatPrices);
-			
+						
 			$("#modalSeatInfo").text(seatPrices);
 			
 			var tags="";
@@ -950,28 +769,17 @@ function showDetail(performanceId) {
 			}			
 			
 			$("#modalDetailAge").text(rating);
-			$("#modalDetailExplain").text(performance.explain);
-			
-			
-			$("#modalBuyBtn").data("no", performance.id);
-			//$("#showMateGroupBtn").data("no", performance.id);
+			$("#modalDetailExplain").html(textWithBr(performance.explain));		
+						
 			$("#modalDeleteBtn").data("no", performance.id);
 			$("#modalUpdateBtn").data("no", performance.id);
 			$("#clickLike").data("no", performance.id);
 			$("#clickLike").data("liked", userLiked);	// 이전에 좋아요를 눌렀는지 여부 
-			
-			
-			
-			
-			//console.log("성공함");
-			//console.log(performance);
-			
+						
 			var id = document.getElementById('map');
 			kakaoMap(id, hallInfo);
-			
-			
-// 통계 그래프 그리기
-			
+						
+			// 통계 그래프 그리기			
 			// 성별 그래프
 			var genderColors=['skyblue', '#e23b3b'];
 			
@@ -986,8 +794,7 @@ function showDetail(performanceId) {
 							}
 						}
 			};
-			
-						
+									
 			var chDonutData = {
 				labels: ['남자', '여자'], 
 				datasets: [ { 
@@ -997,21 +804,22 @@ function showDetail(performanceId) {
 				} ]
 			};
 			
+			var $defaultChart = $("#defaultChart");			
+			var $chGenderDiv= $("#chartGenderDiv").empty();
+			$chGenderDiv.html("<canvas id='chartGender'></canvas>");
 			var $chDonut = $("#chartGender"); 
-			var $defaultChart = $("#defaultChart");
 			
 			if ((manReserveCount == 0) && (womanReserveCount == 0)) {
-				console.log("아직 아무도 구매를 하지 않음");
-				
+								
 				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
 				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 성별 예매정보가 없습니다.</p>";
 				
 				$defaultChart.html(defaultImage);
-				$defaultChart.show();
-				$chDonut.hide();
+				$defaultChart.show();				
+				$chGenderDiv.hide();
 			} else {
-				$defaultChart.hide();
-				$chDonut.show();
+				$defaultChart.hide();				
+				$chGenderDiv.show();
 				if ($chDonut) { 
 					new Chart($chDonut, { 
 						type: 'pie', 
@@ -1024,27 +832,25 @@ function showDetail(performanceId) {
 			} // 데이터 값이 있을 때 그래프 그리기 
 			
 			// 나이대별 관람추이
-			var $chBar = $("#chartAge");
-			//var ageCanvas=  document.getElementById('chartAge');
-			//var context = ageCanvas.getContext('2d');			
+			var $chAgeDiv= $("#chartAgeDiv").empty();
 			var $defaultAgeChart = $("#defaultAgeChart");
-			//context.clearRect(0, 0, ageCanvas.width, ageCanvas.height);
-			$("#chartAge").empty();
+			$chAgeDiv.html("<canvas id='chartAge'></canvas>");
+			var $chBar = $("#chartAge");
 			
 			if ((age10ReserveStats == 0) && (age20ReserveStats == 0) && 
 					(age30ReserveStats == 0) && (age40ReserveStats == 0) &&
 					(age50ReserveStats == 0)) {
-				console.log("아직 아무도 구매를 하지 않음");
-				
+								
 				var defaultImage = "<img class='mt-5' src='/resources/sample-images/notPrepared.png' width='140px'/>";
 				defaultImage += "<p class='mt-4 mb-4 font-weight-bold'>아직 연령대별 예매정보가 없습니다.</p>";
 				
 				$defaultAgeChart.html(defaultImage);
 				$defaultAgeChart.show();
-				$chBar.hide();
+				
+				$chAgeDiv.hide();
 			} else {
-				$defaultAgeChart.hide();
-				$chBar.show();
+				$defaultAgeChart.hide();				
+				$chAgeDiv.show();
 				
 				if ($chBar) {
 					new Chart($chBar, {
@@ -1083,21 +889,12 @@ function showDetail(performanceId) {
 						}
 						
 					})		
-				}// bar 끝
-				
+				}// bar 끝				
 				
 			} // 연령대별 예매정보가 있다면 끝
 			
 		} // success 끝
-	})
-	
-	
-	
-	
-	
-	
-	
-	
+	})	
 	
 	$("#myModal").modal("show");
 	// modal 창이 열리는 시점(스타일이 변경되는 시점)에서 지도 영역이 변경되었다고 알려주는 함수 호출
@@ -1106,54 +903,32 @@ function showDetail(performanceId) {
 	
 };
 
-
-
 $("#clickLike").click(function(){
-	//console.log(this);
-	
-	//console.log($(this).find("i"));
-	
-	// 로그인 여부 확인하고 로그인 상태이면, 좋아요 표시
-	
-	
-	
+		
 })
-
 
 
 $(function() {
 	$(":input[name=genre]").closest('label').click(function(event) {
 		event.preventDefault();
-		//console.log("before", ($(this).find('input').prop("checked")));
-
+		
 		$(this).find('input').prop("checked", !($(this).find('input').prop("checked")))
 		
-		//console.log("after", ($(this).find('input').prop("checked")));
-		
-		//console.log($(this).find('input').val());
-		
-		
-		
 		if ($(this).find('input').prop("checked")) {
-			
-			
+						
 			$(this).removeClass("btn-outline-danger").addClass("btn-danger");
 			
-			// 무시해도되는 코드임
 			// 전체 누르면 다른 버튼은 취소되도록
 			if ($(this).find('input').val()=="전체") {				
 				$(this).siblings().find('input').prop("checked", false);
 				$(this).siblings().removeClass("btn-danger").addClass("btn-outline-danger");				
 			}else {	// 전체 말고 다른 버튼 눌렀을 때 전체 버튼이 이미 눌러져 있는경우 전체버튼 체크해제됨
 				if ($("#genreAll").prop("checked")) {
-					//console.log("다른 장르버튼 눌렀을때 전체버튼이 체크되어있는가");
+					//다른 장르버튼 눌렀을때 전체버튼이 체크되어있는가
 					$("#genreAll").closest('label').removeClass("btn-danger").addClass("btn-outline-danger");	
 					$("#genreAll").prop("checked", false);
-				}	
-			
-			}			
-			
-			//console.log("체크되었음");
+				}				
+			}									
 		} else {
 			$(this).removeClass("btn-danger").addClass("btn-outline-danger");
 		}

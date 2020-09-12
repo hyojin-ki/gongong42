@@ -995,7 +995,7 @@ public class PerformanceContoller {
 		
 		// 여자 공연예매수
 		womanReserveStats.setPerformanceInfoId(performanceId);
-		womanReserveStats.setGender("W");
+		womanReserveStats.setGender("F");
 		womanReserveStats.setReserveCount(performanceService.getGenderReserveCountByPerformanceInfoIdAndGender(womanReserveStats));
 		
 		// 10대이하 공연예매수

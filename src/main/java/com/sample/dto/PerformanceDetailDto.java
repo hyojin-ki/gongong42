@@ -1,5 +1,7 @@
 package com.sample.dto;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -171,11 +173,24 @@ public class PerformanceDetailDto {
  
 	public List<PerformanceSeatPrice> getSeatPrices() {
 		
-		return seatPrices;
+		return sortSeatPrice(seatPrices);
 	}
 	
 	public void setSeatPrices(List<PerformanceSeatPrice> seatPrices) {
-		this.seatPrices = seatPrices;
+		this.seatPrices = sortSeatPrice(seatPrices);
+	}
+	
+	public List<PerformanceSeatPrice> sortSeatPrice(List<PerformanceSeatPrice> seatPrices) {		
+		Comparator<PerformanceSeatPrice> seatComparator = new Comparator<PerformanceSeatPrice>() {
+
+			@Override
+			public int compare(PerformanceSeatPrice p1, PerformanceSeatPrice p2) {
+				// TODO Auto-generated method stub
+				return p1.getPrice() - p2.getPrice();
+			}			
+		};				
+        Collections.sort(seatPrices,seatComparator);	
+        return seatPrices;
 	}
 	
 	public int getReserveCount() {
