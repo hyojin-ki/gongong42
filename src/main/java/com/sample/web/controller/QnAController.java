@@ -195,7 +195,7 @@ public class QnAController {
 		
 		qnaService.updateQnaImages(map);
 		
-		return "redirect:/admin/qna/list.do";
+		return "redirect:list.do";
 	}
 	
 	@GetMapping("/deleteQuestion.do")
@@ -203,7 +203,7 @@ public class QnAController {
 		
 		qnaService.removeQna(qnaId);
 		
-		return "redirect:/admin/qna/list.do";
+		return "redirect:list.do";
 	}
 	
 	@GetMapping("/questionDetail.do")

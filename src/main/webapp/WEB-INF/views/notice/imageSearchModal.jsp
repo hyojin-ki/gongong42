@@ -192,7 +192,6 @@ $(function() {
 			var reader = new FileReader();
 			reader.onload = function (e) {
 				var html = "<a href=\"javascript:void(0);\" id=\"img_id_"+index+"\"><img src=\"" + e.target.result + "\" data-file='"+f.name+"' data-target='"+index+"' style='width:180px;' class='mr-3 selProductFile img-thumbnail' title='Click to remove'></a>";
-				console.log()
 				$(".imgs_wrap").append(html);
 			}
 			reader.readAsDataURL(f);
@@ -444,10 +443,6 @@ $(function() {
 			}
 		}
 	});
-	
-	$("#selection-image").on("img", "click", function () {
-		console.log(this);
-	})
 })
 	
 </script>

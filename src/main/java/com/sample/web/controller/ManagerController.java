@@ -37,6 +37,7 @@ import com.sample.web.view.Image;
 import com.sample.web.view.Notice;
 import com.sample.web.view.Pagination;
 import com.sample.web.view.Qna;
+import com.sample.web.view.QnaImage;
 import com.sample.web.view.Reserve;
 import com.sample.web.view.User;
 
@@ -150,13 +151,6 @@ public class ManagerController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("rows", rows);
 		
-		System.out.println(pagination.getBeginPage());
-		System.out.println(pagination.getEndPage());
-		
-		for (Notice notice : notices) {
-			System.out.println(notice.getId());
-		}
-		
 		return "manager/notice/list";
 	}
 	
@@ -210,8 +204,6 @@ public class ManagerController {
 			keyword = null;
 		}
 		
-		System.out.println("pageNo" + pageNo);
-		
 		String nowStatus = StringUtil.nullToValue(status, "전체");
 		String searchKeyword = StringUtil.nullToBlank(keyword);
 		
@@ -241,15 +233,21 @@ public class ManagerController {
 		model.addAttribute("totalPageCount", totalPageCount);
 		model.addAttribute("rows", rows);
 		
-		System.out.println(totalRows);
-		System.out.println(totalPageCount);
-		
-		for (Qna qna : qnas) {
-			System.out.println("id: " + qna.getId());
-		}
-		
 		return "manager/qna/list";
 	}
 	
+	@GetMapping("/qna/getImages.do")
+	@ResponseBody
+	public Map<String, Object> getImagesById (@RequestParam("id") int id) {
+		
+		List<QnaImage> images = qnaService.getIamgesById(id);
+		Qna qna = qnaService.getQnaDetail(id);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("images", images);
+		map.put("qna", qna);
+		
+		return map;
+	}
 	
 }

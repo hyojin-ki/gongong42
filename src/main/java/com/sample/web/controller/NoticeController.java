@@ -357,10 +357,6 @@ public class NoticeController {
 		
 		List<Image> images = noticeService.getAllImages();
 		
-		for (Image image : images) {
-			System.out.println(image.getImagePath());
-		}
-		
 		return noticeService.getAllImages();
 	}
 }

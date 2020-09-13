@@ -134,24 +134,38 @@ a:hover {
 									</colgroup>
 									<thead class="table-dark">
 										<tr style="background-color: black !important; color: white !important;">
-											<c:if test="${!user.admin }">
-												<th>No.</th>
-												<th>분 류</th>
-												<th style="text-align: left !important;"><span style="padding-left: 160px;">제</span><span style="padding-left: 130px;">목</span></th>
-												<th>작 성 자</th>
-												<th>조 회 수</th>
-												<th>등 록 일</th>
-											</c:if>	
-											<c:if test="${user.admin }">
-												<th>No.</th>
-												<th>분 류</th>
-												<th style="text-align: left !important;"><span style="padding-left: 160px;">제</span><span style="padding-left: 130px;">목</span></th>
-												<th>작 성 자</th>
-												<th>조 회 수</th>
-												<th>등 록 일</th>
-												<th></th>
-												<th></th>
-											</c:if>
+											<c:choose>
+												<c:when test="${!user.admin }">
+													<th>No.</th>
+													<th>분 류</th>
+													<th style="text-align: left !important;"><span style="padding-left: 160px;">제</span><span style="padding-left: 130px;">목</span></th>
+													<th>작 성 자</th>
+													<th>조 회 수</th>
+													<th>등 록 일</th>
+												</c:when>
+												<c:when test="${user.admin }">
+													<c:choose>
+														<c:when test="${empty noticeList }">
+															<th>No.</th>
+															<th>분 류</th>
+															<th style="text-align: left !important;"><span style="padding-left: 160px;">제</span><span style="padding-left: 130px;">목</span></th>
+															<th>작 성 자</th>
+															<th>조 회 수</th>
+															<th>등 록 일</th>
+														</c:when>
+														<c:otherwise>
+															<th>No.</th>
+															<th>분 류</th>
+															<th style="text-align: left !important;"><span style="padding-left: 160px;">제</span><span style="padding-left: 130px;">목</span></th>
+															<th>작 성 자</th>
+															<th>조 회 수</th>
+															<th>등 록 일</th>
+															<th></th>
+															<th></th>
+														</c:otherwise>
+													</c:choose>
+												</c:when>
+											</c:choose>										
 										</tr>
 									</thead>
 									<tbody>

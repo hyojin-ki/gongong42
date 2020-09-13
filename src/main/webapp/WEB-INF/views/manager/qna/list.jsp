@@ -72,6 +72,40 @@ a:hover {
 	font-weight: bold;
 	color: black;
 }
+.qna-title:hover {
+	cursor: pointer;
+	font-weight: bold;
+	color: black;
+}
+.modal-dialog.modal-80size {
+  width: 80%;
+  height: 80%;
+  margin: 0;
+  padding: 0;
+}
+
+.modal-content.modal-80size {
+  height: auto;
+  min-height: 80%;
+}
+.modal.modal-center {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal.modal-center:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog.modal-center {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle; 
+}
 </style>
 </head>
 <body>
@@ -83,6 +117,16 @@ a:hover {
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
+			<!-- 
+				<div class="row">
+					<div class="col-12">
+						<div class="row category" id="category" align="center">
+							<div class="col" id="notice-list"><a href="/notice/list.do">공지사항</a></div>
+							<div class="col" id="qna-list"><a href="/qna/list.do">QnA</a></div>
+						</div>
+					</div>
+				</div>
+				 -->
 				<div class="row">
 					<div class="col-12">
 						<form id="qna-list-form" class="form-group" method="get" action="/qna/list.do">
@@ -102,17 +146,13 @@ a:hover {
 									</div>
 								</div>
 							</div>
-							<div class="col-6">
-								<div class="row">
-									<div class="col-12" align="right">
-										<select class="form-control" id="qna-list-numberToShow" style="width: 130px;" name="rows">
-											<option value="10" ${rows eq '10' ? 'selected' : '' }> 10개씩 보기</option>
-											<option value="20" ${rows eq '20' ? 'selected' : '' }> 20개씩 보기</option>
-											<option value="50" ${rows eq '50' ? 'selected' : '' }> 50개씩 보기</option>
-											<option value="100" ${rows eq '100' ? 'selected' : '' }> 100개씩 보기</option>
-										</select>
-									</div>
-								</div>								
+							<div class="col-6" align="right">
+								<select class="form-control" id="qna-list-numberToShow" style="width: 140px;" name="rows">
+									<option value="10" ${rows eq '10' ? 'selected' : '' }> 10개씩 보기</option>
+									<option value="20" ${rows eq '20' ? 'selected' : '' }> 20개씩 보기</option>
+									<option value="50" ${rows eq '50' ? 'selected' : '' }> 50개씩 보기</option>
+									<option value="100" ${rows eq '100' ? 'selected' : '' }> 100개씩 보기</option>
+								</select>							
 							</div>
 						</div>
 						<div class="row">
@@ -121,8 +161,7 @@ a:hover {
 									<colgroup>
 										<col width="10%">
 										<col width="15%">
-										<col width="45%">
-										<col width="10%">
+										<col width="55%">
 										<col width="10%">
 										<col width="10%">
 									</colgroup>
@@ -132,7 +171,6 @@ a:hover {
 											<th>분 류</th>
 											<th style="text-align: left !important;"><span style="padding-left: 160px;">제</span><span style="padding-left: 130px;">목</span></th>
 											<th>작성자</th>
-											<th>조회수</th>
 											<th>등록일</th>
 										</tr>
 									</thead>
@@ -167,12 +205,12 @@ a:hover {
 															<c:when test="${user.admin eq true }">
 																<c:choose>
 																	<c:when test="${qna.answerTitle eq null }">
-																		<td style="text-align: left !important;" class="qna-title">
+																		<td style="text-align: left !important;" class="qna-title" id="${qna.id }">
 																			<span class="badge badge-danger">답변예정</span> ${qna.questionTitle }																			
 																		</td>
 																	</c:when>
 																	<c:when test="${qna.answerTitle ne null }">
-																		<td style="text-align: left !important;" class="qna-title">
+																		<td style="text-align: left !important;" class="qna-title" id="${qna.id }">
 																			<span class="badge badge-success">답변완료</span> ${qna.questionTitle }																			
 																		</td>
 																	</c:when>
@@ -182,13 +220,13 @@ a:hover {
 																<c:choose>
 																	<c:when test="${user.id eq qna.questionUser.id }">
 																		<c:choose>
-																			<c:when test="${qna.answerTitle eq null }">
-																				<td style="text-align: left !important;" class="qna-title"><span class="badge badge-danger">답변예정</span>
+																			<c:when test="${qna.answerTitle eq null }"> 
+																				<td style="text-align: left !important;" class="qna-title" id="${qna.id }"><span class="badge badge-danger">답변예정</span>
 																				${qna.questionTitle } <span class="badge badge-info badge-pill">내가쓴글</span>
 																				</td>
 																			</c:when>
 																			<c:when test="${qna.answerTitle ne null }">
-																				<td style="text-align: left !important;" class="qna-title"><span class="badge badge-success">답변완료</span>
+																				<td style="text-align: left !important;" class="qna-title" id="${qna.id }"><span class="badge badge-success">답변완료</span>
 																				${qna.questionTitle } <span class="badge badge-info badge-pill">내가쓴글</span>
 																				</td>
 																			</c:when>
@@ -197,11 +235,11 @@ a:hover {
 																	<c:when test="${qna.opened eq true }">
 																		<c:choose>
 																			<c:when test="${qna.answerTitle eq null }">
-																				<td style="text-align: left !important;" class="qna-title"><span class="badge badge-danger">답변예정</span> 
+																				<td style="text-align: left !important;" id="${qna.id }" class="qna-title"><span class="badge badge-danger">답변예정</span> 
 																				${qna.questionTitle }
 																			</c:when>
 																			<c:when test="${qna.answerTitle ne null }">
-																				<td style="text-align: left !important;" class="qna-title"><span class="badge badge-success">답변완료</span> 
+																				<td style="text-align: left !important;" id="${qna.id }" class="qna-title"><span class="badge badge-success">답변완료</span> 
 																				${qna.questionTitle }
 																			</c:when>
 																		</c:choose>
@@ -219,11 +257,11 @@ a:hover {
 																	<c:when test="${qna.opened eq true }">
 																		<c:choose>
 																			<c:when test="${qna.answerTitle eq null }">
-																				<td style="text-align: left !important;" class="qna-title"><span class="badge badge-danger">답변예정</span> 
+																				<td style="text-align: left !important;" id="${qna.id }" class="qna-title"><span class="badge badge-danger">답변예정</span> 
 																				${qna.questionTitle }
 																			</c:when>
 																			<c:when test="${qna.answerTitle ne null }">
-																				<td style="text-align: left !important;" class="qna-title"><span class="badge badge-success">답변완료</span> 
+																				<td style="text-align: left !important;" id="${qna.id }" class="qna-title"><span class="badge badge-success">답변완료</span> 
 																				${qna.questionTitle }
 																			</c:when>
 																		</c:choose>
@@ -238,7 +276,6 @@ a:hover {
 															</c:when>
 														</c:choose>
 														<td>${qna.questionUser.id }</td>
-														<td>${qna.hits }</td>
 														<td><fmt:formatDate value="${qna.regDate }"/></td>
 													</tr>
 													<c:choose>
@@ -247,9 +284,9 @@ a:hover {
 																<td style='text-align: left;' colspan='6'>
 																<div class='row'>
 																	<div class='col-12'>
-																		<div class='box au' style='width: 90%; margin-left: 100px; float: left; overflow: auto; background-color: #C0C0C0;'>
-																			<h4 class='mt-3 ml-3'><span>Q. </span>${qna.questionTitle }</h4>
-																			<h6 class='mt-2 ml-5'>${qna.questionContent }</h6>
+																		<div class='box au' style='width: 90%; margin-left: 100px; float: left; background-color: #C0C0C0;'>
+																			<div class="row question-form">
+																			</div>
 																			<div class="mr-5" align="right">
 																				<button type="button" id="${qna.id }" class="modify-question btn btn-success mb-1 btn-sm mr-2"
 																				data-toggle=modal data-target="#modal-modify-question-form">수정하기</button>
@@ -258,11 +295,11 @@ a:hover {
 																			<hr class='one' color='black' width='900px;' style='border: thin soild'>
 																			<c:choose>
 																				<c:when test="${qna.answerTitle eq null }">
-																					<h4 class='ml-3'><span>A. </span>답변이 없습니다.</h4>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>답변이 없습니다.</h4>
 																				</c:when>
 																				<c:otherwise>
-																					<h4 class='ml-3'><span>A. </span>${qna.answerTitle }</h4>
-																					<h6 class='mt-2 ml-5'>${qna.answerContent }</h6>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>${qna.answerTitle }</h4>
+																					<h6 class='mt-2 ml-5' style="padding-left: 50px;">${qna.answerContent }</h6>
 																				</c:otherwise>
 																			</c:choose>
 																		</div>
@@ -276,17 +313,17 @@ a:hover {
 																<td style='text-align: left;' colspan='6'>
 																<div class='row'>
 																	<div class='col-12'>
-																		<div class='box au' style='width: 90%; margin-left: 100px; float: left; overflow: auto; background-color: #C0C0C0;'>
-																			<h4 class='mt-3 ml-3'><span>Q. </span>${qna.questionTitle }</h4>
-																			<h6 class='mt-2 ml-5'>${qna.questionContent }</h6>
+																		<div class='box au' style='width: 90%; margin-left: 100px; float: left; background-color: #C0C0C0;'>
+																			<div class="row question-form">
+																			</div>
 																			<hr class='one' color='black' width='900px;' style='border: thin soild'>
 																			<c:choose>
 																				<c:when test="${qna.answerTitle eq null }">
-																					<h4 class='ml-3'><span>A. </span>답변이 없습니다.</h4>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>답변이 없습니다.</h4>
 																				</c:when>
 																				<c:otherwise>
-																					<h4 class='ml-3'><span>A. </span>${qna.answerTitle }</h4>
-																					<h6 class='mt-2 ml-5'>${qna.answerContent }</h6>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>${qna.answerTitle }</h4>
+																					<h6 class='mt-2 ml-5' style="padding-left: 50px;">${qna.answerContent }</h6>
 																				</c:otherwise>
 																			</c:choose>
 																		</div>
@@ -300,23 +337,21 @@ a:hover {
 																<td style='text-align: left;' colspan='6'>
 																<div class='row'>
 																	<div class='col-12'>
-																		<div class='box au' style='width: 90%; margin-left: 100px; float: left; overflow: auto; background-color: #C0C0C0;'>
-																			<h4 class='mt-3 ml-3'><span>Q. </span>${qna.questionTitle }</h4>
-																			<h6 class='mt-2 ml-5'>${qna.questionContent }</h6>
-																			<div class="mr-5" align="right">
+																		<div class='box au' style='width: 90%; margin-left: 100px; float: left; background-color: #C0C0C0;'>
+																			<div class="row question-form">
 																			</div>
 																			<hr class='one' color='black' width='900px;' style='border: thin soild'>
 																			<c:choose>
 																				<c:when test="${qna.answerTitle eq null }">
-																					<h4 class='ml-3'><span>A. </span>답변이 없습니다.</h4>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>답변이 없습니다.</h4>
 																					<div class="mr-5" align="right">
 																						<button type="button" id="${qna.id }" class="answer-add-admin btn btn-primary btn-sm mb-1 mr-2"
 																						data-toggle=modal data-target="#modal-add-answer-form">답변달기</button>
 																					</div>
 																				</c:when>
 																				<c:otherwise>
-																					<h4 class='ml-3'><span>A. </span>${qna.answerTitle }</h4>
-																					<h6 class='mt-2 ml-5'>${qna.answerContent }</h6>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>${qna.answerTitle }</h4>
+																					<h6 class='mt-2 ml-5' style="padding-left: 50px;">${qna.answerContent }</h6>
 																					<div class="mr-5" align="right">
 																						<button type="button" id="${qna.id }" class="answer-modify-admin btn btn-success mb-3 btn-sm mr-2"
 																						data-toggle=modal data-target="#modal-modify-answer-form">답변수정하기</button>
@@ -335,18 +370,16 @@ a:hover {
 																<div class='row'>
 																	<div class='col-12'>
 																		<div class='box au' style='width: 90%; margin-left: 100px; float: left; overflow: auto; background-color: #C0C0C0;'>
-																			<h4 class='mt-3 ml-3'><span>Q. </span>${qna.questionTitle }</h4>
-																			<h6 class='mt-2 ml-5'>${qna.questionContent }</h6>
-																			<div class="mr-5" align="right">
+																			<div class="row question-form">
 																			</div>
 																			<hr class='one' color='black' width='900px;' style='border: thin soild'>
 																			<c:choose>
 																				<c:when test="${qna.answerTitle eq null }">
-																					<h4 class='ml-3'><span>A. </span>답변이 없습니다.</h4>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>답변이 없습니다.</h4>
 																				</c:when>
 																				<c:otherwise>
-																					<h4 class='ml-3'><span>A. </span>${qna.answerTitle }</h4>
-																					<h6 class='mt-2 ml-5'>${qna.answerContent }</h6>
+																					<h4 class='ml-3' style="padding-left: 30px;"><span>A. </span>${qna.answerTitle }</h4>
+																					<h6 class='mt-2 ml-5' style="padding-left: 50px;">${qna.answerContent }</h6>
 																				</c:otherwise>
 																			</c:choose>
 																		</div>
@@ -364,6 +397,8 @@ a:hover {
 							</div>
 						</div>
 						<!-- 페이지 우측 하단 QnA등록버튼 관리자일경우 답변등록, 답변수정, 유저일경우 본인글만 수정,삭제가능 -->
+						<!-- 관리자일 경우 문의하기버튼 삭제 -->
+						<!-- 						
 						<c:choose>
 							<c:when test="${user ne null && user.admin ne true}">
 								<div class="row">
@@ -382,6 +417,7 @@ a:hover {
 								</div>
 							</c:when>
 						</c:choose>
+						 -->
 						<!-- 페이지 하단 검색창 -->
 						<div class="row">
 							<div class="col-12 d-flex justify-content-center">
@@ -429,6 +465,7 @@ a:hover {
 			</div>
 		</div>
 	</div>	
+	<!--  
 	<div class="container-fluid" style="background-color: #f5f5f5; width: 100%;">
 		<div class="row" style="height: 100px;">
 			<div class="col-6">
@@ -461,489 +498,39 @@ a:hover {
 			</div>
 		</div>
 	</div>
-<!-- 문의하기 모달창 -->
-	<form action="addqna.do" method="post">
-		<div class="modal fade" id="modal-add-question-form" data-backdrop="static" >
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-				<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title">문의하기</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
+	-->
+<%@ include file="../../common/footer.jsp" %>	
+<%@ include file="qnaAddQuesModal.jsp" %>
+<%@ include file="qnaModifyQuesModal.jsp" %>
+<%@ include file="qnaAddAnswerModal.jsp" %>
+<%@ include file="qnaModifyAnswerModal.jsp" %>
+<div class="modal fade modal-center" tabindex="-1" role="dialog" id="detail-image-sizeUp">
+	<div class="modal-dialog modal-fullsize modal-center" role="document">
+		<div class="modal-content modal-fullsize">
+		<!-- Modal body -->
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-12">
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators" id="image-sizeUp-indicators">
+						</ol>
+					<div class="carousel-inner" id="image-form">
 					</div>
-						<!-- Modal body -->
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-12 mb-1">
-								<strong><span>문의유형</span></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 mb-2">
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category" id="customRadio" name="qnaCategory" value="0">
-									<label class="custom-control-label" for="customRadio">예매/취소</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category" id="customRadio2" name="qnaCategory" value="1">
-									<label class="custom-control-label" for="customRadio2">메이트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category" id="customRadio3" name="qnaCategory" value="3">
-									<label class="custom-control-label" for="customRadio3">이벤트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category" id="customRadio4" name="qnaCategory" value="2">
-									<label class="custom-control-label" for="customRadio4">기타</label>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-group">
-									<strong><label>제목</label></strong>
-									<input type="text" name="qnaTitle" class="form-control" placeholder="제목을 입력해주세요">
-								</div>
-								<div class="form-group">
-									<strong><label>내용</label></strong>
-									<textarea rows="5" cols="" name="qnaContent" class="form-control" placeholder="내용을 입력해주세요"></textarea>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-opened" id="customRadio5" name="qnaOpened" value="true">
-									<label class="custom-control-label" for="customRadio5">공개</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-opened" id="customRadio6" name="qnaOpened" value="false">
-									<label class="custom-control-label" for="customRadio6">비공개</label>
-								</div>
-							</div>
-						</div>
-						<div class="row mt-3">
-							<div class="col-12">
-								<div class="row" id="selection-image">
-									<div class="col-2">
-										<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-image-add-question-form" 
-										id="search-photo-question"><i class="far fa-plus-square fa-4x"></i></button>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-2" style="padding-left: 25px;">
-										<label>사진첨부</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-						<!-- Modal footer -->
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-dark btn-lg">등록</button>
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">취소</button>
+					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
 					</div>
 				</div>
 			</div>
 		</div>
-	</form>
-	<div class="modal fade" id="modal-image-add-question-form" data-backdrop="static">
-		<div class="modal-dialog modal-content modal-xl modal-dialog-scrollable" >
-			<div class="modal-content ">
-				<div class="modal-header">
-					<h3 class="modal-title">사진검색하기</h3>
-					<button type="button" class="close"  data-dismiss="modal">&times;</button>
-				</div>
-				<div class="modal-header">
-					<div class="from-group">
-						<input type="text" class="form-control" placeholder="검색어를 입력하세요">
-					</div>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-					<c:forEach begin="1" end="15" var="item">
-						<div class="col-4 mb-5">
-							<img src="/resources/sample-images/image1.jpg" id="image${item }" style="height: 200px;" class="img-thumbnail scale">
-						</div>
-					</c:forEach>						
-					</div>
-				</div>
-				<div class="modal-footer"></div>
-				<div class="row">
-					<div class="col-4"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-dark btn-lg" data-dismiss="modal" id="btn-confirm">확인</button>
-					</div>
-					<div class="col-1"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">닫기</button>
-						
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
-	<!-- 문의 수정하기 모달창  -->
-	<form action="modifyquestion.do" method="post">
-		<div class="modal fade" id="modal-modify-question-form" data-backdrop="static" >
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-				<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title">문의하기</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-						<!-- Modal body -->
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-12 mb-1">
-								<strong><span>문의유형</span></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 mb-2">
-							<input type="hidden" name="qnaId" id="question-qna-id" value="">
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category-modify" id="customRadio15" name="qnaCategory" value="0">
-									<label class="custom-control-label" for="customRadio15">예매/취소</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category-modify" id="customRadio16" name="qnaCategory" value="1">
-									<label class="custom-control-label" for="customRadio16">메이트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category-modify" id="customRadio17" name="qnaCategory" value="3">
-									<label class="custom-control-label" for="customRadio17">이벤트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-category-modify" id="customRadio18" name="qnaCategory" value="2">
-									<label class="custom-control-label" for="customRadio18">기타</label>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-group">
-									<strong><label>제목</label></strong>
-									<input type="text" id="qnaTitle-modify-user" name="qnaTitle" class="form-control" placeholder="제목을 입력해주세요">
-								</div>
-								<div class="form-group">
-									<strong><label>내용</label></strong>
-									<textarea rows="5" cols="" id="qnaContent-modify-user" name="qnaContent" class="form-control" placeholder="내용을 입력해주세요"></textarea>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-opened-modify" id="customRadio19" name="qnaOpened" value="true">
-									<label class="custom-control-label" for="customRadio19">공개</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input question-opened-modify" id="customRadio20" name="qnaOpened" value="false">
-									<label class="custom-control-label" for="customRadio20">비공개</label>
-								</div>
-							</div>
-						</div>
-						<div class="row mt-3">
-							<div class="col-12">
-								<div class="row" id="selection-image">
-									<div class="col-2">
-										<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-image-modify-question-form" 
-										id="search-photo-question-modify"><i class="far fa-plus-square fa-4x"></i></button>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-2" style="padding-left: 25px;">
-										<label>사진첨부</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-						<!-- Modal footer -->
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-dark btn-lg">등록</button>
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-	<div class="modal fade" id="modal-image-modify-question-form" data-backdrop="static">
-		<div class="modal-dialog modal-content modal-xl modal-dialog-scrollable" >
-			<div class="modal-content ">
-				<div class="modal-header">
-					<h3 class="modal-title">사진검색하기</h3>
-					<button type="button" class="close"  data-dismiss="modal">&times;</button>
-				</div>
-				<div class="modal-header">
-					<div class="from-group">
-						<input type="text" class="form-control" placeholder="검색어를 입력하세요">
-					</div>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-					<c:forEach begin="1" end="15" var="item">
-						<div class="col-4 mb-5">
-							<img src="/resources/sample-images/image1.jpg" id="image${item }" style="height: 200px;" class="img-thumbnail scale">
-						</div>
-					</c:forEach>						
-					</div>
-				</div>
-				<div class="modal-footer"></div>
-				<div class="row">
-					<div class="col-4"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-dark btn-lg" data-dismiss="modal" id="btn-confirm">확인</button>
-					</div>
-					<div class="col-1"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">닫기</button>
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- 답변등록하기 모달창 -->
-	<form action="/qna/addanswer.do" method="post">
-		<div class="modal fade" id="modal-add-answer-form" data-backdrop="static" >
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-				<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title">답변하기</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-						<!-- Modal body -->
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-12 mb-1">
-								<strong><span>문의유형</span></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 mb-2">
-							<input type="hidden" name="qnaId" id="answer-qna-id" value="">
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input answer-category" id="customRadio7" name="qnaCategory" value="0">
-									<label class="custom-control-label" for="customRadio7">예매/취소</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input answer-category" id="customRadio8" name="qnaCategory" value="1">
-									<label class="custom-control-label" for="customRadio8">메이트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input answer-category" id="customRadio9" name="qnaCategory" value="3">
-									<label class="custom-control-label" for="customRadio9">이벤트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input answer-category" id="customRadio10" name="qnaCategory" value="2">
-									<label class="custom-control-label" for="customRadio10">기타</label>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-group">
-									<strong><label>문의제목</label></strong>
-									<input type="text" id="qnaTitle" class="form-control" value="" readonly="readonly">
-								</div>
-								<div class="form-group">
-									<strong><label>문의내용</label></strong>
-									<textarea rows="5" cols="" id="qnaContent" class="form-control" readonly="readonly"></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-group">
-									<strong><label>답변제목</label></strong>
-									<input type="text" name="answerTitle" id="answerTitle" class="form-control" placeholder="제목을 입력해주세요" value="">
-								</div>
-								<div class="form-group">
-									<strong><label>답변내용</label></strong>
-									<textarea rows="5" cols="" name="answerContent" id="answerContent" class="form-control" placeholder="내용을 입력해주세요"></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row mt-3">
-							<div class="col-12">
-								<div class="row" id="selection-image">
-									<div class="col-2">
-										<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-image-add-answer-form" 
-										id="search-photo-answer"><i class="far fa-plus-square fa-4x"></i></button>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-2" style="padding-left: 25px;">
-										<label>사진첨부</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-						<!-- Modal footer -->
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-dark btn-lg">등록</button>
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-	<div class="modal fade" id="modal-image-add-answer-form" data-backdrop="static">
-		<div class="modal-dialog modal-content modal-xl modal-dialog-scrollable" >
-			<div class="modal-content ">
-				<div class="modal-header">
-					<h3 class="modal-title">사진검색하기</h3>
-					<button type="button" class="close"  data-dismiss="modal">&times;</button>
-				</div>
-				<div class="modal-header">
-					<div class="from-group">
-						<input type="text" class="form-control" placeholder="검색어를 입력하세요">
-					</div>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-					<c:forEach begin="1" end="15" var="item">
-						<div class="col-4 mb-5">
-							<img src="/resources/sample-images/image1.jpg" id="image${item }" style="height: 200px;" class="img-thumbnail scale">
-						</div>
-					</c:forEach>						
-					</div>
-				</div>
-				<div class="modal-footer"></div>
-				<div class="row">
-					<div class="col-4"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-dark btn-lg" data-dismiss="modal" id="btn-confirm">확인</button>
-					</div>
-					<div class="col-1"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">닫기</button>
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- 답변수정하기 모달창 -->
-	<form action="/qna/modifyanswer.do" method="post">
-		<div class="modal fade" id="modal-modify-answer-form" data-backdrop="static" >
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-				<!-- Modal Header -->
-					<div class="modal-header">
-						<h4 class="modal-title">답변하기</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-						<!-- Modal body -->
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-12 mb-1">
-								<strong><span>문의유형</span></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 mb-2">
-							<input type="hidden" name="qnaId" id="modify-qna-id" value="">
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input modify-category" id="customRadio11" name="qnaCategory" value="0">
-									<label class="custom-control-label" for="customRadio11">예매/취소</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input modify-category" id="customRadio12" name="qnaCategory" value="1">
-									<label class="custom-control-label" for="customRadio12">메이트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input modify-category" id="customRadio13" name="qnaCategory" value="3">
-									<label class="custom-control-label" for="customRadio13">이벤트</label>
-								</div>
-								<div class="custom-control custom-radio custom-control-inline">
-									<input type="radio" class="custom-control-input modify-category" id="customRadio14" name="qnaCategory" value="2">
-									<label class="custom-control-label" for="customRadio14">기타</label>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-group">
-									<strong><label>문의제목</label></strong>
-									<input type="text" id="qnaTitle-modify" class="form-control" value="" readonly="readonly">
-								</div>
-								<div class="form-group">
-									<strong><label>문의내용</label></strong>
-									<textarea rows="5" cols="" id="qnaContent-modify" class="form-control" readonly="readonly"></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div class="form-group">
-									<strong><label>답변제목</label></strong>
-									<input type="text" name="answerTitle" id="answerTitle-modify" class="form-control" value="">
-								</div>
-								<div class="form-group">
-									<strong><label>답변내용</label></strong>
-									<textarea rows="5" cols="" name="answerContent" id="answerContent-modify" class="form-control" ></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row mt-3">
-							<div class="col-12">
-								<div class="row" id="selection-image">
-									<div class="col-2">
-										<button type="button" class="btn btn-light" data-toggle="modal" data-target="#modal-image-add-modify-form" 
-										id="search-photo-modify"><i class="far fa-plus-square fa-4x"></i></button>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-2" style="padding-left: 25px;">
-										<label>사진첨부</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-						<!-- Modal footer -->
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-dark btn-lg">등록</button>
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">취소</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
-	<div class="modal fade" id="modal-image-add-modify-form" data-backdrop="static">
-		<div class="modal-dialog modal-content modal-xl modal-dialog-scrollable" >
-			<div class="modal-content ">
-				<div class="modal-header">
-					<h3 class="modal-title">사진검색하기</h3>
-					<button type="button" class="close"  data-dismiss="modal">&times;</button>
-				</div>
-				<div class="modal-header">
-					<div class="from-group">
-						<input type="text" class="form-control" placeholder="검색어를 입력하세요">
-					</div>
-				</div>
-				<div class="modal-body">
-					<div class="row">
-					<c:forEach begin="1" end="15" var="item">
-						<div class="col-4 mb-5">
-							<img src="/resources/sample-images/image1.jpg" id="image${item }" style="height: 200px;" class="img-thumbnail scale">
-						</div>
-					</c:forEach>						
-					</div>
-				</div>
-				<div class="modal-footer"></div>
-				<div class="row">
-					<div class="col-4"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-dark btn-lg" data-dismiss="modal" id="btn-confirm">확인</button>
-					</div>
-					<div class="col-1"></div>
-					<div class="col-2">
-						<button type="button" class="btn btn-light btn-lg" data-dismiss="modal">닫기</button>
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+</div>
 </div>
 <script type="text/javascript">
 $(function() {
@@ -971,7 +558,7 @@ $(function() {
 		$("#qna-list-form").submit();
 	})
 	
-		// 갯수별로 보기
+	// 갯수별로 보기
 	$("#qna-list-numberToShow").on('change', function() {
 		$("#pageNo").val('1');
 		$("#qna-list-form").submit();
@@ -1036,7 +623,6 @@ $(function() {
 	});
 	
 	// 글이 존재하지 않으면 페이지바를 삭제
-	// 만들어야댐
 	if ($("#qna-empty").text() == '게시글이 존재하지 않습니다.') {
 		$("#qna-page-bar").empty();
 	}
@@ -1066,97 +652,12 @@ $(function() {
 		}
 	})
 	
-	$(".answer-modify-admin").on("click", function () {
-		var qnaId = $(this).attr("id");
-		
-		$("#modify-qna-id").val(qnaId);
-		
-		$.ajax({
-			url: "/qna/questionDetail.do",
-			data: {id: qnaId},
-			type: "GET",
-			success: function (data) {
-				
-				$("#modal-modify-answer-form .modify-category").each(function () {
-					if($(this).val() == data.category) {
-						$(this).prop("checked", true)
-					} else {
-						$(this).prop("disabled", "true");
-					}
-					
-					$("#modal-modify-answer-form #qnaTitle-modify").val(data.questionTitle);
-					$("#modal-modify-answer-form #qnaContent-modify").val(data.questionContent);
-					
-					$("#modal-modify-answer-form #answerTitle-modify").val(data.answerTitle);
-					$("#modal-modify-answer-form #answerContent-modify").val(data.answerContent);
-					
-				})
-			}
-		})
-		
-	})
-	
-	$(".answer-add-admin").on("click", function () {
-		
-		var qnaId = $(this).attr("id");
-		
-		$("#answer-qna-id").val(qnaId);
-		
-		$.ajax({
-			url: "/qna/questionDetail.do",
-			data: {id: qnaId},
-			type: "GET",
-			success: function (data) {
-				
-				$("#modal-add-answer-form .answer-category").each(function () {
-					if($(this).val() == data.category) {
-						$(this).prop("checked", true)
-					} else {
-						$(this).prop("disabled", "true");
-					}
-				})
-				
-				$("#modal-add-answer-form #qnaTitle").val(data.questionTitle);
-				$("#modal-add-answer-form #qnaContent").val(data.questionContent);
-				
-			}
-		})
-	})
-		
-	$(".modify-question").on("click", function () {
-		qnaId = $(this).attr("id");
-		
-		$("#question-qna-id").val(qnaId);
-		
-		$.ajax({
-			url: "/qna/questionDetail.do",
-			data: {id: qnaId},
-			type: "GET",
-			success: function (data) {
-				
-				$("#modal-modify-question-form .question-category-modify").each(function () {
-					if ($(this).val() == data.category) {
-						$(this).prop("checked", true)
-					}
-				})
-				
-				$("#modal-modify-question-form #qnaTitle-modify-user").val(data.questionTitle);
-				$("#modal-modify-question-form #qnaContent-modify-user").val(data.questionContent);
-				
-				if(data.opened) {
-					$("#customRadio19").prop("checked", true)
-				} else {
-					$("#customRadio20").prop("checked", true);
-				}
-			}
-		})
-	})
-	
+	// qna 삭제
 	$(".delete-question").on("click", function () {
 		var qnaId = $(this).data("target")
 		
 		$.ajax({
-			url: "/qna/deleteQuestion.do",
+			url: "deleteQuestion.do",
 			data : {id: qnaId},
 			type : "GET",
 			success: function () {
@@ -1165,7 +666,146 @@ $(function() {
 			}
 		})
 	})
-
+	
+	
+	$(".qna-title").on("click", function () {
+ 		var qnaId = $(this).attr("id")
+ 		
+ 		var addElement = "";
+ 		
+		$currentQuestionForm = ($(this).parent().next().find(".question-form"))
+		
+		$.ajax({
+			url: "getImages.do",
+			data: {id: qnaId},
+			type: "GET",
+			success: function (data) {
+				console.log(data)
+				if (!data.images.length) {
+					
+					$currentQuestionForm.empty();
+					
+					addElement += '<div class="col-12 ml-5">'
+					addElement += '<h4 style="word-break:break-all; width: 600px;" class="mt-3"><span>Q. </span>'+data.qna.questionTitle+'</h4>'
+					addElement += '<h6 style="word-break:break-all; width: 600px;" class="mt-2">'+data.qna.questionContent+'</h6>'
+					addElement += '</div>'
+					
+					$currentQuestionForm.append(addElement)
+					
+				} else if (data.images.length == 1) {
+					
+					$currentQuestionForm.empty();
+					
+					addElement += '<div class="col-3 mt-3 question-image-form" style="padding-right: 0; padding-left: 30px;" id="question-image-form">'
+					addElement += '<img width="210px" height="50px" src="/resources/sample-images/'+data.images[0].imagePath+'" class="img-thumbnail question-image">'
+					addElement += '<button class="btn btn-primary btn-sm mt-1 question-image-btn" data-toggle=modal data-target="#detail-image-sizeUp" style="margin-left: 68px;">크게보기</button>'
+					addElement += '</div>'
+					addElement += '<div class="col-9">'
+					addElement += '<h4 style="word-break:break-all; width: 600px;" class="mt-3"><span>Q. </span>'+data.qna.questionTitle+'</h4>'
+					addElement += '<h6 style="word-break:break-all; width: 600px;" class="mt-2">'+data.qna.questionContent+'</h6>'
+					addElement += '</div>'
+					
+					$currentQuestionForm.append(addElement)
+					
+				} else if (data.images.length == 2) {
+					
+					$currentQuestionForm.empty();
+					
+					addElement += '<div class="col-3 mt-3 question-image-form" style="padding-right: 0; padding-left: 30px;" id="question-image-form">'
+					addElement += '<img width="100px" height="50px" src="/resources/sample-images/'+data.images[0].imagePath+'" class="img-thumbnail question-image">'
+					addElement += '<img width="100px" height="50px" src="/resources/sample-images/'+data.images[1].imagePath+'" class="img-thumbnail question-image">'
+					addElement += '<button class="btn btn-primary btn-sm mt-1 question-image-btn" data-toggle=modal data-target="#detail-image-sizeUp" style="margin-left: 68px;">크게보기</button>'
+					addElement += '</div>'
+					addElement += '<div class="col-9">'
+					addElement += '<h4 style="word-break:break-all; width: 600px;" class="mt-3"><span>Q. </span>'+data.qna.questionTitle+'</h4>'
+					addElement += '<h6 style="word-break:break-all; width: 600px;" class="mt-2">'+data.qna.questionContent+'</h6>'
+					addElement += '</div>'
+					
+					$currentQuestionForm.append(addElement)
+					
+				} else if (data.images.length == 3) {
+					
+					$currentQuestionForm.empty();
+					
+					addElement += '<div class="col-3 mt-3 question-image-form" style="padding-right: 0; padding-left: 30px;" id="question-image-form">'
+					addElement += '<img width="70px" height="50px" src="/resources/sample-images/'+data.images[0].imagePath+'" class="img-thumbnail question-image">'
+					addElement += '<img width="70px" height="50px" src="/resources/sample-images/'+data.images[1].imagePath+'" class="img-thumbnail question-image">'
+					addElement += '<img width="70px" height="50px" src="/resources/sample-images/'+data.images[2].imagePath+'" class="img-thumbnail question-image">'
+					addElement += '<button class="btn btn-primary btn-sm mt-1 question-image-btn" data-toggle=modal data-target="#detail-image-sizeUp" style="margin-left: 68px;">크게보기</button>'
+					addElement += '</div>'
+					addElement += '<div class="col-9">'
+					addElement += '<h4 style="word-break:break-all; width: 600px;" class="mt-3"><span>Q. </span>'+data.qna.questionTitle+'</h4>'
+					addElement += '<h6 style="word-break:break-all; width: 600px;" class="mt-2">'+data.qna.questionContent+'</h6>'
+					addElement += '</div>'
+					
+					$currentQuestionForm.append(addElement)
+					
+				}
+			}
+		})
+	})
+	
+	$(".question-form").on("click", ".question-image-btn", function (e) {
+		e.preventDefault();
+		
+		var imageArray = [];
+		var addElement1 = "";
+		var addElement2 = "";
+		
+		$("#image-sizeUp-indicators").empty();
+		$("#detail-image-sizeUp #image-form").empty();
+		
+		$(this).prevAll().each(function (index, element) {
+			
+			var imageName = $(element).attr('src').substring(25)
+			imageArray.push(imageName)
+		})
+		
+		if (imageArray.length == 1) {
+			
+			addElement2 += "<div class='carousel-item active'>"
+			addElement2 += "<img class='d-block w-100' src='../../resources/sample-images/"+imageArray[0]+"'>"
+			addElement2 += "</div>"
+				
+			$("#image-sizeUp-indicators").append(addElement1)
+			$("#detail-image-sizeUp #image-form").append(addElement2)
+			
+		} else if (imageArray.length == 2) {
+			
+			addElement1 += "<li data-target='#carouselExampleIndicators' data-slide-to='0' class='active'></li>"
+			addElement1 += "<li data-target='#carouselExampleIndicators' data-slide-to='1'></li>"
+			
+			addElement2 += "<div class='carousel-item active'>"
+			addElement2 += "<img class='d-block w-100' src='../../resources/sample-images/"+imageArray[0]+"'>"
+			addElement2 += "</div>"
+			addElement2 += "<div class='carousel-item'>"
+			addElement2 += "<img class='d-block w-100' src='../../resources/sample-images/"+imageArray[1]+"'>"
+			addElement2 += "</div>"
+			
+			$("#image-sizeUp-indicators").append(addElement1)
+			$("#detail-image-sizeUp #image-form").append(addElement2)
+			
+		} else if (imageArray.length == 3) {
+			
+			addElement1 += "<li data-target='#carouselExampleIndicators' data-slide-to='0' class='active'></li>"
+			addElement1 += "<li data-target='#carouselExampleIndicators' data-slide-to='1'></li>"
+			addElement1 += "<li data-target='#carouselExampleIndicators' data-slide-to='2'></li>"
+			
+			addElement2 += "<div class='carousel-item active'>"
+			addElement2 += "<img class='d-block w-100' src='../../resources/sample-images/"+imageArray[0]+"'>"
+			addElement2 += "</div>"
+			addElement2 += "<div class='carousel-item'>"
+			addElement2 += "<img class='d-block w-100' src='../../resources/sample-images/"+imageArray[1]+"'>"
+			addElement2 += "</div>"
+			addElement2 += "<div class='carousel-item'>"
+			addElement2 += "<img class='d-block w-100' src='../../resources/sample-images/"+imageArray[2]+"'>"
+			addElement2 += "</div>"
+				
+			$("#image-sizeUp-indicators").append(addElement1)
+			$("#detail-image-sizeUp #image-form").append(addElement2)
+			
+		} 
+	})
 })
 </script>
 </body>

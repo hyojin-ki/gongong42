@@ -13,7 +13,6 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 <link rel="stylesheet" href="/resources/css/style.css" />
-<link rel="stylesheet" href="/resources/css/manager.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -78,16 +77,28 @@ a:hover {
 </style>
 </head>
 <body>
-<c:set var="topName" value="notice"/>
-	<%@ include file="../common/managerTop.jsp" %>
-<div class="page-wrapper chiller-theme toggled">
-  <%@ include file="../common/managernavi.jsp" %>
-  <!-- sidebar-wrapper  -->
+<div class="header">
+	<%@ include file="../../common/navi.jsp" %>
+</div>
+<div class="body" style="margin-top: 100px;">
 	<div class="container">
 		<div class="row">
-			<div class="col-12 mt-5">
+			<div class="col-12">
+				<div class="row mb-3">
+					<div class="col-12">
+						<strong><span style="font-size: 25px;">고객지원센터</span></strong>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-12">
+						<div class="row category" id="category" align="center">
+							<div class="col" id="notice-list"><a href="/notice/list.do">공지사항</a></div>
+							<div class="col" id="QnA-list"><a href="/qna/list.do">QnA</a></div>
+						</div>
+					</div>
+				</div>
 				<div class="row">
-					<div class="col-12 mt-5">
+					<div class="col-12">
 						<table class="table" style="text-align: center;">
 							<colgroup>
 								<col width="5%">
@@ -163,7 +174,7 @@ a:hover {
 									<img src="/resources/sample-images/${detail.images[0].imagePath }" style="width: 125px; height: 100px;">
 									<img src="/resources/sample-images/${detail.images[1].imagePath }" style="width: 125px; height: 100px;">
 									<img src="/resources/sample-images/${detail.images[2].imagePath }" style="width: 125px; height: 100px; margin-top: 5px;">
-									<button type="button" class="btn btn-info btn-sm" data-toggle='modal' data-target="#detail-image-sizeUp" style="margin-top: 10px;">크게보기</button>
+									<div><button type="button" class="btn btn-info btn-sm" data-toggle='modal' data-target="#detail-image-sizeUp" style="margin-top: 10px;">크게보기</button></div>
 								</div>
 							</c:when>
 							<c:when test="${detail.images.size() == 4 }">
@@ -181,7 +192,7 @@ a:hover {
 								<c:forEach var="item" items="${detail.insideContents }">
 									<c:if test="${item.position eq 1 }">
 										<div style="font-size: 25px; font-weight: bolder;"><p>${item.title }</p></div>
-									</c:if>	
+									</c:if>
 								</c:forEach>
 							</div>							
 						</div>
@@ -239,7 +250,7 @@ a:hover {
 						<div class="col-12" align="right">
 							<div class="row">
 								<div class="col-12" align="right">
-									<a href="/admin/notice/list.do"><i class="fas fa-stream fa-2x" style="color: black;"></i></a>
+									<a href="/notice/list.do"><i class="fas fa-stream fa-2x" style="color: black;"></i></a>
 								</div>
 							</div>
 							<div class="row right">
@@ -257,7 +268,7 @@ a:hover {
 						<div class="col-1 right">
 							<div class="row">
 								<div class="col-12" align="center">
-									<a href="/admin/notice/list.do"><i class="fas fa-stream fa-2x" style="color: black;"></i></a>
+									<a href="/notice/list.do"><i class="fas fa-stream fa-2x" style="color: black;"></i></a>
 								</div>
 							</div>
 							<div class="row right">
@@ -312,7 +323,7 @@ a:hover {
 											</c:when>
 										</c:choose>
 									</td>
-									<td><a href="/admin/notice/detail.do?no=${preNoticeIdInfo.id }">${preNoticeIdInfo.title }</a></td>
+									<td><a href="/notice/detail.do?no=${preNoticeIdInfo.id }">${preNoticeIdInfo.title }</a></td>
 									<td><fmt:formatDate value="${preNoticeIdInfo.regDate }"/></td>
 								</c:otherwise>
 							</c:choose>
@@ -346,7 +357,7 @@ a:hover {
 											</c:when>
 										</c:choose>
 									</td>
-									<td><a href="/admin/notice/detail.do?no=${nextNoticeIdInfo.id }">${nextNoticeIdInfo.title }</a></td>
+									<td><a href="/notice/detail.do?no=${nextNoticeIdInfo.id }">${nextNoticeIdInfo.title }</a></td>
 									<td><fmt:formatDate value="${nextNoticeIdInfo.regDate }"/></td>
 								</c:otherwise>								
 							</c:choose>
@@ -379,17 +390,6 @@ a:hover {
 						</div>
 						<c:set var="index" value="${index + 1 }"/>
 					</c:forEach>
-					<!--  
-						<div class="carousel-item">
-							<img class="d-block w-100" src="../resources/sample-images/${detail.images[1].imagePath }">
-						</div>
-						<div class="carousel-item">
-							<img class="d-block w-100" src="../resources/sample-images/${detail.images[2].imagePath }">
-						</div>
-						<div class="carousel-item">
-							<img class="d-block w-100" src="../resources/sample-images/${detail.images[3].imagePath }">
-						</div>
-					-->
 					</div>
 					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -426,28 +426,10 @@ $(function () {
 			type: "GET",
 			success : function () {
 				alert("삭제가 완료되었습니다.");
-				location.href="/admin/notice/list.do";
+				location.href="/notice/list.do";
 			}
 		})
 	})
-	/*
-	$(".carousel-inner .carousel-item").each(function (index, element) {
-		if ($(element).attr("id") == 0) {
-			$(element).addClass("active")
-		} else if ($(element).attr("id") == 1) {
-			$(element).addClass("active")
-		} else if ($(element).attr("id") == 2) {
-			$(element).addClass("active")
-		} else if ($(element).attr("id") == 3) {
-			$(element).addClass("active")
-		}
-	})
-	*/
-	$(".carousel-item").on("change", function () {
-		console.log(this);
-	})
-	
-	
 })
 </script>
 </body>

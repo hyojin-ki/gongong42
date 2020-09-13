@@ -80,9 +80,11 @@ a:hover {
   <%@ include file="../manager/common/managernavi.jsp" %>
   <!-- sidebar-wrapper  -->
  <div class="page-content">
+ <!--  
 <div class="header">
-	<%@ include file="../common/navi.jsp" %>
+%@ include file="../common/navi.jsp" %>
 </div>
+-->
 <div class="body" style="margin-top: 70px;">
 	<div class="container">
 		<div class="row card">

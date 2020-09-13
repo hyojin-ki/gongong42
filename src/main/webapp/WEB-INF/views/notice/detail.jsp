@@ -430,24 +430,6 @@ $(function () {
 			}
 		})
 	})
-	/*
-	$(".carousel-inner .carousel-item").each(function (index, element) {
-		if ($(element).attr("id") == 0) {
-			$(element).addClass("active")
-		} else if ($(element).attr("id") == 1) {
-			$(element).addClass("active")
-		} else if ($(element).attr("id") == 2) {
-			$(element).addClass("active")
-		} else if ($(element).attr("id") == 3) {
-			$(element).addClass("active")
-		}
-	})
-	
-	$(".carousel-item").on("change", function () {
-		console.log(this);
-	})
-	*/
-	
 })
 </script>
 </body>
